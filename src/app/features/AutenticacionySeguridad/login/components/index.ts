@@ -1,0 +1,1 @@
+export { default as FormPerfil} from './FormCrearPerfil'
