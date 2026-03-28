@@ -1,1 +1,1 @@
-export * from '../screen/LoginScreen'
+export { default as FormPerfil} from './FormCrearPerfil'

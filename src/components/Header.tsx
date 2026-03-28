@@ -1,11 +1,15 @@
 'use client'
 
-import { Heart, Menu } from 'lucide-react'
+import { useState } from 'react'
+import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Header() {
+  const [open, setOpen] = useState(false)
+
   return (
     <header className="w-full border-b border-[#E5E7EB] bg-white/90 backdrop-blur sticky top-0 z-50">
+      
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         
         {/* Logo */}
@@ -18,7 +22,7 @@ export default function Header() {
           </h1>
         </div>
 
-        {/* Navegación */}
+        {/* Desktop */}
         <nav className="hidden md:flex items-center gap-6">
           <a href="/" className="text-sm font-medium text-[#7C3AED] hover:text-[#F97316] transition-colors">
             Inicio
@@ -34,27 +38,44 @@ export default function Header() {
           </a>
         </nav>
 
-        {/* Acciones */}
-        <div className="flex items-center gap-3">
+        {/* Desktop acciones */}
+        <div className="hidden md:flex items-center gap-3">
           <Button
             variant="outline"
-            className="hidden md:flex border-[#7C3AED] text-[#7C3AED] hover:bg-[#7C3AED] hover:text-white"
+            className="border-[#7C3AED] text-[#7C3AED] hover:bg-[#7C3AED] hover:text-white"
           >
             Iniciar sesión
           </Button>
 
-          <Button
-            className="hidden md:flex bg-[#F97316] hover:bg-[#EA580C] text-white"
-          >
+          <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white">
             Registrarse
           </Button>
-
-          {/* Mobile menu icon */}
-          <button className="md:hidden text-[#7C3AED]">
-            <Menu className="w-6 h-6" />
-          </button>
         </div>
+
+        {/* Mobile button */}
+        <button onClick={() => setOpen(!open)} className="md:hidden text-[#7C3AED]">
+          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div className="md:hidden px-4 pb-4 space-y-4 bg-white border-t">
+          <a href="/" className="block text-[#7C3AED]">Inicio</a>
+          <a href="/servicios" className="block text-[#7C3AED]">Servicios</a>
+          <a href="/citas" className="block text-[#7C3AED]">Citas</a>
+          <a href="/contacto" className="block text-[#7C3AED]">Contacto</a>
+
+          <div className="flex flex-col gap-2 pt-2">
+            <Button variant="outline" className="border-[#7C3AED] text-[#7C3AED]">
+              Iniciar sesión
+            </Button>
+            <Button className="bg-[#F97316] text-white">
+              Registrarse
+            </Button>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
