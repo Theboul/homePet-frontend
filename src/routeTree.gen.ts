@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as Gestionar_UsuariosRouteImport } from './routes/Gestionar_Usuarios'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
@@ -24,6 +25,11 @@ const LoginRoute = LoginRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Gestionar_UsuariosRoute = Gestionar_UsuariosRouteImport.update({
+  id: '/Gestionar_Usuarios',
+  path: '/Gestionar_Usuarios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,6 +55,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Gestionar_Usuarios'
     | '/about'
     | '/login'
     | '/demo/table'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/Gestionar_Usuarios'
     | '/about'
     | '/login'
     | '/demo/table'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/Gestionar_Usuarios'
     | '/about'
     | '/login'
     | '/demo/table'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Gestionar_UsuariosRoute: typeof Gestionar_UsuariosRoute
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
   DemoTableRoute: typeof DemoTableRoute
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Gestionar_Usuarios': {
+      id: '/Gestionar_Usuarios'
+      path: '/Gestionar_Usuarios'
+      fullPath: '/Gestionar_Usuarios'
+      preLoaderRoute: typeof Gestionar_UsuariosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Gestionar_UsuariosRoute: Gestionar_UsuariosRoute,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
   DemoTableRoute: DemoTableRoute,
