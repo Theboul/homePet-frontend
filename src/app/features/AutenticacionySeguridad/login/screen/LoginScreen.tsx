@@ -2,8 +2,13 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eye, EyeOff, Heart } from 'lucide-react'
+import { FormCrearPerfil } from '../components'
 
 const LoginScreen = () => {
+
+  // ✅ TODO VA DENTRO
+  const [openModal, setOpenModal] = useState(false)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -51,7 +56,6 @@ const LoginScreen = () => {
 
           <form onSubmit={handleLogin} className="space-y-4">
 
-            {/* Email */}
             <div>
               <label className="text-sm text-purple-700">Correo</label>
               <Input
@@ -60,11 +64,9 @@ const LoginScreen = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="focus-visible:ring-orange-500"
               />
             </div>
 
-            {/* Password */}
             <div className="relative">
               <label className="text-sm text-purple-700">Contraseña</label>
               <Input
@@ -73,7 +75,7 @@ const LoginScreen = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="pr-10 focus-visible:ring-orange-500"
+                className="pr-10"
               />
               <button
                 type="button"
@@ -84,7 +86,6 @@ const LoginScreen = () => {
               </button>
             </div>
 
-            {/* Button */}
             <Button
               disabled={isLoading}
               className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white"
@@ -93,9 +94,9 @@ const LoginScreen = () => {
             </Button>
           </form>
 
-          {/* Registro */}
           <Button
             variant="outline"
+            onClick={() => setOpenModal(true)}
             className="w-full border-purple-500 text-purple-700 hover:bg-purple-50"
           >
             Crear cuenta
@@ -103,6 +104,12 @@ const LoginScreen = () => {
 
         </div>
       </div>
+
+      {/* 🔥 AQUÍ VA EL MODAL (DENTRO DEL RETURN) */}
+      <FormCrearPerfil 
+        open={openModal} 
+        onOpenChange={setOpenModal} 
+      />
     </div>
   )
 }
