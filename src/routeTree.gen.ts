@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as Gestionar_UsuariosRouteImport } from './routes/Gestionar_Usuarios'
+import { Route as Gestionar_ClientesRouteImport } from './routes/Gestionar_Clientes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
@@ -30,6 +31,11 @@ const AboutRoute = AboutRouteImport.update({
 const Gestionar_UsuariosRoute = Gestionar_UsuariosRouteImport.update({
   id: '/Gestionar_Usuarios',
   path: '/Gestionar_Usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Gestionar_ClientesRoute = Gestionar_ClientesRouteImport.update({
+  id: '/Gestionar_Clientes',
+  path: '/Gestionar_Clientes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,6 +61,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Gestionar_Clientes': typeof Gestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Gestionar_Clientes': typeof Gestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/Gestionar_Clientes': typeof Gestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/about'
     | '/login'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/about'
     | '/login'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/about'
     | '/login'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Gestionar_ClientesRoute: typeof Gestionar_ClientesRoute
   Gestionar_UsuariosRoute: typeof Gestionar_UsuariosRoute
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/Gestionar_Usuarios'
       fullPath: '/Gestionar_Usuarios'
       preLoaderRoute: typeof Gestionar_UsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Gestionar_Clientes': {
+      id: '/Gestionar_Clientes'
+      path: '/Gestionar_Clientes'
+      fullPath: '/Gestionar_Clientes'
+      preLoaderRoute: typeof Gestionar_ClientesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -177,6 +197,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Gestionar_ClientesRoute: Gestionar_ClientesRoute,
   Gestionar_UsuariosRoute: Gestionar_UsuariosRoute,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
