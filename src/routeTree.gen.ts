@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as Gestionar_UsuariosRouteImport } from './routes/Gestionar_Usuarios'
 import { Route as Gestionar_ClientesRouteImport } from './routes/Gestionar_Clientes'
@@ -21,6 +22,11 @@ import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/Gestionar_Clientes': typeof Gestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/Gestionar_Clientes': typeof Gestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/Gestionar_Clientes': typeof Gestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof Gestionar_UsuariosRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/about'
+    | '/dashboard'
     | '/login'
     | '/demo/table'
     | '/demo/form/address'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/about'
+    | '/dashboard'
     | '/login'
     | '/demo/table'
     | '/demo/form/address'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/about'
+    | '/dashboard'
     | '/login'
     | '/demo/table'
     | '/demo/form/address'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   Gestionar_ClientesRoute: typeof Gestionar_ClientesRoute
   Gestionar_UsuariosRoute: typeof Gestionar_UsuariosRoute
   AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   Gestionar_ClientesRoute: Gestionar_ClientesRoute,
   Gestionar_UsuariosRoute: Gestionar_UsuariosRoute,
   AboutRoute: AboutRoute,
+  DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   DemoTableRoute: DemoTableRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
