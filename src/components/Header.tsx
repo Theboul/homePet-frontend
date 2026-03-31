@@ -3,76 +3,119 @@
 import { useState } from 'react'
 import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Link } from '@tanstack/react-router'
 
 export default function Header() {
   const [open, setOpen] = useState(false)
 
+  // Cambié text-slate-700 por text-slate-900 para máximo contraste
+  const navLinkStyles =
+    'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
+  const mobileLinkStyles =
+    'block text-base font-bold text-slate-900 hover:text-[#7C3AED] py-2'
+
   return (
-    <header className="w-full border-b border-[#E5E7EB] bg-white/90 backdrop-blur sticky top-0 z-50">
-      
+    <header className="w-full border-b border-[#E5E7EB] bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#F97316] flex items-center justify-center shadow-md">
             <Heart className="w-5 h-5 text-white" fill="currentColor" />
           </div>
-          <h1 className="text-xl font-bold text-[#7C3AED]">
-            Pet Home
-          </h1>
-        </div>
+          <h1 className="text-xl font-extrabold text-[#7C3AED]">Pet Home</h1>
+        </Link>
 
-        {/* Desktop */}
-        <nav className="hidden md:flex items-center gap-6">
-          <a href="/" className="text-sm font-medium text-[#7C3AED] hover:text-[#F97316] transition-colors">
+        {/* Desktop Navegación */}
+        <nav className="hidden md:flex items-center gap-8">
+          <Link to="/" className={navLinkStyles}>
             Inicio
-          </a>
-          <a href="/servicios" className="text-sm font-medium text-[#7C3AED] hover:text-[#F97316] transition-colors">
+          </Link>
+          <Link to="/servicios" className={navLinkStyles}>
             Servicios
-          </a>
-          <a href="/citas" className="text-sm font-medium text-[#7C3AED] hover:text-[#F97316] transition-colors">
+          </Link>
+          <Link to="/citas" className={navLinkStyles}>
             Citas
-          </a>
-          <a href="/contacto" className="text-sm font-medium text-[#7C3AED] hover:text-[#F97316] transition-colors">
+          </Link>
+          <Link to="/contacto" className={navLinkStyles}>
             Contacto
-          </a>
+          </Link>
         </nav>
 
         {/* Desktop acciones */}
         <div className="hidden md:flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="border-[#7C3AED] text-[#7C3AED] hover:bg-[#7C3AED] hover:text-white"
-          >
-            Iniciar sesión
-          </Button>
+          <Link to="/login" search={{ register: false }}>
+            <Button
+              variant="outline"
+              className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
+            >
+              Iniciar sesión
+            </Button>
+          </Link>
 
-          <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white">
-            Registrarse
-          </Button>
+          <Link to="/login" search={{ register: true }}>
+            <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
+              Registrarse
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile button */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-[#7C3AED]">
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-slate-900 p-2"
+        >
+          {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden px-4 pb-4 space-y-4 bg-white border-t">
-          <a href="/" className="block text-[#7C3AED]">Inicio</a>
-          <a href="/servicios" className="block text-[#7C3AED]">Servicios</a>
-          <a href="/citas" className="block text-[#7C3AED]">Citas</a>
-          <a href="/contacto" className="block text-[#7C3AED]">Contacto</a>
+        <div className="md:hidden px-4 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-xl">
+          <div className="py-4 space-y-1">
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
+              Inicio
+            </Link>
+            <Link
+              to="/servicios"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
+              Servicios
+            </Link>
+            <Link
+              to="/citas"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
+              Citas
+            </Link>
+            <Link
+              to="/contacto"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
+              Contacto
+            </Link>
+          </div>
 
-          <div className="flex flex-col gap-2 pt-2">
-            <Button variant="outline" className="border-[#7C3AED] text-[#7C3AED]">
-              Iniciar sesión
-            </Button>
-            <Button className="bg-[#F97316] text-white">
-              Registrarse
-            </Button>
+          <div className="flex flex-col gap-3 pb-2">
+            <Link to="/login" search={{ register: false }}>
+              <Button
+                variant="outline"
+                className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
+              >
+                Iniciar sesión
+              </Button>
+            </Link>
+            <Link to="/login" search={{ register: true }}>
+              <Button className="bg-[#F97316] text-white font-bold border-none">
+                Registrarse
+              </Button>
+            </Link>
           </div>
         </div>
       )}
