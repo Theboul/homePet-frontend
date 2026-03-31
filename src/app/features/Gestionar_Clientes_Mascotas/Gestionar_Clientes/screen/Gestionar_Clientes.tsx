@@ -10,10 +10,12 @@ import {
 } from '../components'
 import { Plus, Search, Filter, Users, PawPrint, MapPin } from 'lucide-react'
 
-export function GestionarClientes() {
+export const GestionarClientes = () => {
   const [clientes, setClientes] = useState<Cliente[]>(initialClientes)
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'all' | 'activo' | 'inactivo'>('all')
+  const [statusFilter, setStatusFilter] = useState<
+    'all' | 'activo' | 'inactivo'
+  >('all')
   const [locationFilter, setLocationFilter] = useState('')
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -67,8 +69,8 @@ export function GestionarClientes() {
     if (editingCliente) {
       setClientes((prev) =>
         prev.map((cliente) =>
-          cliente.id === editingCliente.id ? { ...cliente, ...data } : cliente
-        )
+          cliente.id === editingCliente.id ? { ...cliente, ...data } : cliente,
+        ),
       )
     } else {
       const newCliente: Cliente = {
@@ -95,7 +97,7 @@ export function GestionarClientes() {
   const handleDeleteConfirm = () => {
     if (clienteToDelete) {
       setClientes((prev) =>
-        prev.filter((cliente) => cliente.id !== clienteToDelete)
+        prev.filter((cliente) => cliente.id !== clienteToDelete),
       )
       setClienteToDelete(null)
     }
@@ -111,8 +113,8 @@ export function GestionarClientes() {
               ...cliente,
               estado: cliente.estado === 'activo' ? 'inactivo' : 'activo',
             }
-          : cliente
-      )
+          : cliente,
+      ),
     )
   }
 
@@ -201,7 +203,7 @@ export function GestionarClientes() {
                   value={statusFilter}
                   onChange={(e) =>
                     setStatusFilter(
-                      e.target.value as 'all' | 'activo' | 'inactivo'
+                      e.target.value as 'all' | 'activo' | 'inactivo',
                     )
                   }
                   className="h-11 rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 pr-8 text-[#7C3AED] outline-none"

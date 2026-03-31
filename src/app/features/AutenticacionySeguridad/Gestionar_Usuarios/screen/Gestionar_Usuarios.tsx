@@ -1,17 +1,13 @@
-import { useState } from 'react';
-import {
-  UserFilters,
-  UserFormModal,
-  UserStats,
-  UserTable,
-} from '../components';
-import { useGestionarUsuarios } from '../store';
-import type { Usuario, UsuarioFormData } from '../store';
+import { useState } from 'react'
+import { UserFilters, UserFormModal, UserStats, UserTable } from '../components'
+import { useGestionarUsuarios } from '../store'
+import type { Usuario, UsuarioFormData } from '../store'
 
 export const Gestionar_Usuarios = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [modoModal, setModoModal] = useState<'crear' | 'editar'>('crear');
-  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
+  const [openModal, setOpenModal] = useState(false)
+  const [modoModal, setModoModal] = useState<'crear' | 'editar'>('crear')
+  const [usuarioSeleccionado, setUsuarioSeleccionado] =
+    useState<Usuario | null>(null)
 
   const {
     usuariosFiltrados,
@@ -28,40 +24,42 @@ export const Gestionar_Usuarios = () => {
     editarUsuario,
     eliminarUsuario,
     cambiarEstadoUsuario,
-  } = useGestionarUsuarios();
+  } = useGestionarUsuarios()
 
   const abrirModalCrear = () => {
-    setModoModal('crear');
-    setUsuarioSeleccionado(null);
-    setOpenModal(true);
-  };
+    setModoModal('crear')
+    setUsuarioSeleccionado(null)
+    setOpenModal(true)
+  }
 
   const abrirModalEditar = (usuario: Usuario) => {
-    setModoModal('editar');
-    setUsuarioSeleccionado(usuario);
-    setOpenModal(true);
-  };
+    setModoModal('editar')
+    setUsuarioSeleccionado(usuario)
+    setOpenModal(true)
+  }
 
   const handleGuardar = (data: UsuarioFormData) => {
     if (modoModal === 'editar' && usuarioSeleccionado) {
-      editarUsuario(usuarioSeleccionado.id, data);
+      editarUsuario(usuarioSeleccionado.id, data)
     } else {
-      crearUsuario(data);
+      crearUsuario(data)
     }
 
-    setOpenModal(false);
-    setUsuarioSeleccionado(null);
-    setModoModal('crear');
-  };
+    setOpenModal(false)
+    setUsuarioSeleccionado(null)
+    setModoModal('crear')
+  }
 
   return (
-   <section className="min-h-screen bg-white px-6 py-8 text-[#7C3AED]">
+    <section className="min-h-screen bg-white px-6 py-8 text-[#7C3AED]">
       <div className="mx-auto max-w-7xl space-y-6">
         <div>
-        <h1 className="text-4xl font-bold text-[#F97316]">Gestión de Usuarios</h1>
-        <p className="mt-2 text-black">
-  Administra los usuarios internos del sistema de la veterinaria
-</p>
+          <h1 className="text-4xl font-bold text-[#F97316]">
+            Gestión de Usuarios
+          </h1>
+          <p className="mt-2 text-black">
+            Administra los usuarios internos del sistema de la veterinaria
+          </p>
         </div>
 
         <UserStats
@@ -96,13 +94,13 @@ export const Gestionar_Usuarios = () => {
           modo={modoModal}
           usuarioInicial={usuarioSeleccionado}
           onClose={() => {
-            setOpenModal(false);
-            setUsuarioSeleccionado(null);
-            setModoModal('crear');
+            setOpenModal(false)
+            setUsuarioSeleccionado(null)
+            setModoModal('crear')
           }}
           onSave={handleGuardar}
         />
       </div>
     </section>
-  );
-};  
+  )
+}
