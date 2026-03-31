@@ -1,28 +1,43 @@
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eye, EyeOff, Heart } from 'lucide-react'
 import { FormCrearPerfil } from '../components'
+import { useLoginMutation } from '#/store/auth/authApi'
+import { useAppDispatch } from '#/store/hooks'
+import { setCredentials } from '#/store/auth/authSlice'
 
 const LoginScreen = () => {
 
-  // ✅ TODO VA DENTRO
+
   const [openModal, setOpenModal] = useState(false)
 
-  const [email, setEmail] = useState('')
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const [correo, setCorreo] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
+  const [login, { isLoading }] = useLoginMutation()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
+    setFormError(null)
 
-    setTimeout(() => {
-      console.log('Login:', { email, password })
-      setIsLoading(false)
-      alert('Login exitoso 🐶')
-    }, 1500)
+    try {
+      const result = await login({ correo, password }).unwrap()
+      dispatch(
+        setCredentials({
+          user: result.user,
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+        }),
+      )
+      navigate({ to: '/dashboard' })
+    } catch {
+      setFormError('Correo o contraseña incorrectos.')
+    }
   }
 
   return (
@@ -61,8 +76,8 @@ const LoginScreen = () => {
               <Input
                 type="email"
                 placeholder="correo@pethome.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
                 required
               />
             </div>
@@ -92,6 +107,12 @@ const LoginScreen = () => {
             >
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}
             </Button>
+
+            {formError && (
+              <p className="text-sm text-red-600" role="alert">
+                {formError}
+              </p>
+            )}
           </form>
 
           <Button
@@ -106,9 +127,9 @@ const LoginScreen = () => {
       </div>
 
       {/* 🔥 AQUÍ VA EL MODAL (DENTRO DEL RETURN) */}
-      <FormCrearPerfil 
-        open={openModal} 
-        onOpenChange={setOpenModal} 
+      <FormCrearPerfil
+        open={openModal}
+        onOpenChange={setOpenModal}
       />
     </div>
   )
