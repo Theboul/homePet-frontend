@@ -2,12 +2,10 @@ import { Heart, Facebook, Instagram, Mail, Phone, MapPin } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 
-export default function Footer() {
+export const Footer = () => {
   return (
     <footer className="border-t bg-white">
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-        
         {/* Logo */}
         <div className="space-y-4 text-center sm:text-left">
           <div className="flex items-center justify-center sm:justify-start gap-2">
@@ -17,7 +15,8 @@ export default function Footer() {
             <h2 className="text-xl font-bold text-[#7C3AED]">Pet Home</h2>
           </div>
           <p className="text-sm text-[#6B7280]">
-            Cuidamos a tus mascotas con amor, tecnología y profesionales capacitados.
+            Cuidamos a tus mascotas con amor, tecnología y profesionales
+            capacitados.
           </p>
         </div>
 
@@ -25,10 +24,38 @@ export default function Footer() {
         <div className="text-center sm:text-left">
           <h3 className="font-semibold mb-4 text-[#7C3AED]">Navegación</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="/" className="text-[#6B7280] hover:text-[#F97316] transition">Inicio</a></li>
-            <li><a href="/servicios" className="text-[#6B7280] hover:text-[#F97316] transition">Servicios</a></li>
-            <li><a href="/citas" className="text-[#6B7280] hover:text-[#F97316] transition">Citas</a></li>
-            <li><a href="/contacto" className="text-[#6B7280] hover:text-[#F97316] transition">Contacto</a></li>
+            <li>
+              <a
+                href="/"
+                className="text-[#6B7280] hover:text-[#F97316] transition"
+              >
+                Inicio
+              </a>
+            </li>
+            <li>
+              <a
+                href="/servicios"
+                className="text-[#6B7280] hover:text-[#F97316] transition"
+              >
+                Servicios
+              </a>
+            </li>
+            <li>
+              <a
+                href="/citas"
+                className="text-[#6B7280] hover:text-[#F97316] transition"
+              >
+                Citas
+              </a>
+            </li>
+            <li>
+              <a
+                href="/contacto"
+                className="text-[#6B7280] hover:text-[#F97316] transition"
+              >
+                Contacto
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -52,16 +79,16 @@ export default function Footer() {
         <div className="text-center sm:text-left">
           <h3 className="font-semibold mb-4 text-[#7C3AED]">Síguenos</h3>
           <div className="flex justify-center sm:justify-start gap-3">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="icon"
               className="border-[#7C3AED] text-[#7C3AED] hover:bg-[#7C3AED] hover:text-white"
             >
               <Facebook className="w-4 h-4" />
             </Button>
 
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="icon"
               className="border-[#F97316] text-[#F97316] hover:bg-[#F97316] hover:text-white"
             >
@@ -74,8 +101,9 @@ export default function Footer() {
       <Separator />
 
       <div className="text-center py-4 text-sm text-[#6B7280]">
-        © {new Date().getFullYear()}{" "}
-        <span className="text-[#7C3AED] font-semibold">Pet Home</span> 🐾 — Todos los derechos reservados
+        © {new Date().getFullYear()}{' '}
+        <span className="text-[#7C3AED] font-semibold">Pet Home</span> 🐾 —
+        Todos los derechos reservados
       </div>
     </footer>
   )

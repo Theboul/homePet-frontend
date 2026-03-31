@@ -2,7 +2,7 @@ import { Label } from '#/components/ui/label'
 import { createFileRoute } from '@tanstack/react-router'
 import { CardSim } from 'lucide-react'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/_public/')({ component: App })
 
 function App() {
   return (

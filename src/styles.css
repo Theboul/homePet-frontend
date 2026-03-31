@@ -107,12 +107,10 @@ body,
   }
 
   body {
-    background: linear-gradient(
-      180deg,
-      #8a00d4 0%,
-      #a000e6 50%,
-      #7a00cc 100%
-    );
+    background: linear-gradient(180deg,
+        #8a00d4 0%,
+        #a000e6 50%,
+        #7a00cc 100%);
     color: white;
   }
 }

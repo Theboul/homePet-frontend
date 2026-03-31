@@ -1,9 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { MainLayoutClient } from '@/components/ui/Layout'
 
 export const Route = createFileRoute('/_public')({
-  component: RouteComponent,
+  component: () => (
+    <MainLayoutClient>
+      <Outlet />
+    </MainLayoutClient>
+  ),
 })
-
-function RouteComponent() {
-  return <div>Hello "/_public"!</div>
-}

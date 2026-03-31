@@ -18,58 +18,54 @@ const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getIte
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-      {
-        title: 'TanStack Start Starter',
-      },
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Pet Home' },
     ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
-    ],
+    links: [{ rel: 'stylesheet', href: appCss }],
   }),
-  shellComponent: RootDocument,
+  // Cambiamos shellComponent por component para el renderizado estándar
+  component: RootDocument,
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        <Provider store={store}>
-          <AuthBootstrap />
-          <Header />
-          <main>
-            {children}
-          </main>
-          <Footer />
-        </Provider>
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
-        <Scripts />
-      </body>
-        
-    </html>
+<<<<<<< HEAD
+  <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
+    <Provider store={store}>
+      <AuthBootstrap />
+      <Header />
+      <main>
+        {children}
+      </main>
+      <Footer />
+    </Provider>
+    <TanStackDevtools
+      config={{
+        position: 'bottom-right',
+      }}
+      plugins={[
+        {
+          name: 'Tanstack Router',
+          render: <TanStackRouterDevtoolsPanel />,
+        },
+      ]}
+    />
+=======
+      <body className="font-sans antialiased">
+      <React.Suspense>
+        <Outlet />
+      </React.Suspense>
+
+>>>>>>> 7fc350d977279f5098a40e560ca8beb7a3be0b3c
+      <Scripts />
+    </body>
+  </html>
   )
 }
 
