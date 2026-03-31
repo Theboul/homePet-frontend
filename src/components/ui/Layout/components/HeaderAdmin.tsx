@@ -5,7 +5,7 @@ import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
 
-export default function Header() {
+export const HeaderAdmin = () => {
   const [open, setOpen] = useState(false)
 
   // Cambié text-slate-700 por text-slate-900 para máximo contraste

@@ -12,11 +12,9 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  // TanStack Router ya sabe que 'search' contiene 'register: boolean'
-  const search = useSearch({ from: '/login' })
+  const search = useSearch({ from: '/_public/login' })
 
   useEffect(() => {
-    // Si la URL es /login?register=true, abrimos el modal
     if (search.register) {
       setOpenModal(true)
     }
