@@ -1,12 +1,15 @@
-import {
-  HeadContent,
-  Scripts,
-  createRootRoute,
-  Outlet,
-} from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import * as React from 'react' // Importación correcta de React
+import { Provider } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '#/store/hooks'
+import { store } from '#/store/store'
+import { useGetProfileQuery } from '#/store/auth/authApi'
+import { logout, updateUser } from '#/store/auth/authSlice'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+
 
 import appCss from '../styles.css?url'
 
@@ -32,13 +35,58 @@ function RootDocument() {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
+<<<<<<< HEAD
+  <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
+    <Provider store={store}>
+      <AuthBootstrap />
+      <Header />
+      <main>
+        {children}
+      </main>
+      <Footer />
+    </Provider>
+    <TanStackDevtools
+      config={{
+        position: 'bottom-right',
+      }}
+      plugins={[
+        {
+          name: 'Tanstack Router',
+          render: <TanStackRouterDevtoolsPanel />,
+        },
+      ]}
+    />
+=======
       <body className="font-sans antialiased">
-        <React.Suspense>
-          <Outlet />
-        </React.Suspense>
+      <React.Suspense>
+        <Outlet />
+      </React.Suspense>
 
-        <Scripts />
-      </body>
-    </html>
+>>>>>>> 7fc350d977279f5098a40e560ca8beb7a3be0b3c
+      <Scripts />
+    </body>
+  </html>
   )
+}
+
+function AuthBootstrap() {
+  const dispatch = useAppDispatch()
+  const accessToken = useAppSelector((state) => state.auth.accessToken)
+  const { data, isError } = useGetProfileQuery(undefined, {
+    skip: !accessToken,
+  })
+
+  useEffect(() => {
+    if (data) {
+      dispatch(updateUser(data))
+    }
+  }, [data, dispatch])
+
+  useEffect(() => {
+    if (isError && accessToken) {
+      dispatch(logout())
+    }
+  }, [isError, accessToken, dispatch])
+
+  return null
 }

@@ -1,21 +1,16 @@
 import { fetchBaseQuery, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store';
-import { logout, setCredentials } from '../auth/authSlice';
-import Cookies from 'js-cookie';
+import { logout, setAccessToken } from '../auth/authSlice';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-// Usa tu ruta de endpoint real para el refresh token
-const REFRESH_TOKEN_URL = '/auth/refresh'; 
+const REFRESH_TOKEN_URL = '/auth/token/refresh/';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
-  prepareHeaders: (headers, { getState, endpoint }) => {
-    // Excluir endpoints de auth donde no se requiere / no se debe mandar el token para evitar problemas
-    if (!['login', 'register'].includes(endpoint)) {
-      const token = (getState() as RootState).auth.accessToken;
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.accessToken;
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
     }
     return headers;
   },
@@ -29,9 +24,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    // Guardar si ya estamos intentando hacer refresh para evitar loops
-    // (Por simplicidad lo haremos de manera secuencial aquí)
-    const refreshToken = Cookies.get('homePet_refresh_token'); // o desde donde leas el refresh
+    const refreshToken = (api.getState() as RootState).auth.refreshToken;
 
     if (refreshToken) {
       if (import.meta.env.DEV) {
@@ -50,21 +43,9 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
       );
 
       if (refreshResult.data) {
-        // Asume que la respuesta trae token de acceso nuevo (y quizás refresh nuevo)
-        // Adaptarlo según la respuesta exacta de Django
-        const user = (api.getState() as RootState).auth.user;
-        const newAccessToken = (refreshResult.data as any).access;
-        
-        if (user) {
-          api.dispatch(
-            setCredentials({
-              user,
-              accessToken: newAccessToken,
-            })
-          );
-        }
+        const newAccessToken = (refreshResult.data as { access: string }).access;
+        api.dispatch(setAccessToken(newAccessToken));
 
-        // Reintentar la query original
         result = await baseQuery(args, api, extraOptions);
       } else {
         if (import.meta.env.DEV) {

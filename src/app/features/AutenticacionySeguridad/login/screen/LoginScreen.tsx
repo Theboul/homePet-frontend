@@ -1,16 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eye, EyeOff, Heart } from 'lucide-react'
 import { FormCrearPerfil } from '../components'
-import { useSearch } from '@tanstack/react-router'
+import { useLoginMutation } from '#/store/auth/authApi'
+import { useAppDispatch } from '#/store/hooks'
+import { setCredentials } from '#/store/auth/authSlice'
 
 const LoginScreen = () => {
+
+
   const [openModal, setOpenModal] = useState(false)
-  const [email, setEmail] = useState('')
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const [correo, setCorreo] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
+  const [login, { isLoading }] = useLoginMutation()
 
   const search = useSearch({ from: '/_public/login' })
 
@@ -22,14 +31,21 @@ const LoginScreen = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
+    setFormError(null)
 
-    // Simulación de login
-    setTimeout(() => {
-      console.log('Login:', { email, password })
-      setIsLoading(false)
-      alert('¡Bienvenido de nuevo! 🐾')
-    }, 1500)
+    try {
+      const result = await login({ correo, password }).unwrap()
+      dispatch(
+        setCredentials({
+          user: result.user,
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+        }),
+      )
+      navigate({ to: '/dashboard' })
+    } catch {
+      setFormError('Correo o contraseña incorrectos.')
+    }
   }
 
   return (
@@ -66,9 +82,9 @@ const LoginScreen = () => {
               </label>
               <Input
                 type="email"
-                placeholder="ejemplo@correo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="correo@pethome.com"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
                 required
                 className="border-gray-200 focus:ring-[#7C3AED]"
               />
@@ -101,6 +117,12 @@ const LoginScreen = () => {
             >
               {isLoading ? 'Verificando...' : 'Entrar'}
             </Button>
+
+            {formError && (
+              <p className="text-sm text-red-600" role="alert">
+                {formError}
+              </p>
+            )}
           </form>
 
           {/* Separador visual */}
@@ -123,14 +145,10 @@ const LoginScreen = () => {
         </div>
       </div>
 
-      {/* Modal de Registro */}
+      {/* 🔥 AQUÍ VA EL MODAL (DENTRO DEL RETURN) */}
       <FormCrearPerfil
         open={openModal}
-        onOpenChange={(val) => {
-          setOpenModal(val)
-          // Opcional: Si quieres limpiar la URL al cerrar el modal,
-          // podrías usar el hook useNavigate() aquí.
-        }}
+        onOpenChange={setOpenModal}
       />
     </div>
   )
