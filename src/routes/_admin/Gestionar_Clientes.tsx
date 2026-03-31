@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { GestionarClientes } from '../app/features/Gestionar_Clientes_Mascotas'
+import { GestionarClientes } from '../../app/features/Gestionar_Clientes_Mascotas'
 import { store } from '#/store/store'
 
 export const Route = createFileRoute('/Gestionar_Clientes')({

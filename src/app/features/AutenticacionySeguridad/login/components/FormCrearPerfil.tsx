@@ -11,7 +11,6 @@ type Props = {
 }
 
 const RegisterModal = ({ open, onOpenChange }: Props) => {
-
   const [form, setForm] = useState({
     correo: '',
     password: '',
@@ -62,27 +61,24 @@ const RegisterModal = ({ open, onOpenChange }: Props) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-
       {/* CARD */}
       <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-xl p-6 relative">
-
         {/* ❌ cerrar */}
-        <button 
-          onClick={() => onOpenChange(false)} 
+        <button
+          onClick={() => onOpenChange(false)}
           className="absolute top-4 right-4 text-gray-400 hover:text-black"
         >
           <X />
         </button>
 
         <h2 className="text-xl sm:text-2xl font-bold text-purple-700 mb-6 text-center">
-          Crear mi cuenta 
+          Crear mi cuenta
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-
           {/* INPUT STYLE BASE */}
           {/** puedes reutilizar esto mentalmente */}
-          
+
           <input
             type="email"
             name="correo"
