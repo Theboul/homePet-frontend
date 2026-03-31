@@ -9,8 +9,6 @@ import { useAppDispatch } from '#/store/hooks'
 import { setCredentials } from '#/store/auth/authSlice'
 
 const LoginScreen = () => {
-
-
   const [openModal, setOpenModal] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -146,10 +144,7 @@ const LoginScreen = () => {
       </div>
 
       {/* 🔥 AQUÍ VA EL MODAL (DENTRO DEL RETURN) */}
-      <FormCrearPerfil
-        open={openModal}
-        onOpenChange={setOpenModal}
-      />
+      <FormCrearPerfil open={openModal} onOpenChange={setOpenModal} />
     </div>
   )
 }

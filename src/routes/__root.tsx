@@ -1,4 +1,10 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import * as React from 'react'
+import {
+  HeadContent,
+  Scripts,
+  createRootRoute,
+  Outlet,
+} from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
@@ -7,9 +13,6 @@ import { useAppDispatch, useAppSelector } from '#/store/hooks'
 import { store } from '#/store/store'
 import { useGetProfileQuery } from '#/store/auth/authApi'
 import { logout, updateUser } from '#/store/auth/authSlice'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
-
 
 import appCss from '../styles.css?url'
 
@@ -24,7 +27,6 @@ export const Route = createRootRoute({
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
-  // Cambiamos shellComponent por component para el renderizado estándar
   component: RootDocument,
 })
 
@@ -35,37 +37,27 @@ function RootDocument() {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-<<<<<<< HEAD
-  <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-    <Provider store={store}>
-      <AuthBootstrap />
-      <Header />
-      <main>
-        {children}
-      </main>
-      <Footer />
-    </Provider>
-    <TanStackDevtools
-      config={{
-        position: 'bottom-right',
-      }}
-      plugins={[
-        {
-          name: 'Tanstack Router',
-          render: <TanStackRouterDevtoolsPanel />,
-        },
-      ]}
-    />
-=======
-      <body className="font-sans antialiased">
-      <React.Suspense>
-        <Outlet />
-      </React.Suspense>
+      <body className="font-sans antialiased selection:bg-[rgba(79,184,178,0.24)]">
+        <Provider store={store}>
+          <AuthBootstrap />
+          {/* Usamos React.Suspense y Outlet para que las rutas funcionen correctamente */}
+          <React.Suspense fallback={null}>
+            <Outlet />
+          </React.Suspense>
+        </Provider>
 
->>>>>>> 7fc350d977279f5098a40e560ca8beb7a3be0b3c
-      <Scripts />
-    </body>
-  </html>
+        <TanStackDevtools
+          config={{ position: 'bottom-right' }}
+          plugins={[
+            {
+              name: 'Tanstack Router',
+              render: () => <TanStackRouterDevtoolsPanel />,
+            },
+          ]}
+        />
+        <Scripts />
+      </body>
+    </html>
   )
 }
 
