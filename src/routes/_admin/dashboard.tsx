@@ -1,5 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { DashboardLayout, DashboardScreen } from '#/app/features/dashboard'
+import { DashboardScreen } from '@/app/features/dashboard/screen/DashboardScreen'
+import { MainLayoutAdmin } from '@/components/ui/Layout/screens/MainLayoutAdmin'
 import { store } from '#/store/store'
 
 export const Route = createFileRoute('/_admin/dashboard')({
@@ -7,9 +8,5 @@ export const Route = createFileRoute('/_admin/dashboard')({
 })
 
 function DashboardRoute() {
-  return (
-    <DashboardLayout>
-      <DashboardScreen />
-    </DashboardLayout>
-  )
+  return <DashboardScreen />
 }

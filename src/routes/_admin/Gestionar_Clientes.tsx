@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { GestionarClientes } from '../../app/features/Gestionar_Clientes_Mascotas'
 import { store } from '#/store/store'
 
-export const Route = createFileRoute('/_admin/Gestionar_Clientes')({
+export const Route = createFileRoute('/_admin/gestionar_clientes')({
   beforeLoad: () => {
     const { isAuthenticated } = store.getState().auth
 

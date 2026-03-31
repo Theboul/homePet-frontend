@@ -19,10 +19,13 @@ const RegisterModal = ({ open, onOpenChange }: Props) => {
     telefono: '',
     direccion: '',
   })
+
   const [registerUser, { isLoading }] = useRegisterMutation()
   const [formError, setFormError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Limpiamos el error cuando el usuario empieza a escribir de nuevo
+    if (formError) setFormError(null)
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -30,12 +33,14 @@ const RegisterModal = ({ open, onOpenChange }: Props) => {
     e.preventDefault()
     setFormError(null)
 
+    // 1. Validación básica de contraseñas
     if (form.password !== form.confirmPassword) {
       setFormError('Las contraseñas no coinciden')
       return
     }
 
     try {
+      // 2. Ejecutar mutación con los datos que espera tu BackendUser
       await registerUser({
         correo: form.correo,
         password: form.password,
@@ -43,7 +48,9 @@ const RegisterModal = ({ open, onOpenChange }: Props) => {
         telefono: form.telefono,
         direccion: form.direccion,
       }).unwrap()
-      onOpenChange(false)
+
+      // 3. Éxito: Limpiar, cerrar y avisar
+      alert('¡Cuenta creada con éxito! Ya puedes iniciar sesión.')
       setForm({
         correo: '',
         password: '',
@@ -52,94 +59,130 @@ const RegisterModal = ({ open, onOpenChange }: Props) => {
         telefono: '',
         direccion: '',
       })
-    } catch {
-      setFormError('No se pudo registrar el usuario. Verifica los datos.')
+      onOpenChange(false)
+    } catch (err: any) {
+      // 4. Manejo de errores (por ejemplo, si el correo ya existe)
+      const errorMsg =
+        err.data?.detail ||
+        'No se pudo registrar. Verifica que el correo no esté en uso.'
+      setFormError(errorMsg)
     }
   }
 
   if (!open) return null
 
+  // Estilo base para los inputs para no repetir clases
+  const inputStyles =
+    'w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all'
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      {/* CARD */}
-      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-xl p-6 relative">
-        {/* ❌ cerrar */}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl p-8 relative animate-in fade-in zoom-in duration-200">
+        {/* Botón Cerrar */}
         <button
           onClick={() => onOpenChange(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-black"
+          className="absolute top-4 right-4 text-gray-400 hover:text-purple-700 transition-colors"
         >
-          <X />
+          <X size={24} />
         </button>
 
-        <h2 className="text-xl sm:text-2xl font-bold text-purple-700 mb-6 text-center">
-          Crear mi cuenta
-        </h2>
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-purple-700">
+            Únete a Pet Home 🐾
+          </h2>
+          <p className="text-gray-500 text-sm mt-1">
+            Crea tu perfil y gestiona las citas de tus mascotas
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* INPUT STYLE BASE */}
-          {/** puedes reutilizar esto mentalmente */}
+          <div className="grid grid-cols-1 gap-4">
+            <input
+              type="email"
+              name="correo"
+              placeholder="Correo electrónico"
+              value={form.correo}
+              onChange={handleChange}
+              required
+              className={inputStyles}
+            />
 
-          <input
-            type="email"
-            name="correo"
-            placeholder="Correo electrónico"
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                value={form.password}
+                onChange={handleChange}
+                required
+                className={inputStyles}
+              />
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirmar contraseña"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                required
+                className={inputStyles}
+              />
+            </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Contraseña"
-            onChange={handleChange}
-            value={form.password}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
+            <div className="border-t border-gray-100 my-2 pt-4">
+              <p className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-4">
+                Información Personal
+              </p>
+            </div>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirmar contraseña"
-            onChange={handleChange}
-            value={form.confirmPassword}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
+            <input
+              type="text"
+              name="nombre"
+              placeholder="Nombre completo"
+              value={form.nombre}
+              onChange={handleChange}
+              required
+              className={inputStyles}
+            />
 
-          <input
-            type="text"
-            name="nombre"
-            placeholder="Nombre completo"
-            onChange={handleChange}
-            value={form.nombre}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
+            <input
+              type="text"
+              name="telefono"
+              placeholder="Teléfono móvil"
+              value={form.telefono}
+              onChange={handleChange}
+              required
+              className={inputStyles}
+            />
 
-          <input
-            type="text"
-            name="telefono"
-            placeholder="Teléfono"
-            onChange={handleChange}
-            value={form.telefono}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
+            <input
+              type="text"
+              name="direccion"
+              placeholder="Dirección de domicilio"
+              value={form.direccion}
+              onChange={handleChange}
+              required
+              className={inputStyles}
+            />
+          </div>
 
-          <input
-            type="text"
-            name="direccion"
-            placeholder="Dirección"
-            onChange={handleChange}
-            value={form.direccion}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
+          {formError && (
+            <div className="bg-red-50 border-l-4 border-red-500 p-3">
+              <p className="text-sm text-red-600 font-medium">{formError}</p>
+            </div>
+          )}
 
-          {formError && <p className="text-sm text-red-600">{formError}</p>}
-
-          <Button disabled={isLoading} className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2">
-            {isLoading ? 'Registrando...' : 'Registrarse'}
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white font-bold h-12 text-lg shadow-lg shadow-orange-200 transition-all mt-4"
+          >
+            {isLoading ? 'Creando cuenta...' : 'Finalizar Registro'}
           </Button>
+
+          <p className="text-center text-xs text-gray-400 mt-4 px-6">
+            Al registrarte, aceptas que Pet Home trate tus datos para la gestión
+            de servicios veterinarios.
+          </p>
         </form>
       </div>
     </div>

@@ -1,7 +1,3 @@
-export const TAG_TYPES = [
-  'Auth',
-  'User',
-  'Pets',
-] as const;
+export const TAG_TYPES = ['Auth', 'User', 'Clients', 'Pets'] as const
 
-export type TagType = typeof TAG_TYPES[number];
+export type TagType = (typeof TAG_TYPES)[number]

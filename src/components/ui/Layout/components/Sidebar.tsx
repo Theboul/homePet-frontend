@@ -3,7 +3,8 @@ import { Link, useLocation } from '@tanstack/react-router'
 import { Button } from '#/components/ui/button'
 import {
   Home,
-  ClipboardList,
+  ShieldCheck, // Icono para Autenticación
+  Users, // Icono para Gestión de Clientes
   Stethoscope,
   Package,
   DollarSign,
@@ -18,7 +19,12 @@ import {
 
 type MenuChild = {
   label: string
-  to: '/dashboard' | '/Gestionar_Clientes' | '/Gestionar_Usuarios' | '/about' | '/login'
+  to:
+    | '/dashboard'
+    | '/gestionar_clientes'
+    | '/gestionar_usuarios'
+    | '/about'
+    | '/login'
 }
 
 type MenuItem = {
@@ -37,24 +43,15 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
     section: 'Gestión',
     items: [
       {
-        label: 'Gestionar',
-        icon: ClipboardList,
-        children: [
-          { label: 'Clientes', to: '/Gestionar_Clientes' },
-          { label: 'Usuarios', to: '/Gestionar_Usuarios' },
-        ],
+        label: 'Autenticación y Seguridad',
+        icon: ShieldCheck,
+        children: [{ label: 'Gestionar Usuarios', to: '/gestionar_usuarios' }],
       },
       {
-        label: 'Operaciones',
-        icon: Stethoscope,
-        children: [
-          { label: 'Panel Clínico', to: '/dashboard' },
-          { label: 'Reportes', to: '/about' },
-        ],
+        label: 'Gestión de Clientes y Mascotas',
+        icon: Users,
+        children: [{ label: 'Gestionar Clientes', to: '/gestionar_clientes' }],
       },
-      { label: 'Inventario', icon: Package, to: '/dashboard' },
-      { label: 'Facturación', icon: DollarSign, to: '/dashboard' },
-      { label: 'Reportes', icon: BarChart2, to: '/about' },
     ],
   },
   {
@@ -68,12 +65,12 @@ function childIsActive(children: MenuChild[] | undefined, pathname: string) {
   return children.some((child) => child.to === pathname)
 }
 
-export function Sidebar({ 
-  isCollapsed = false, 
-  toggleSidebar 
-}: { 
-  isCollapsed?: boolean; 
-  toggleSidebar?: () => void; 
+export function Sidebar({
+  isCollapsed = false,
+  toggleSidebar,
+}: {
+  isCollapsed?: boolean
+  toggleSidebar?: () => void
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
@@ -83,14 +80,26 @@ export function Sidebar({
   }
 
   return (
-    <aside className={`bg-[#6A24D4] h-screen flex flex-col text-white flex-shrink-0 sticky top-0 transition-all duration-300 z-20 ${isCollapsed ? 'w-20' : 'w-64'}`}>
+    <aside
+      className={`bg-[#6A24D4] h-screen flex flex-col text-white flex-shrink-0 sticky top-0 transition-all duration-300 z-20 ${isCollapsed ? 'w-20' : 'w-64'}`}
+    >
       {/* Logo & Header */}
-      <div className={`flex items-center select-none ${isCollapsed ? 'flex-col gap-4 py-6 px-4' : 'gap-3 p-6'}`}>
+      <div
+        className={`flex items-center select-none ${isCollapsed ? 'flex-col gap-4 py-6 px-4' : 'gap-3 p-6'}`}
+      >
         <div className="bg-orange-500 rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center shadow-lg">
           <PawPrint className="w-5 h-5 text-white" fill="currentColor" />
         </div>
-        {!isCollapsed && <h1 className="text-xl font-bold tracking-wide flex-1 whitespace-nowrap">VetCare</h1>}
-        <Button onClick={toggleSidebar} variant="ghost" className={`text-purple-300 hover:bg-white/10 hover:text-orange-400 transition-colors p-2 rounded-full h-auto flex-shrink-0 ${isCollapsed ? 'rotate-180' : ''}`}>
+        {!isCollapsed && (
+          <h1 className="text-xl font-bold tracking-wide flex-1 whitespace-nowrap">
+            VetCare
+          </h1>
+        )}
+        <Button
+          onClick={toggleSidebar}
+          variant="ghost"
+          className={`text-purple-300 hover:bg-white/10 hover:text-orange-400 transition-colors p-2 rounded-full h-auto flex-shrink-0 ${isCollapsed ? 'rotate-180' : ''}`}
+        >
           <ChevronLeft className="w-5 h-5" />
         </Button>
       </div>
@@ -111,8 +120,12 @@ export function Sidebar({
               {section.items.map((item) => {
                 const Icon = item.icon
                 const hasChildren = Boolean(item.children?.length)
-                const itemActive = item.to === pathname || childIsActive(item.children, pathname)
-                const itemOpen = hasChildren && (openMenus[item.label] ?? childIsActive(item.children, pathname))
+                const itemActive =
+                  item.to === pathname || childIsActive(item.children, pathname)
+                const itemOpen =
+                  hasChildren &&
+                  (openMenus[item.label] ??
+                    childIsActive(item.children, pathname))
                 const isActiveOrOpen = itemActive || itemOpen
 
                 if (hasChildren) {
@@ -123,7 +136,10 @@ export function Sidebar({
                         onClick={() => {
                           if (isCollapsed && toggleSidebar) {
                             toggleSidebar()
-                            setOpenMenus((prev) => ({ ...prev, [item.label]: true }))
+                            setOpenMenus((prev) => ({
+                              ...prev,
+                              [item.label]: true,
+                            }))
                           } else {
                             toggleMenu(item.label)
                           }
@@ -135,10 +151,14 @@ export function Sidebar({
                             : 'text-white/75 hover:bg-white/8 hover:text-white'
                         }`}
                       >
-                        <Icon className={`h-5 w-5 flex-shrink-0 ${isActiveOrOpen ? 'text-orange-300' : 'text-white/70'}`} />
+                        <Icon
+                          className={`h-5 w-5 flex-shrink-0 ${isActiveOrOpen ? 'text-orange-300' : 'text-white/70'}`}
+                        />
                         {!isCollapsed && (
                           <>
-                            <span className="flex-1 whitespace-nowrap">{item.label}</span>
+                            <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                              {item.label}
+                            </span>
                             {itemOpen ? (
                               <ChevronDown className="h-4 w-4 text-white/70" />
                             ) : (
@@ -184,8 +204,14 @@ export function Sidebar({
                         : 'text-white/75 hover:bg-white/8 hover:text-white'
                     }`}
                   >
-                    <Icon className={`h-5 w-5 flex-shrink-0 ${itemActive ? 'text-orange-300' : 'text-white/70'}`} />
-                    {!isCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
+                    <Icon
+                      className={`h-5 w-5 flex-shrink-0 ${itemActive ? 'text-orange-300' : 'text-white/70'}`}
+                    />
+                    {!isCollapsed && (
+                      <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                        {item.label}
+                      </span>
+                    )}
                   </Link>
                 )
               })}
@@ -195,7 +221,9 @@ export function Sidebar({
       </nav>
 
       {/* Profile Section */}
-      <div className={`p-4 border-t border-white/10 m-4 mt-auto flex items-center ${isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'} overflow-hidden`}>
+      <div
+        className={`p-4 border-t border-white/10 m-4 mt-auto flex items-center ${isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'} overflow-hidden`}
+      >
         <div className="bg-orange-500 text-white text-sm font-bold w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center">
           AD
         </div>

@@ -10,15 +10,17 @@ import { setCredentials } from '#/store/auth/authSlice'
 
 const LoginScreen = () => {
   const [openModal, setOpenModal] = useState(false)
-
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const [correo, setCorreo] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
 
+  // Nota: Asegúrate de que en tu useSearch el 'from' coincida
+  // con el ID de ruta que TypeScript reconoció (vimos que era '/login')
   const search = useSearch({ from: '/_public/login' })
 
   useEffect(() => {
@@ -32,7 +34,10 @@ const LoginScreen = () => {
     setFormError(null)
 
     try {
+      // 1. Ejecutamos la mutación (Ya viene mapeada por tu transformResponse)
       const result = await login({ correo, password }).unwrap()
+
+      // 2. Guardamos en Redux y LocalStorage
       dispatch(
         setCredentials({
           user: result.user,
@@ -40,9 +45,18 @@ const LoginScreen = () => {
           refreshToken: result.refreshToken,
         }),
       )
+
+      // 3. Redirigimos al Dashboard o Admin según corresponda
       navigate({ to: '/dashboard' })
-    } catch {
-      setFormError('Correo o contraseña incorrectos.')
+    } catch (error: any) {
+      // Manejo de errores específicos de Django
+      if (error.status === 401) {
+        setFormError(
+          'Credenciales incorrectas. Verifica tu correo y contraseña.',
+        )
+      } else {
+        setFormError('Ocurrió un error en el servidor. Inténtalo más tarde.')
+      }
     }
   }
 
@@ -68,7 +82,7 @@ const LoginScreen = () => {
         <div className="bg-white rounded-2xl shadow-2xl p-8 space-y-6 border border-white/20">
           <div>
             <h2 className="text-2xl font-bold text-[#7C3AED]">Bienvenido</h2>
-            <p className="text-gray-500 text-sm">
+            <p className="text-slate-500 text-sm">
               Inicia sesión para continuar
             </p>
           </div>
@@ -84,7 +98,8 @@ const LoginScreen = () => {
                 value={correo}
                 onChange={(e) => setCorreo(e.target.value)}
                 required
-                className="border-gray-200 focus:ring-[#7C3AED]"
+                disabled={isLoading}
+                className="border-gray-200 focus:ring-[#7C3AED] text-slate-900"
               />
             </div>
 
@@ -98,7 +113,8 @@ const LoginScreen = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="pr-10 border-gray-200 focus:ring-[#7C3AED]"
+                disabled={isLoading}
+                className="pr-10 border-gray-200 focus:ring-[#7C3AED] text-slate-900"
               />
               <button
                 type="button"
@@ -109,21 +125,23 @@ const LoginScreen = () => {
               </button>
             </div>
 
+            {formError && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-100">
+                <p className="text-xs text-red-600 font-medium" role="alert">
+                  {formError}
+                </p>
+              </div>
+            )}
+
             <Button
+              type="submit"
               disabled={isLoading}
               className="w-full mt-4 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold h-11 transition-all"
             >
-              {isLoading ? 'Verificando...' : 'Entrar'}
+              {isLoading ? 'Iniciando sesión...' : 'Entrar'}
             </Button>
-
-            {formError && (
-              <p className="text-sm text-red-600" role="alert">
-                {formError}
-              </p>
-            )}
           </form>
 
-          {/* Separador visual */}
           <div className="relative flex items-center py-2">
             <div className="flex-grow border-t border-gray-200"></div>
             <span className="flex-shrink mx-4 text-gray-400 text-xs font-medium uppercase">
@@ -132,9 +150,9 @@ const LoginScreen = () => {
             <div className="flex-grow border-t border-gray-200"></div>
           </div>
 
-          {/* Botón para abrir Modal manualmente */}
           <Button
             variant="outline"
+            type="button"
             onClick={() => setOpenModal(true)}
             className="w-full border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-purple-50 h-11 transition-all"
           >
@@ -143,7 +161,7 @@ const LoginScreen = () => {
         </div>
       </div>
 
-      {/* 🔥 AQUÍ VA EL MODAL (DENTRO DEL RETURN) */}
+      {/* Modal de Registro */}
       <FormCrearPerfil open={openModal} onOpenChange={setOpenModal} />
     </div>
   )
