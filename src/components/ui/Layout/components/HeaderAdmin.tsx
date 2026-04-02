@@ -30,15 +30,15 @@ export const HeaderAdmin = () => {
           <Link to="/" className={navLinkStyles}>
             Inicio
           </Link>
-          <Link to="/servicios" className={navLinkStyles}>
+          <a href="/servicios" className={navLinkStyles}>
             Servicios
-          </Link>
-          <Link to="/citas" className={navLinkStyles}>
+          </a>
+          <a href="/citas" className={navLinkStyles}>
             Citas
-          </Link>
-          <Link to="/contacto" className={navLinkStyles}>
+          </a>
+          <a href="/contacto" className={navLinkStyles}>
             Contacto
-          </Link>
+          </a>
         </nav>
 
         {/* Desktop acciones */}
@@ -79,27 +79,27 @@ export const HeaderAdmin = () => {
             >
               Inicio
             </Link>
-            <Link
-              to="/servicios"
+            <a
+              href="/servicios"
               onClick={() => setOpen(false)}
               className={mobileLinkStyles}
             >
               Servicios
-            </Link>
-            <Link
-              to="/citas"
+            </a>
+            <a
+              href="/citas"
               onClick={() => setOpen(false)}
               className={mobileLinkStyles}
             >
               Citas
-            </Link>
-            <Link
-              to="/contacto"
+            </a>
+            <a
+              href="/contacto"
               onClick={() => setOpen(false)}
               className={mobileLinkStyles}
             >
               Contacto
-            </Link>
+            </a>
           </div>
 
           <div className="flex flex-col gap-3 pb-2">

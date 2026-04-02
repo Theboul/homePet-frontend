@@ -9,8 +9,5 @@ export {
   DeleteClienteConfirmation,
 } from './components'
 
-// Types
-export type { Cliente, ClienteFormData } from './types'
-
-// Store
-export { initialClientes} from './store'
+// Types & Store exports (from new RTK Query store)
+export type { Cliente, ClienteCreatePayload, ClienteUpdatePayload } from './store'

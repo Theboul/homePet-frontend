@@ -1,11 +1,10 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { Gestionar_Usuarios } from '../app/features/AutenticacionySeguridad'
-import { store } from '#/store/store'
+import { createFileRoute } from '@tanstack/react-router'
+import { Gestionar_Usuarios } from '@/app/features/AutenticacionySeguridad'
 
 export const Route = createFileRoute('/_admin/Gestionar_Usuarios')({
-  component: App,
+  component: GestionarUsuariosPage,
 })
 
-function App() {
+function GestionarUsuariosPage() {
   return <Gestionar_Usuarios />
 }

@@ -1,15 +1,10 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { DashboardLayout, DashboardScreen } from '#/app/features/dashboard'
-import { store } from '#/store/store'
+import { createFileRoute } from '@tanstack/react-router'
+import { DashboardScreen } from '@/app/features/dashboard/screen/DashboardScreen'
 
 export const Route = createFileRoute('/_admin/dashboard')({
   component: DashboardRoute,
 })
 
 function DashboardRoute() {
-  return (
-    <DashboardLayout>
-      <DashboardScreen />
-    </DashboardLayout>
-  )
+  return <DashboardScreen />
 }

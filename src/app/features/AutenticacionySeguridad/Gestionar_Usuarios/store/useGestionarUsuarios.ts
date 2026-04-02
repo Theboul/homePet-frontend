@@ -91,6 +91,7 @@ export const useGestionarUsuarios = () => {
     crearUsuario,
     eliminarUsuario,
     cambiarEstadoUsuario,
+    editarUsuario,
   };
   
 };
