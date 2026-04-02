@@ -15,9 +15,9 @@ import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
-import { Route as AdminGestionar_usuariosRouteImport } from './routes/_admin/gestionar_usuarios'
-import { Route as AdminGestionar_clientesRouteImport } from './routes/_admin/gestionar_clientes'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
+import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
@@ -49,19 +49,19 @@ const PublicAboutRoute = PublicAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => PublicRoute,
 } as any)
-const AdminGestionar_usuariosRoute = AdminGestionar_usuariosRouteImport.update({
-  id: '/gestionar_usuarios',
-  path: '/gestionar_usuarios',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminGestionar_clientesRoute = AdminGestionar_clientesRouteImport.update({
-  id: '/gestionar_clientes',
-  path: '/gestionar_clientes',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
+  id: '/Gestionar_Usuarios',
+  path: '/Gestionar_Usuarios',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
+  id: '/Gestionar_Clientes',
+  path: '/Gestionar_Clientes',
   getParentRoute: () => AdminRoute,
 } as any)
 const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
@@ -77,9 +77,9 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/dashboard': typeof AdminDashboardRoute
-  '/gestionar_clientes': typeof AdminGestionar_clientesRoute
-  '/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -88,9 +88,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+  '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/dashboard': typeof AdminDashboardRoute
-  '/gestionar_clientes': typeof AdminGestionar_clientesRoute
-  '/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -101,9 +101,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_admin': typeof AdminRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
-  '/_admin/gestionar_clientes': typeof AdminGestionar_clientesRoute
-  '/_admin/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -115,9 +115,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Usuarios'
     | '/dashboard'
-    | '/gestionar_clientes'
-    | '/gestionar_usuarios'
     | '/about'
     | '/login'
     | '/demo/table'
@@ -126,9 +126,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Usuarios'
     | '/dashboard'
-    | '/gestionar_clientes'
-    | '/gestionar_usuarios'
     | '/about'
     | '/login'
     | '/demo/table'
@@ -138,9 +138,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_admin'
     | '/_public'
+    | '/_admin/Gestionar_Clientes'
+    | '/_admin/Gestionar_Usuarios'
     | '/_admin/dashboard'
-    | '/_admin/gestionar_clientes'
-    | '/_admin/gestionar_usuarios'
     | '/_public/about'
     | '/_public/login'
     | '/demo/table'
@@ -201,25 +201,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAboutRouteImport
       parentRoute: typeof PublicRoute
     }
-    '/_admin/gestionar_usuarios': {
-      id: '/_admin/gestionar_usuarios'
-      path: '/gestionar_usuarios'
-      fullPath: '/gestionar_usuarios'
-      preLoaderRoute: typeof AdminGestionar_usuariosRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/gestionar_clientes': {
-      id: '/_admin/gestionar_clientes'
-      path: '/gestionar_clientes'
-      fullPath: '/gestionar_clientes'
-      preLoaderRoute: typeof AdminGestionar_clientesRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/_admin/dashboard': {
       id: '/_admin/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Usuarios': {
+      id: '/_admin/Gestionar_Usuarios'
+      path: '/Gestionar_Usuarios'
+      fullPath: '/Gestionar_Usuarios'
+      preLoaderRoute: typeof AdminGestionar_UsuariosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Clientes': {
+      id: '/_admin/Gestionar_Clientes'
+      path: '/Gestionar_Clientes'
+      fullPath: '/Gestionar_Clientes'
+      preLoaderRoute: typeof AdminGestionar_ClientesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/demo/form/simple': {
@@ -240,15 +240,15 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
+  AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminGestionar_clientesRoute: typeof AdminGestionar_clientesRoute
-  AdminGestionar_usuariosRoute: typeof AdminGestionar_usuariosRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
+  AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
   AdminDashboardRoute: AdminDashboardRoute,
-  AdminGestionar_clientesRoute: AdminGestionar_clientesRoute,
-  AdminGestionar_usuariosRoute: AdminGestionar_usuariosRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

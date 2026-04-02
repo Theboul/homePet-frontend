@@ -2,7 +2,12 @@
 
 import { useMemo, useState } from 'react'
 import type { Cliente, ClienteFormData } from '../types'
-import { initialClientes } from '../store'
+import {
+  useGetClientesQuery,
+  useCreateClienteMutation,
+  useUpdateClienteMutation,
+  useDeleteClienteMutation,
+} from '../store'
 import {
   ClientesTable,
   ClienteDialog,
@@ -11,12 +16,25 @@ import {
 import { Plus, Search, Filter, Users, PawPrint, MapPin } from 'lucide-react'
 
 export const GestionarClientes = () => {
-  const [clientes, setClientes] = useState<Cliente[]>(initialClientes)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<
     'all' | 'activo' | 'inactivo'
   >('all')
   const [locationFilter, setLocationFilter] = useState('')
+
+  const {
+    data: clientes = [],
+    isLoading: isFetching,
+    isError,
+  } = useGetClientesQuery({
+    search: searchQuery || undefined,
+    estado: statusFilter === 'all' ? undefined : statusFilter,
+    direccion: locationFilter || undefined,
+  })
+
+  const [createCliente] = useCreateClienteMutation()
+  const [updateCliente] = useUpdateClienteMutation()
+  const [deleteCliente] = useDeleteClienteMutation()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingCliente, setEditingCliente] = useState<Cliente | undefined>()
@@ -64,29 +82,22 @@ export const GestionarClientes = () => {
   const handleSubmit = async (data: ClienteFormData) => {
     setIsLoading(true)
 
-    await new Promise((resolve) => setTimeout(resolve, 800))
-
-    if (editingCliente) {
-      setClientes((prev) =>
-        prev.map((cliente) =>
-          cliente.id === editingCliente.id ? { ...cliente, ...data } : cliente,
-        ),
-      )
-    } else {
-      const newCliente: Cliente = {
-        id: Date.now().toString(),
-        idUsuario: Math.floor(Math.random() * 1000) + 100,
-        ...data,
-        rol: 'cliente',
-        fechaRegistro: new Date().toISOString().split('T')[0],
+    try {
+      if (editingCliente) {
+        await updateCliente({ id: editingCliente.id, data }).unwrap()
+        alert('Cliente actualizado correctamente')
+      } else {
+        await createCliente(data).unwrap()
+        alert('Cliente creado correctamente')
       }
-
-      setClientes((prev) => [newCliente, ...prev])
+      setIsDialogOpen(false)
+      setEditingCliente(undefined)
+    } catch (error: any) {
+      console.error('Error al guardar cliente:', error)
+      alert(error?.data?.detail || 'No se pudo guardar el cliente')
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
-    setIsDialogOpen(false)
-    setEditingCliente(undefined)
   }
 
   const handleDeleteClick = (clienteId: string) => {
@@ -94,27 +105,48 @@ export const GestionarClientes = () => {
     setDeleteDialogOpen(true)
   }
 
-  const handleDeleteConfirm = () => {
-    if (clienteToDelete) {
-      setClientes((prev) =>
-        prev.filter((cliente) => cliente.id !== clienteToDelete),
-      )
-      setClienteToDelete(null)
+  const handleDeleteConfirm = async () => {
+    if (!clienteToDelete) {
+      setDeleteDialogOpen(false)
+      return
     }
 
-    setDeleteDialogOpen(false)
+    try {
+      await deleteCliente(clienteToDelete).unwrap()
+      setClienteToDelete(null)
+      setDeleteDialogOpen(false)
+      alert('Cliente eliminado correctamente')
+    } catch (error) {
+      console.error('No se pudo eliminar cliente:', error)
+      alert('Error al eliminar cliente')
+      setDeleteDialogOpen(false)
+    }
   }
 
-  const handleToggleStatus = (clienteId: string) => {
-    setClientes((prev) =>
-      prev.map((cliente) =>
-        cliente.id === clienteId
-          ? {
-              ...cliente,
-              estado: cliente.estado === 'activo' ? 'inactivo' : 'activo',
-            }
-          : cliente,
-      ),
+  const handleToggleStatus = async (clienteId: string) => {
+    const cliente = clientes.find((c) => c.id === clienteId)
+    if (!cliente) return
+
+    try {
+      await updateCliente({
+        id: clienteId,
+        data: { estado: cliente.estado === 'activo' ? 'inactivo' : 'activo' },
+      }).unwrap()
+    } catch (error) {
+      console.error('No se pudo cambiar el estado:', error)
+      alert('No se pudo cambiar el estado del cliente')
+    }
+  }
+
+  if (isError) {
+    return (
+      <section className="min-h-screen bg-white px-6 py-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="rounded-2xl border border-red-300 bg-red-50 p-6 text-center text-red-700">
+            Error al cargar clientes. Verifica tu conexión con el backend.
+          </div>
+        </div>
+      </section>
     )
   }
 
@@ -237,16 +269,29 @@ export const GestionarClientes = () => {
           </button>
         </div>
 
-        <p className="text-sm text-black">
-          Mostrando {filteredClientes.length} de {clientes.length} clientes
-        </p>
+        {isFetching ? (
+          <div className="flex h-32 items-center justify-center rounded-2xl border border-[#F97316]/30 bg-white">
+            <div className="flex flex-col items-center gap-2">
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#7C3AED] border-t-transparent" />
+              <span className="text-[#7C3AED] font-bold">
+                Cargando clientes...
+              </span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <p className="text-sm text-black">
+              Mostrando {filteredClientes.length} de {clientes.length} clientes
+            </p>
 
-        <ClientesTable
-          clientes={filteredClientes}
-          onEdit={handleEditCliente}
-          onDelete={handleDeleteClick}
-          onToggleStatus={handleToggleStatus}
-        />
+            <ClientesTable
+              clientes={filteredClientes}
+              onEdit={handleEditCliente}
+              onDelete={handleDeleteClick}
+              onToggleStatus={handleToggleStatus}
+            />
+          </>
+        )}
 
         <ClienteDialog
           open={isDialogOpen}
