@@ -15,6 +15,11 @@ export const Gestionar_Usuarios = () => {
 
   const {
     usuariosFiltrados,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    refetch,
     search,
     setSearch,
     rolFilter,
@@ -83,6 +88,30 @@ export const Gestionar_Usuarios = () => {
         <p className="text-sm text-zinc-400">
           Mostrando {usuariosFiltrados.length} de {totalUsuarios} usuarios
         </p>
+
+        {isLoading && (
+          <p className="text-sm text-gray-500">Cargando usuarios desde backend...</p>
+        )}
+
+        {isError && (
+          <div className="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+            No se pudo cargar la lista de usuarios desde backend.
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="ml-2 font-semibold underline"
+            >
+              Reintentar
+            </button>
+            <pre className="mt-2 overflow-auto text-xs text-red-800/80">
+              {JSON.stringify(error, null, 2)}
+            </pre>
+          </div>
+        )}
+
+        {isFetching && !isLoading && (
+          <p className="text-xs text-gray-400">Actualizando datos...</p>
+        )}
 
         <UserTable
           usuarios={usuariosFiltrados}

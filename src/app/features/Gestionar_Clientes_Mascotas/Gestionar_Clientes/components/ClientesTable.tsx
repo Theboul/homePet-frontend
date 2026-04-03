@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import type { Cliente } from '../store/gestionarClientes.types'
 import {
   flexRender,
@@ -82,7 +83,7 @@ export function ClientesTable({
               {table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="border-b border-[#F97316]/20 bg-white hover:bg-slate-50/50">
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-4 align-middle">
+                    <td key={cell.id} className="px-4 py-4 align-middle text-black">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
@@ -95,25 +96,25 @@ export function ClientesTable({
       
       {/* Paginación de TanStack */}
       <div className="flex items-center justify-between px-2">
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-black-50">
           Página {table.getState().pagination.pageIndex + 1} de{' '}
           {table.getPageCount() || 1}
         </div>
         <div className="space-x-2">
-          <button
+          <Button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+            className="rounded-lg border border-black-300 px-4 py-2 text-sm font-medium hover:bg-green-500 disabled:opacity-50"
           >
             Anterior
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+            className="rounded-lg border border-black-300 px-4 py-2 text-sm font-medium hover:bg-green-500 disabled:opacity-50"
           >
             Siguiente
-          </button>
+          </Button>
         </div>
       </div>
     </div>

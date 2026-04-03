@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '#/store/hooks'
 import { store } from '#/store/store'
 import { useGetProfileQuery } from '#/store/auth/authApi'
-import { logout } from '#/store/auth/authSlice'
+import { updateUser } from '#/store/auth/authSlice'
 
 import appCss from '../styles.css?url'
 
@@ -47,15 +47,15 @@ function RootDocument() {
 function AuthBootstrap() {
   const dispatch = useAppDispatch()
   const accessToken = useAppSelector((state) => state.auth.accessToken)
-  const { isError } = useGetProfileQuery(undefined, {
+  const { data } = useGetProfileQuery(undefined, {
     skip: !accessToken,
   })
 
   useEffect(() => {
-    if (isError && accessToken) {
-      dispatch(logout())
+    if (data) {
+      dispatch(updateUser(data))
     }
-  }, [isError, accessToken, dispatch])
+  }, [data, dispatch])
 
   return null
 }

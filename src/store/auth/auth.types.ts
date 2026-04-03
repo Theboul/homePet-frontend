@@ -4,9 +4,9 @@ export type UserRole =
   | 'CLIENT';
 
 export interface BackendRole {
-  id_rol: number;
-  nombre: UserRole;
-  descripcion: string | null;
+  id_rol?: number;
+  nombre?: string;
+  descripcion?: string | null;
 }
 
 export interface User {
@@ -27,11 +27,15 @@ export interface AuthState {
 }
 
 export interface BackendUser {
-  id_usuario: number;
-  correo: string;
-  role: BackendRole;
-  is_active: boolean;
-  date_joined: string;
+  id_usuario?: number;
+  id?: number;
+  correo?: string;
+  role?: BackendRole | string;
+  rol?: BackendRole | string;
+  is_active?: boolean;
+  estado?: boolean | string;
+  date_joined?: string;
+  fecha_creacion?: string;
 }
 
 export interface LoginRequest {

@@ -128,8 +128,8 @@ export const getClientesColumns = ({
             {getInitials(cliente.nombre)}
           </div>
           <div>
-            <p className="font-medium text-foreground">{cliente.nombre}</p>
-            <p className="text-sm text-muted-foreground">ID: {cliente.usuario}</p>
+            <p className="font-medium text-black">{cliente.nombre}</p>
+            <p className="text-sm text-gray-600">ID: {cliente.usuario}</p>
           </div>
         </div>
       )
@@ -142,11 +142,11 @@ export const getClientesColumns = ({
       const cliente = row.original
       return (
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-sm text-foreground">
-            <Mail className="h-3.5 w-3.5 text-muted-foreground" />
+          <div className="flex items-center gap-2 text-sm text-black">
+            <Mail className="h-3.5 w-3.5 text-gray-500" />
             {cliente.correo}
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-gray-700">
             <Phone className="h-3.5 w-3.5" />
             {cliente.telefono}
           </div>
@@ -159,8 +159,8 @@ export const getClientesColumns = ({
     header: 'Ubicación / Dirección',
     cell: ({ row }) => {
       return (
-        <div className="flex items-center gap-2 text-foreground">
-          <MapPin className="h-4 w-4 text-muted-foreground" />
+        <div className="flex items-center gap-2 text-black">
+          <MapPin className="h-4 w-4 text-gray-500" />
           {row.original.direccion}
         </div>
       )
@@ -175,13 +175,13 @@ export const getClientesColumns = ({
         <span
           className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
             activo
-              ? 'bg-[#F97316]/10 text-[#F97316] border border-[#F97316]/30'
-              : 'bg-muted text-muted-foreground border border-border'
+              ? 'border border-green-300 bg-green-50 text-green-700'
+              : 'border border-red-300 bg-red-50 text-red-700'
           }`}
         >
           <span
             className={`h-1.5 w-1.5 rounded-full ${
-              activo ? 'bg-[#F97316]' : 'bg-muted-foreground'
+              activo ? 'bg-green-600' : 'bg-red-600'
             }`}
           />
           {activo ? 'Activo' : 'Inactivo'}
@@ -193,7 +193,7 @@ export const getClientesColumns = ({
     accessorKey: 'fecha_creacion',
     header: 'Registro',
     cell: ({ row }) => {
-      return <span className="text-muted-foreground">{formatDate(row.original.fecha_creacion)}</span>
+      return <span className="text-gray-700">{formatDate(row.original.fecha_creacion)}</span>
     },
   },
   {

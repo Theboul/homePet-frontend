@@ -38,7 +38,6 @@ export const UserTable = ({
     <tr className="bg-[#7C3AED] text-left">
               <th className="px-4 py-4 text-sm font-semibold text-white">Usuario</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Teléfono</th>
-              <th className="px-4 py-4 text-sm font-semibold text-white">Departamento</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Rol</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Estado</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Creado</th>
@@ -78,15 +77,15 @@ export const UserTable = ({
                     <span
                       className={`inline-flex items-center gap-2 text-sm ${
                         usuario.estado === 'Activo'
-                          ? 'text-[#F97316]'
-                          : 'text-gray-500'
+                          ? 'text-green-700'
+                          : 'text-red-700'
                       }`}
                     >
                       <span
                         className={`h-2.5 w-2.5 rounded-full ${
                           usuario.estado === 'Activo'
-                            ? 'bg-[#F97316]'
-                            : 'bg-gray-400'
+                            ? 'bg-green-600'
+                            : 'bg-red-600'
                         }`}
                       />
                       {usuario.estado}

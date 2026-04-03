@@ -1,12 +1,18 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { MainLayoutAdmin } from '@/components/ui/Layout'
+import { DashboardLayout } from '@/app/features/dashboard/components/DashboardLayout'
 import { store } from '#/store/store'
+import { authApi } from '#/store/auth/authApi'
 
 export const Route = createFileRoute('/_admin')({
   beforeLoad: async () => {
-    const { isAuthenticated, user } = store.getState().auth
+    // In SSR we cannot read localStorage-backed auth state; enforce auth on client.
+    if (typeof window === 'undefined') {
+      return
+    }
 
-    if (!isAuthenticated) {
+    const { isAuthenticated, accessToken, user } = store.getState().auth
+
+    if (!isAuthenticated && !accessToken) {
       throw redirect({
         to: '/login',
         search: {
@@ -15,13 +21,30 @@ export const Route = createFileRoute('/_admin')({
       })
     }
 
-    if (user?.role === 'CLIENT') {
-      // Si el usuario es un cliente, no tiene acceso a las rutas administrativas.
-      // Lo mandamos a otra ruta (por ejemplo, la ruta pública o una página de acceso denegado).
-      // Asumiremos que '/' o '/dashboard' para clientes existe. Por ahora, a '/'
-      throw redirect({
-        to: '/',
-      })
+    if (user?.role === 'CLIENT' && accessToken) {
+      // Revalida el perfil para evitar bloqueos por datos persistidos desactualizados.
+      const profileRequest = store.dispatch(
+        authApi.endpoints.getProfile.initiate(undefined, { forceRefetch: true })
+      )
+
+      try {
+        const profile = await profileRequest.unwrap()
+
+        if (profile.role === 'CLIENT') {
+          throw redirect({
+            to: '/',
+          })
+        }
+      } catch {
+        throw redirect({
+          to: '/login',
+          search: {
+            register: false,
+          },
+        })
+      } finally {
+        profileRequest.unsubscribe()
+      }
     }
   },
   component: AuthLayoutComponent,
@@ -29,8 +52,8 @@ export const Route = createFileRoute('/_admin')({
 
 function AuthLayoutComponent() {
   return (
-    <MainLayoutAdmin>
+    <DashboardLayout>
       <Outlet />
-    </MainLayoutAdmin>
+    </DashboardLayout>
   )
 }
