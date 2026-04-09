@@ -1,17 +1,29 @@
-import { useMemo, useState } from 'react';
-import { usuariosMock } from './gestionarUsuarios.data';
+import { useEffect, useMemo, useState } from 'react';
 import type {
   Usuario,
   UsuarioFormData,
   UserRole,
   UserStatus,
 } from './gestionarUsuarios.types';
+import { useGetUsuariosQuery } from './gestionarUsuariosApi';
 
 export const useGestionarUsuarios = () => {
-  const [usuarios, setUsuarios] = useState<Usuario[]>(usuariosMock);
+  const {
+    data: usuariosApi = [],
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    refetch,
+  } = useGetUsuariosQuery();
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [search, setSearch] = useState('');
   const [rolFilter, setRolFilter] = useState<UserRole | 'Todos'>('Todos');
   const [estadoFilter, setEstadoFilter] = useState<UserStatus | 'Todos'>('Todos');
+
+  useEffect(() => {
+    setUsuarios(usuariosApi);
+  }, [usuariosApi]);
 
   const usuariosFiltrados = useMemo(() => {
     return usuarios.filter((usuario) => {
@@ -79,6 +91,11 @@ export const useGestionarUsuarios = () => {
   return {
     usuarios,
     usuariosFiltrados,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    refetch,
     search,
     setSearch,
     rolFilter,
@@ -91,6 +108,7 @@ export const useGestionarUsuarios = () => {
     crearUsuario,
     eliminarUsuario,
     cambiarEstadoUsuario,
+    editarUsuario,
   };
   
 };

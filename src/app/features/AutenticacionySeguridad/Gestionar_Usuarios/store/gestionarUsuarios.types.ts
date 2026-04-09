@@ -1,4 +1,8 @@
-export type UserRole = 'Administrador' | 'Veterinario' | 'Recepcionista';
+export type UserRole =
+  | 'Administrador'
+  | 'Veterinario'
+  | 'Recepcionista'
+  | 'Cliente';
 export type UserStatus = 'Activo' | 'Inactivo';
 
 export interface Usuario {

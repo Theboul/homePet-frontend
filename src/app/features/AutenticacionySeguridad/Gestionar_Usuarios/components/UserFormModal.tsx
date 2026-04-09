@@ -67,8 +67,7 @@ export const UserFormModal = ({
     if (
       !form.nombre.trim() ||
       !form.correo.trim() ||
-      !form.telefono.trim() ||
-      !form.departamento.trim()
+      !form.telefono.trim()
     ) {
       return;
     }
@@ -152,6 +151,7 @@ export const UserFormModal = ({
               <option value="Administrador">Administrador</option>
               <option value="Veterinario">Veterinario</option>
               <option value="Recepcionista">Recepcionista</option>
+              <option value="Cliente">Cliente</option>
             </select>
           </div>
 

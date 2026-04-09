@@ -1,13 +1,14 @@
 'use client'
 
-import type { Cliente, ClienteFormData } from '../types'
+import type { Cliente, ClienteCreatePayload } from '../store/gestionarClientes.types'
 import { ClienteForm } from './ClienteForm'
+import { Button } from '#/components/ui/button'
 
 interface ClienteDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   cliente?: Cliente
-  onSubmit: (data: ClienteFormData) => void
+  onSubmit: (data: ClienteCreatePayload) => void
   isLoading?: boolean
 }
 
@@ -35,13 +36,13 @@ export function ClienteDialog({
             </p>
           </div>
 
-          <button
+          <Button
             type="button"
             onClick={() => onOpenChange(false)}
             className="rounded-lg bg-white px-3 py-2 text-[#7C3AED] hover:opacity-90"
           >
             Cerrar
-          </button>
+          </Button>
         </div>
 
         <ClienteForm
