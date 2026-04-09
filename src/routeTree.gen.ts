@@ -16,6 +16,7 @@ import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
 import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
@@ -54,6 +55,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminBitacoraRoute = AdminBitacoraRouteImport.update({
+  id: '/bitacora',
+  path: '/bitacora',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
   id: '/Gestionar_Usuarios',
   path: '/Gestionar_Usuarios',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/login': typeof PublicLoginRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
+    | '/bitacora'
     | '/dashboard'
     | '/about'
     | '/login'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
+    | '/bitacora'
     | '/dashboard'
     | '/about'
     | '/login'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/_public'
     | '/_admin/Gestionar_Clientes'
     | '/_admin/Gestionar_Usuarios'
+    | '/_admin/bitacora'
     | '/_admin/dashboard'
     | '/_public/about'
     | '/_public/login'
@@ -208,6 +220,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/bitacora': {
+      id: '/_admin/bitacora'
+      path: '/bitacora'
+      fullPath: '/bitacora'
+      preLoaderRoute: typeof AdminBitacoraRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Usuarios': {
       id: '/_admin/Gestionar_Usuarios'
       path: '/Gestionar_Usuarios'
@@ -242,12 +261,14 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
+  AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
+  AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
 }
 
