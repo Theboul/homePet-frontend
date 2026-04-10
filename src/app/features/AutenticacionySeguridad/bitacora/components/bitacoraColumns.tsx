@@ -2,11 +2,12 @@ import { createColumnHelper } from '@tanstack/react-table';
 import type { Bitacora } from '../store/bitacora.types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Globe } from 'lucide-react';
+import { Eye, Globe } from 'lucide-react';
+import { Button } from '#/components/ui/button';
 
 const columnHelper = createColumnHelper<Bitacora>();
 
-export const getBitacoraColumns = () => [
+export const getBitacoraColumns = (onViewDetails: (bitacora: Bitacora) => void) => [
   columnHelper.accessor('fecha_hora', {
     header: 'Fecha y Hora',
     cell: (info) => (
@@ -63,5 +64,22 @@ export const getBitacoraColumns = () => [
         </span>
       );
     },
+  }),
+  columnHelper.display({
+    id: 'acciones',
+    header: () => <div className="text-right">Detalles</div>,
+    cell: (info) => (
+      <div className="flex justify-end">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-[#F97316] hover:text-[#EA580C] hover:bg-orange-50"
+          onClick={() => onViewDetails(info.row.original)}
+          title="Ver todos los detalles"
+        >
+          <Eye className="h-4 w-4" />
+        </Button>
+      </div>
+    ),
   }),
 ];

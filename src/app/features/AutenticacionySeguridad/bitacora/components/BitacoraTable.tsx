@@ -8,6 +8,8 @@ import {
 import { getBitacoraColumns } from './bitacoraColumns';
 import { Activity } from 'lucide-react';
 import type { Bitacora } from '../store/bitacora.types';
+import { BitacoraDetailsModal } from './BitacoraDetailsModal';
+import { useMemo, useState } from 'react';
 
 interface BitacoraTableProps {
   data: Bitacora[];
@@ -28,7 +30,12 @@ export function BitacoraTable({
   hasNext,
   hasPrevious,
 }: BitacoraTableProps) {
-  const columns = getBitacoraColumns();
+
+  const [selectedBitacora, setSelectedBitacora] = useState<Bitacora | null>(null);
+  const columns = useMemo(
+    () => getBitacoraColumns((bitacora) => setSelectedBitacora(bitacora)), 
+    []
+  );
 
   const table = useReactTable({
     data,
@@ -110,6 +117,11 @@ export function BitacoraTable({
           </Button>
         </div>
       </div>
+
+      <BitacoraDetailsModal 
+        bitacora={selectedBitacora} 
+        onClose={() => setSelectedBitacora(null)} 
+      />
     </div>
   );
 }
