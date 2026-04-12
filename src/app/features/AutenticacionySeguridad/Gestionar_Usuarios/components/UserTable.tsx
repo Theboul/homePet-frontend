@@ -38,6 +38,7 @@ export const UserTable = ({
     <tr className="bg-[#7C3AED] text-left">
               <th className="px-4 py-4 text-sm font-semibold text-white">Usuario</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Teléfono</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white">Dirección</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Rol</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Estado</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Creado</th>
@@ -65,7 +66,7 @@ export const UserTable = ({
                   </td>
 
                   <td className="px-4 py-4 text-black">{usuario.telefono}</td>
-                  <td className="px-4 py-4 text-black">{usuario.departamento}</td>
+                  <td className="px-4 py-4 text-black">{usuario.direccion}</td>
 
                   <td className="px-4 py-4">
                     <span className="rounded-full border border-[#F97316] bg-[#F97316]/10 px-3 py-1 text-sm text-[#F97316]">

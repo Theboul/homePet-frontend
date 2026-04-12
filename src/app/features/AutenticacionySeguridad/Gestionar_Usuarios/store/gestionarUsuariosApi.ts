@@ -64,7 +64,7 @@ const mapBackendUsuario = (usuario: BackendUsuario): Usuario => {
     nombre: usuario.nombre ?? usuario.perfil?.nombre ?? 'Sin nombre',
     correo: usuario.correo ?? authUser?.correo ?? '',
     telefono: usuario.telefono ?? usuario.perfil?.telefono ?? '-',
-    departamento: usuario.direccion ?? usuario.perfil?.direccion ?? 'Sin asignar',
+    direccion: usuario.direccion ?? usuario.perfil?.direccion ?? 'Sin asignar',
     rol: role,
     estado: mapStatus(usuario.is_active ?? authUser?.is_active, usuario.estado),
     creadoEn:
@@ -166,8 +166,8 @@ export const gestionarUsuariosApi = api.injectEndpoints({
           return {
             data: toUsuarios(
               perfilesResponse.data as
-                | UsersResponse<BackendUsuario>
-                | BackendUsuario[]
+              | UsersResponse<BackendUsuario>
+              | BackendUsuario[]
             ),
           }
         }
@@ -176,8 +176,25 @@ export const gestionarUsuariosApi = api.injectEndpoints({
       },
       providesTags: ['User'],
     }),
+    createUsuario: builder.mutation<Usuario, Partial<import('./gestionarUsuarios.types').UsuarioFormData>>({
+      query: (body) => ({
+        url: 'auth/usuarios/',
+        method: 'POST',
+        body: {
+          correo: body.correo,
+          password: body.correo, // default password
+          id_rol: body.rol === 'Administrador' ? 1 : body.rol === 'Veterinario' ? 2 : body.rol === 'Cliente' ? 3 : body.rol === 'Recepcionista' ? 4 : 1,
+          nombre: body.nombre,
+          telefono: body.telefono,
+          direccion: body.direccion,
+          estado: body.estado === 'Activo',
+          is_active: body.estado === 'Activo',
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetUsuariosQuery } = gestionarUsuariosApi
+export const { useGetUsuariosQuery, useCreateUsuarioMutation } = gestionarUsuariosApi
