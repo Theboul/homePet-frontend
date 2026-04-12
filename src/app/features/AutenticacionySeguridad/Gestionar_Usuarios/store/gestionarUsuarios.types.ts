@@ -10,7 +10,7 @@ export interface Usuario {
   nombre: string;
   correo: string;
   telefono: string;
-  departamento: string;
+  direccion: string;
   rol: UserRole;
   estado: UserStatus;
   creadoEn: string;
@@ -20,7 +20,7 @@ export interface UsuarioFormData {
   nombre: string;
   correo: string;
   telefono: string;
-  departamento: string;
+  direccion: string;
   rol: UserRole;
   estado: UserStatus;
 }
