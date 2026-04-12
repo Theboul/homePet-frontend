@@ -5,7 +5,7 @@ import type {
   UserRole,
   UserStatus,
 } from './gestionarUsuarios.types';
-import { useGetUsuariosQuery } from './gestionarUsuariosApi';
+import { useGetUsuariosQuery, useCreateUsuarioMutation } from './gestionarUsuariosApi';
 
 export const useGestionarUsuarios = () => {
   const {
@@ -16,6 +16,7 @@ export const useGestionarUsuarios = () => {
     error,
     refetch,
   } = useGetUsuariosQuery();
+  const [createUsuarioMutation] = useCreateUsuarioMutation();
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [search, setSearch] = useState('');
   const [rolFilter, setRolFilter] = useState<UserRole | 'Todos'>('Todos');
@@ -30,7 +31,7 @@ export const useGestionarUsuarios = () => {
       const coincideBusqueda =
         usuario.nombre.toLowerCase().includes(search.toLowerCase()) ||
         usuario.correo.toLowerCase().includes(search.toLowerCase()) ||
-        usuario.departamento.toLowerCase().includes(search.toLowerCase());
+        usuario.direccion.toLowerCase().includes(search.toLowerCase());
 
       const coincideRol = rolFilter === 'Todos' || usuario.rol === rolFilter;
       const coincideEstado =
@@ -44,14 +45,19 @@ export const useGestionarUsuarios = () => {
   const usuariosActivos = usuarios.filter((u) => u.estado === 'Activo').length;
   const administradores = usuarios.filter((u) => u.rol === 'Administrador').length;
 
-  const crearUsuario = (data: UsuarioFormData) => {
-    const nuevoUsuario: Usuario = {
-      id: Date.now(),
-      ...data,
-      creadoEn: new Date().toISOString().split('T')[0],
-    };
-
-    setUsuarios((prev) => [nuevoUsuario, ...prev]);
+  const crearUsuario = async (data: UsuarioFormData) => {
+    try {
+      const result = await createUsuarioMutation(data).unwrap();
+      setUsuarios((prev) => [result, ...prev]);
+    } catch (error) {
+      console.error('Error al crear usuario en backend, fallback local:', error);
+      const nuevoUsuario: Usuario = {
+        id: Date.now(),
+        ...data,
+        creadoEn: new Date().toISOString().split('T')[0],
+      };
+      setUsuarios((prev) => [nuevoUsuario, ...prev]);
+    }
   };
 
   const eliminarUsuario = (id: number) => {
