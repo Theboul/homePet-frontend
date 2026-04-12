@@ -12,6 +12,7 @@ function App() {
       <a href="/login">Ir al login</a>
       <a href="/Gestionar_Usuarios">Ir al Gestionar_Usuarios</a>
       <a href="/Gestionar_Clientes">Ir al Gestionar_Clientes</a>
+      <a href="/Gestionar_Mascotas">Ir al Gestionar_Mascotas</a>
       <p className="m-0 max-w-3xl text-base leading-8 text-[var(--sea-ink-soft)]">
         Bienvenido a Home Pet Home, tu refugio digital para el cuidado de tus
         mascotas. Aquí encontrarás todo lo que necesitas para mantener a tus

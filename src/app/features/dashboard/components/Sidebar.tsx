@@ -3,12 +3,8 @@ import { Link, useLocation } from '@tanstack/react-router'
 import { Button } from '#/components/ui/button'
 import {
   Home,
-  ClipboardList,
-  Stethoscope,
-  Package,
-  DollarSign,
-  BarChart2,
-  Settings,
+  ShieldCheck, 
+  Users,       
   PawPrint,
   ChevronLeft,
   ChevronDown,
@@ -18,7 +14,7 @@ import {
 
 type MenuChild = {
   label: string
-  to: '/dashboard' | '/Gestionar_Clientes' | '/Gestionar_Usuarios' | '/about' | '/login'
+  to: '/dashboard' | '/Gestionar_Clientes' | '/Gestionar_Usuarios' | '/bitacora' | '/about' | '/login'
 }
 
 type MenuItem = {
@@ -31,35 +27,29 @@ type MenuItem = {
 const menuSections: Array<{ section: string; items: MenuItem[] }> = [
   {
     section: 'Principal',
-    items: [{ label: 'Inicio', icon: Home, to: '/dashboard' }],
-  },
-  {
-    section: 'Gestión',
     items: [
-      {
-        label: 'Gestionar',
-        icon: ClipboardList,
-        children: [
-          { label: 'Clientes', to: '/Gestionar_Clientes' },
-          { label: 'Usuarios', to: '/Gestionar_Usuarios' },
-        ],
-      },
-      {
-        label: 'Operaciones',
-        icon: Stethoscope,
-        children: [
-          { label: 'Panel Clínico', to: '/dashboard' },
-          { label: 'Reportes', to: '/about' },
-        ],
-      },
-      { label: 'Inventario', icon: Package, to: '/dashboard' },
-      { label: 'Facturación', icon: DollarSign, to: '/dashboard' },
-      { label: 'Reportes', icon: BarChart2, to: '/about' },
+      { label: 'Inicio', icon: Home, to: '/dashboard' }
     ],
   },
   {
-    section: 'Sistema',
-    items: [{ label: 'Configuración', icon: Settings, to: '/login' }],
+    section: 'Módulos del Sistema',
+    items: [
+      {
+        label: 'Autenticación y Seg.',
+        icon: ShieldCheck,
+        children: [
+          { label: 'Gestionar Usuarios', to: '/Gestionar_Usuarios' }, 
+          { label: 'Bitácora y Seguridad', to: '/bitacora' },         
+        ],
+      },
+      {
+        label: 'Clientes y Mascotas',
+        icon: Users,
+        children: [
+          { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' }, 
+        ],
+      },
+    ],
   },
 ]
 
@@ -76,6 +66,7 @@ export function Sidebar({
   toggleSidebar?: () => void; 
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
+  
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
 
   const toggleMenu = (label: string) => {
@@ -89,7 +80,7 @@ export function Sidebar({
         <div className="bg-orange-500 rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center shadow-lg">
           <PawPrint className="w-5 h-5 text-white" fill="currentColor" />
         </div>
-        {!isCollapsed && <h1 className="text-xl font-bold tracking-wide flex-1 whitespace-nowrap">VetCare</h1>}
+        {!isCollapsed && <h1 className="text-xl font-bold tracking-wide flex-1 whitespace-nowrap">PetHome</h1>}
         <Button onClick={toggleSidebar} variant="ghost" className={`text-purple-300 hover:bg-white/10 hover:text-orange-400 transition-colors p-2 rounded-full h-auto flex-shrink-0 ${isCollapsed ? 'rotate-180' : ''}`}>
           <ChevronLeft className="w-5 h-5" />
         </Button>
@@ -111,8 +102,15 @@ export function Sidebar({
               {section.items.map((item) => {
                 const Icon = item.icon
                 const hasChildren = Boolean(item.children?.length)
-                const itemActive = item.to === pathname || childIsActive(item.children, pathname)
-                const itemOpen = hasChildren && (openMenus[item.label] ?? childIsActive(item.children, pathname))
+                
+                // Calculamos en tiempo real si el hijo está activo
+                const isChildActive = childIsActive(item.children, pathname)
+                const itemActive = item.to === pathname || isChildActive
+                
+                // SOLUCIÓN: El menú está abierto SI el usuario lo clickeó (true/false) 
+                // O si no lo ha tocado (undefined) pero tiene un hijo activo.
+                const itemOpen = hasChildren && (openMenus[item.label] ?? isChildActive)
+                
                 const isActiveOrOpen = itemActive || itemOpen
 
                 if (hasChildren) {
