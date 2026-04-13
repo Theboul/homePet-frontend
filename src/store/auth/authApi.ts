@@ -14,58 +14,49 @@ const normalizeRole = (value: string) =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toUpperCase()
-    .trim();
+    .trim()
 
 const mapRole = (user: BackendUser): UserRole => {
-  const backendRole = user.role ?? user.rol;
+  const backendRole = user.role ?? user.rol
   const raw =
     typeof backendRole === 'string'
       ? backendRole
-      : backendRole?.nombre ?? '';
-  const normalized = normalizeRole(raw);
+      : backendRole?.nombre ?? ''
+  const normalized = normalizeRole(raw)
 
-  if (normalized.includes('CLIENT')) return 'CLIENT';
-  if (normalized.includes('ADMIN')) return 'ADMIN';
-  if (normalized.includes('VETERIN')) return 'VETERINARIAN';
+  if (normalized.includes('CLIENT')) return 'CLIENT'
+  if (normalized.includes('ADMIN')) return 'ADMIN'
+  if (normalized.includes('VETERIN')) return 'VETERINARIAN'
 
   // Roles administrativos adicionales (por ejemplo recepcionista) deben
   // poder entrar al dashboard administrativo en el frontend.
   if (normalized.includes('RECEPCION') || normalized.includes('RECEPTION')) {
-    return 'ADMIN';
+    return 'ADMIN'
   }
 
   // Evita degradar usuarios autenticados a CLIENT por diferencias de contrato.
-  return 'ADMIN';
-};
+  return 'ADMIN'
+}
 
 const mapIsActive = (user: BackendUser): boolean => {
-  if (typeof user.is_active === 'boolean') return user.is_active;
-  if (typeof user.estado === 'boolean') return user.estado;
+  if (typeof user.is_active === 'boolean') return user.is_active
+  if (typeof user.estado === 'boolean') return user.estado
 
   const estado = String(user.estado ?? '')
     .toLowerCase()
-    .trim();
+    .trim()
 
-  return estado === 'activo' || estado === 'active';
-};
+  return estado === 'activo' || estado === 'active'
+}
 
 function mapBackendUser(user: BackendUser): User {
   return {
-<<<<<<< HEAD
-    id: user.id_usuario ?? user.id ?? 0,
+    id_usuario: user.id_usuario ?? user.id ?? 0,
     correo: user.correo ?? '',
     role: mapRole(user),
     isActive: mapIsActive(user),
     dateJoined: user.date_joined ?? user.fecha_creacion ?? '',
-  };
-=======
-    id_usuario: user.id_usuario,
-    correo: user.correo,
-    role: (user.role?.nombre ?? 'CLIENT') as UserRole,
-    isActive: user.is_active,
-    dateJoined: user.date_joined,
   }
->>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 }
 
 export type LoginMutationResult = {

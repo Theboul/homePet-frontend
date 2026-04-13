@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { DashboardLayout } from '@/app/features/dashboard/components/DashboardLayout'
+import { DashboardLayout } from "../app/features/dashboard/components/DashboardLayout";
 import { store } from '#/store/store'
 import { authApi } from '#/store/auth/authApi'
 

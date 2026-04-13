@@ -45,11 +45,6 @@ const LoginScreen = () => {
           refreshToken: result.refreshToken,
         }),
       )
-<<<<<<< HEAD
-      navigate({ to: result.user.role === 'CLIENT' ? '/cliente' : '/dashboard' })
-    } catch {
-      setFormError('Correo o contraseña incorrectos.')
-=======
 
       // 3. Redirigimos al Dashboard o Admin según corresponda
       navigate({ to: '/dashboard' })
@@ -62,7 +57,7 @@ const LoginScreen = () => {
       } else {
         setFormError('Ocurrió un error en el servidor. Inténtalo más tarde.')
       }
->>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
+
     }
   }
 

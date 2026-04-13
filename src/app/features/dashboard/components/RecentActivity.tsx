@@ -1,10 +1,4 @@
-import {
-  Calendar,
-  UserPlus,
-  ClipboardList,
-  Package,
-  DollarSign,
-} from 'lucide-react'
+import { Calendar, UserPlus, ClipboardList, Package, DollarSign } from 'lucide-react'
 
 // Datos Hardcodeados de prueba
 const activities = [
@@ -58,9 +52,7 @@ const activities = [
 export function RecentActivity() {
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-full">
-      <h3 className="text-lg font-bold text-gray-800 mb-6 font-sans">
-        Actividad Reciente
-      </h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-6 font-sans">Actividad Reciente</h3>
 
       <div className="relative">
         {/* Línea conectora */}
@@ -71,18 +63,12 @@ export function RecentActivity() {
             const Icon = activity.icon
             return (
               <div key={activity.id} className="flex gap-4 items-start">
-                <div
-                  className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center ${activity.iconBg} ring-4 ring-white`}
-                >
+                <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center ${activity.iconBg} ring-4 ring-white`}>
                   <Icon className={`w-5 h-5 ${activity.iconColor}`} />
                 </div>
                 <div className="pt-1">
-                  <h4 className="text-sm font-bold text-gray-800">
-                    {activity.title}
-                  </h4>
-                  <p className="text-sm text-gray-500 mt-0.5">
-                    {activity.description}
-                  </p>
+                  <h4 className="text-sm font-bold text-gray-800">{activity.title}</h4>
+                  <p className="text-sm text-gray-500 mt-0.5">{activity.description}</p>
                   <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
                 </div>
               </div>

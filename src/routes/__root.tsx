@@ -1,27 +1,10 @@
-<<<<<<< HEAD
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
 import { Suspense, useEffect } from 'react'
-=======
-import * as React from 'react'
-import {
-  HeadContent,
-  Scripts,
-  createRootRoute,
-  Outlet,
-} from '@tanstack/react-router'
-import { useEffect } from 'react'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
->>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 import { Provider } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '#/store/hooks'
 import { store } from '#/store/store'
 import { useGetProfileQuery } from '#/store/auth/authApi'
-<<<<<<< HEAD
 import { updateUser } from '#/store/auth/authSlice'
-=======
-import { logout, updateUser } from '#/store/auth/authSlice'
->>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 
 import appCss from '../styles.css?url'
 
@@ -46,7 +29,6 @@ function RootDocument() {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-<<<<<<< HEAD
       <body className="font-sans antialiased">
         <Provider store={store}>
           <AuthBootstrap />
@@ -54,27 +36,6 @@ function RootDocument() {
             <Outlet />
           </Suspense>
         </Provider>
-
-=======
-      <body className="font-sans antialiased selection:bg-[rgba(79,184,178,0.24)]">
-        <Provider store={store}>
-          <AuthBootstrap />
-          {/* Usamos React.Suspense y Outlet para que las rutas funcionen correctamente */}
-          <React.Suspense fallback={null}>
-            <Outlet />
-          </React.Suspense>
-        </Provider>
-
-        <TanStackDevtools
-          config={{ position: 'bottom-right' }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: () => <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
->>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
         <Scripts />
       </body>
     </html>
