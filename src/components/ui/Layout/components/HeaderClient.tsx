@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
@@ -9,8 +9,15 @@ import { logout } from '#/store/auth/authSlice'
 
 export const HeaderClient = () => {
   const [open, setOpen] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
   const dispatch = useAppDispatch()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
+
+  const showAuthenticatedActions = isHydrated && isAuthenticated
 
   // Cambié text-slate-700 por text-slate-900 para máximo contraste
   const navLinkStyles =
@@ -47,7 +54,7 @@ export const HeaderClient = () => {
 
         {/* Desktop acciones */}
         <div className="hidden md:flex items-center gap-3">
-          {isAuthenticated ? (
+          {showAuthenticatedActions ? (
             <Button
               onClick={() => dispatch(logout())}
               className="bg-red-100 text-red-600 hover:bg-red-200 border-none font-bold"
@@ -117,7 +124,7 @@ export const HeaderClient = () => {
           </div>
 
           <div className="flex flex-col gap-3 pb-2">
-            {isAuthenticated ? (
+            {showAuthenticatedActions ? (
               <Button
                 onClick={() => {
                   dispatch(logout())

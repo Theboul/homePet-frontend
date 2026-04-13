@@ -26,12 +26,19 @@ export const GestionarClientes = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [clienteToDelete, setClienteToDelete] = useState<number | null>(null)
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  })
+
   const {
     data: paginatedData,
     isLoading: isLoadingClientes,
   } = useGetClientesQuery({
     search: searchQuery,
     estado: statusFilter !== 'all' ? (statusFilter === 'activo' ? true : false) : undefined,
+    page: pagination.pageIndex + 1,
+    page_size: pagination.pageSize,
   })
 
   const [createCliente, { isLoading: isCreating }] = useCreateClienteMutation()
@@ -235,6 +242,10 @@ export const GestionarClientes = () => {
           onEdit={handleEditCliente}
           onDelete={handleDeleteClick}
           onToggleStatus={handleToggleStatus}
+          pageCount={Math.ceil((paginatedData?.count || 0) / pagination.pageSize)}
+          pageIndex={pagination.pageIndex}
+          pageSize={pagination.pageSize}
+          onPaginationChange={setPagination}
         />
 
         <ClienteDialog

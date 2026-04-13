@@ -21,6 +21,12 @@ export const Route = createRootRoute({
   }),
   // Cambiamos shellComponent por component para el renderizado estándar
   component: RootDocument,
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-3xl px-6 py-16 text-center">
+      <h1 className="text-3xl font-bold text-[#7C3AED]">Pagina no encontrada</h1>
+      <p className="mt-2 text-gray-600">La ruta que intentaste abrir no existe o fue movida.</p>
+    </div>
+  ),
 })
 
 function RootDocument() {

@@ -12,7 +12,7 @@ export const clientesApi = api.injectEndpoints({
     // Obtener lista de clientes con paginación y filtros (Admin)
     getClientes: builder.query<PaginatedClientesResponse, ClientesQueryParams | void>({
       query: (params) => ({
-        url: 'gestion/clientes/',
+        url: 'gestion/clientes/clientes/',
         params: params || {},
       }),
       providesTags: ['Clients'],
@@ -20,14 +20,14 @@ export const clientesApi = api.injectEndpoints({
 
     // Obtener un cliente específico (Admin)
     getClienteById: builder.query<Cliente, number>({
-      query: (id) => `gestion/clientes/${id}/`,
+      query: (id) => `gestion/clientes/clientes/${id}/`,
       providesTags: (_result, _error, id) => [{ type: 'Clients', id }],
     }),
 
     // Crear cliente por administrador
     createCliente: builder.mutation<Cliente, ClienteCreatePayload>({
       query: (body) => ({
-        url: 'gestion/clientes/',
+        url: 'gestion/clientes/clientes/',
         method: 'POST',
         body,
       }),
@@ -51,7 +51,7 @@ export const clientesApi = api.injectEndpoints({
       { id: number; data: ClienteUpdatePayload }
     >({
       query: ({ id, data }) => ({
-        url: `gestion/clientes/${id}/`,
+        url: `gestion/clientes/clientes/${id}/`,
         method: 'PATCH', // PATCH para actualizaciones parciales
         body: data,
       }),
@@ -64,7 +64,7 @@ export const clientesApi = api.injectEndpoints({
     // Eliminar (borrado lógico o físico dependiendo del backend, en este caso el modelo muestra delete())
     deleteCliente: builder.mutation<void, number>({
       query: (id) => ({
-        url: `gestion/clientes/${id}/`,
+        url: `gestion/clientes/clientes/${id}/`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Clients'],

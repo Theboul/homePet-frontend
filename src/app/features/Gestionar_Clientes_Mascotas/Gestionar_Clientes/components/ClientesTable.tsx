@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import type { Cliente } from '../store/gestionarClientes.types'
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 import { getClientesColumns } from './clientesColumns'
@@ -15,6 +13,10 @@ interface ClientesTableProps {
   onEdit: (cliente: Cliente) => void
   onDelete: (clienteId: number) => void
   onToggleStatus: (clienteId: number) => void
+  pageCount: number
+  pageIndex: number
+  pageSize: number
+  onPaginationChange: (pagination: any) => void
 }
 
 export function ClientesTable({
@@ -22,22 +24,22 @@ export function ClientesTable({
   onEdit,
   onDelete,
   onToggleStatus,
+  pageCount,
+  pageIndex,
+  pageSize,
+  onPaginationChange,
 }: ClientesTableProps) {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  })
-
   const columns = getClientesColumns({ onEdit, onDelete, onToggleStatus })
 
   const table = useReactTable({
     data: clientes,
     columns,
+    pageCount,
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
+    onPaginationChange,
     state: {
-      pagination,
+      pagination: { pageIndex, pageSize },
     },
   } as any) // suppress filterFns issue
 
