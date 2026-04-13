@@ -1,1 +1,1 @@
-export { GestionarClientes } from './Gestionar_Clientes'
+export * from './Gestionar_Clientes'
