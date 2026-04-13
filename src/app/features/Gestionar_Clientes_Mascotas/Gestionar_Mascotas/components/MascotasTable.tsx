@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { MoreVertical, Eye, Pencil, Trash2 } from "lucide-react"
 import type { Mascota } from "../types"
-import { usuariosOptions } from "../store"
 
 interface MascotasTableProps {
   mascotas: Mascota[]
@@ -41,9 +40,7 @@ function getEstadoBadgeClass(estado: boolean) {
 }
 
 function getNombrePropietario(mascota: Mascota) {
-  if (mascota.usuario?.nombre) return mascota.usuario.nombre
-  const usuario = usuariosOptions.find((u) => u.id === mascota.id_usuario)
-  return usuario?.nombre ?? `Usuario #${mascota.id_usuario}`
+  return mascota.usuario?.nombre ?? "Sin propietario"
 }
 
 interface ActionMenuProps {
@@ -233,7 +230,9 @@ function MobileMascotaCard({
     <div className="rounded-2xl border border-[#FDBA74] bg-white p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-lg font-semibold text-[#111827]">{mascota.nombre}</h3>
+          <h3 className="text-lg font-semibold text-[#111827]">
+            {mascota.nombre}
+          </h3>
           <p className="mt-1 text-sm text-[#6B7280]">
             {getNombrePropietario(mascota)}
           </p>
@@ -274,28 +273,36 @@ function MobileMascotaCard({
           <p className="text-[11px] font-semibold uppercase tracking-wide text-[#7C3AED]">
             Color
           </p>
-          <p className="mt-1 text-sm text-[#18181B]">{mascota.color}</p>
+          <p className="mt-1 text-sm text-[#18181B]">
+            {mascota.color ?? "-"}
+          </p>
         </div>
 
         <div className="rounded-xl bg-[#FFFDFB] p-3">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-[#7C3AED]">
             Sexo
           </p>
-          <p className="mt-1 text-sm text-[#18181B]">{mascota.sexo}</p>
+          <p className="mt-1 text-sm text-[#18181B]">
+            {mascota.sexo ?? "-"}
+          </p>
         </div>
 
         <div className="rounded-xl bg-[#FFFDFB] p-3">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-[#7C3AED]">
             Tamaño
           </p>
-          <p className="mt-1 text-sm text-[#18181B]">{mascota.tamano}</p>
+          <p className="mt-1 text-sm text-[#18181B]">
+            {mascota.tamano ?? "-"}
+          </p>
         </div>
 
         <div className="rounded-xl bg-[#FFFDFB] p-3">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-[#7C3AED]">
             Peso
           </p>
-          <p className="mt-1 text-sm text-[#18181B]">{mascota.peso} kg</p>
+          <p className="mt-1 text-sm text-[#18181B]">
+            {mascota.peso ?? "-"} {mascota.peso ? "kg" : ""}
+          </p>
         </div>
       </div>
     </div>
@@ -342,14 +349,19 @@ export function MascotasTable({
                 <th className="px-6 py-4 font-semibold">Tamaño</th>
                 <th className="px-6 py-4 font-semibold">Peso</th>
                 <th className="px-6 py-4 font-semibold">Estado</th>
-                <th className="px-6 py-4 text-right font-semibold">Acciones</th>
+                <th className="px-6 py-4 text-right font-semibold">
+                  Acciones
+                </th>
               </tr>
             </thead>
 
             <tbody className="bg-white">
               {mascotas.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-6 py-10 text-center text-[#6B7280]">
+                  <td
+                    colSpan={10}
+                    className="px-6 py-10 text-center text-[#6B7280]"
+                  >
                     No hay mascotas registradas
                   </td>
                 </tr>
@@ -384,10 +396,18 @@ export function MascotasTable({
                         {getNombrePropietario(mascota)}
                       </td>
 
-                      <td className="px-6 py-4 text-[#4B5563]">{mascota.color}</td>
-                      <td className="px-6 py-4 text-[#4B5563]">{mascota.sexo}</td>
-                      <td className="px-6 py-4 text-[#4B5563]">{mascota.tamano}</td>
-                      <td className="px-6 py-4 text-[#4B5563]">{mascota.peso} kg</td>
+                      <td className="px-6 py-4 text-[#4B5563]">
+                        {mascota.color ?? "-"}
+                      </td>
+                      <td className="px-6 py-4 text-[#4B5563]">
+                        {mascota.sexo ?? "-"}
+                      </td>
+                      <td className="px-6 py-4 text-[#4B5563]">
+                        {mascota.tamano ?? "-"}
+                      </td>
+                      <td className="px-6 py-4 text-[#4B5563]">
+                        {mascota.peso ?? "-"} {mascota.peso ? "kg" : ""}
+                      </td>
 
                       <td className="px-6 py-4">
                         <span

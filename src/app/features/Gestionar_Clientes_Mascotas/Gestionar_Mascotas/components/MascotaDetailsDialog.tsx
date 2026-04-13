@@ -43,6 +43,11 @@ function formatFechaRegistro(fecha: string | null | undefined) {
   }
 }
 
+function getPesoTexto(peso: number | null | undefined) {
+  if (peso === null || peso === undefined) return "No registrado"
+  return `${peso} kg`
+}
+
 export function MascotaDetailsDialog({
   open,
   mascota,
@@ -101,7 +106,7 @@ export function MascotaDetailsDialog({
               <DetailCard label="Color" value={mascota.color} />
               <DetailCard label="Sexo" value={mascota.sexo} />
               <DetailCard label="Tamaño" value={mascota.tamano} />
-              <DetailCard label="Peso" value={`${mascota.peso} kg`} />
+              <DetailCard label="Peso" value={getPesoTexto(mascota.peso)} />
               <DetailCard label="Estado" value={getEstadoTexto(mascota.estado)} />
               <DetailCard label="Fecha de nacimiento" value={mascota.fecha_nac} />
             </div>

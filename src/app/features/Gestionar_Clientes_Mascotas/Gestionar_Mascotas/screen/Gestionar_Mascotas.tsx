@@ -1,12 +1,8 @@
 import { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  actualizarMascota,
-  crearMascota,
-  mascotaInitialValues,
-  mascotasMock,
-} from "../store"
+import { mapMascotaFormToPayload, mascotaInitialValues } from "../store"
+import { useGestionarMascotas } from "../store/useGestionarMascotas"
 import type { Mascota, MascotaFormValues } from "../types"
 import {
   DeleteMascotaConfirmation,
@@ -28,7 +24,18 @@ function getNombrePropietario(mascota: Mascota) {
 }
 
 export function Gestionar_Mascotas() {
-  const [mascotas, setMascotas] = useState<Mascota[]>(mascotasMock)
+  const {
+    mascotas,
+    clientes,
+    especies,
+    razas,
+    loading,
+    createMascota,
+    updateMascota,
+    deleteMascota,
+    loadRazasByEspecie,
+  } = useGestionarMascotas()
+
   const [search, setSearch] = useState("")
   const [filtroEspecie, setFiltroEspecie] = useState("Todas")
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -49,11 +56,11 @@ export function Gestionar_Mascotas() {
       const coincideBusqueda =
         !term ||
         [
-          m.nombre,
+          m.nombre ?? "",
           getRazaMascota(m),
           getEspecieMascota(m),
           getNombrePropietario(m),
-          m.color,
+          m.color ?? "",
         ]
           .join(" ")
           .toLowerCase()
@@ -74,29 +81,48 @@ export function Gestionar_Mascotas() {
 
   const pesoPromedio = useMemo(() => {
     if (!mascotas.length) return "0.0"
-    const total = mascotas.reduce((acc, mascota) => acc + mascota.peso, 0)
+    const total = mascotas.reduce(
+      (acc, mascota) => acc + Number(mascota.peso ?? 0),
+      0,
+    )
     return (total / mascotas.length).toFixed(1)
   }, [mascotas])
 
   const especiesDisponibles = useMemo(() => {
-    const especies = Array.from(
+    const especiesUnicas = Array.from(
       new Set(
         mascotas
           .map((m) => getEspecieMascota(m))
           .filter((especie) => especie && especie.trim() !== ""),
       ),
     )
-    return ["Todas", ...especies]
+    return ["Todas", ...especiesUnicas]
   }, [mascotas])
 
   const handleChange = (
     field: keyof MascotaFormValues,
     value: string | number | boolean,
   ) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
+    setFormValues((prev) => {
+      if (field === "id_usuario" || field === "id_especie" || field === "id_raza") {
+        return {
+          ...prev,
+          [field]: value === "" ? "" : Number(value),
+        }
+      }
+
+      if (field === "peso") {
+        return {
+          ...prev,
+          [field]: value === "" ? "" : Number(value),
+        }
+      }
+
+      return {
+        ...prev,
+        [field]: value,
+      }
+    })
   }
 
   const resetForm = () => {
@@ -104,29 +130,40 @@ export function Gestionar_Mascotas() {
     setEditingMascota(null)
   }
 
-  const handleOpenCreate = () => {
+  const handleOpenCreate = async () => {
     resetForm()
+    await loadRazasByEspecie("")
     setDialogOpen(true)
   }
 
-  const handleEdit = (mascota: Mascota) => {
+  const handleEdit = async (mascota: Mascota) => {
     setEditingMascota(mascota)
 
+    const especieId = mascota.especie?.id_especie ?? ""
+    const razaId = mascota.raza?.id_raza ?? ""
+    const usuarioId = mascota.usuario?.id_usuario ?? ""
+
     setFormValues({
-      id_usuario: mascota.id_usuario,
-      id_especie: mascota.id_especie,
-      id_raza: mascota.id_raza,
-      nombre: mascota.nombre,
-      color: mascota.color,
-      sexo: mascota.sexo,
+      id_usuario: usuarioId,
+      id_especie: especieId,
+      id_raza: razaId,
+      nombre: mascota.nombre ?? "",
+      color: mascota.color ?? "",
+      sexo: mascota.sexo ?? "MACHO",
       fecha_nac: mascota.fecha_nac ?? "",
-      tamano: mascota.tamano,
-      peso: mascota.peso,
+      tamano: mascota.tamano ?? "Mediano",
+      peso: mascota.peso ?? "",
       foto: mascota.foto ?? "",
       alergias: mascota.alergias ?? "",
       notas_generales: mascota.notas_generales ?? "",
       estado: mascota.estado,
     })
+
+    if (especieId) {
+      await loadRazasByEspecie(especieId)
+    } else {
+      await loadRazasByEspecie("")
+    }
 
     setDialogOpen(true)
   }
@@ -141,7 +178,7 @@ export function Gestionar_Mascotas() {
     setDetailsOpen(true)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formValues.id_usuario) {
       alert("Selecciona un propietario")
       return
@@ -162,28 +199,45 @@ export function Gestionar_Mascotas() {
       return
     }
 
-    if (editingMascota) {
-      setMascotas((prev) =>
-        actualizarMascota(editingMascota.id_mascota, formValues, prev),
-      )
-    } else {
-      const nuevaMascota = crearMascota(formValues, mascotas)
-      setMascotas((prev) => [...prev, nuevaMascota])
-    }
+    try {
+      const payload = mapMascotaFormToPayload(formValues)
 
-    setDialogOpen(false)
-    resetForm()
+      if (editingMascota) {
+        await updateMascota(editingMascota.id_mascota, payload)
+      } else {
+        await createMascota(payload)
+      }
+
+      setDialogOpen(false)
+      resetForm()
+    } catch (error: any) {
+      console.error("Error guardando mascota:", error)
+
+      if (error?.raza_id?.[0]) {
+        alert(error.raza_id[0])
+        return
+      }
+
+      if (error?.detail) {
+        alert(error.detail)
+        return
+      }
+
+      alert("No se pudo guardar la mascota.")
+    }
   }
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!selectedMascota) return
 
-    setMascotas((prev) =>
-      prev.filter((m) => m.id_mascota !== selectedMascota.id_mascota),
-    )
-
-    setSelectedMascota(null)
-    setDeleteOpen(false)
+    try {
+      await deleteMascota(selectedMascota.id_mascota)
+      setSelectedMascota(null)
+      setDeleteOpen(false)
+    } catch (error) {
+      console.error("Error eliminando mascota:", error)
+      alert("No se pudo eliminar la mascota.")
+    }
   }
 
   return (
@@ -266,17 +320,30 @@ export function Gestionar_Mascotas() {
           onDelete={handleDelete}
         />
 
-        <MascotaDialog
-          open={dialogOpen}
-          title={editingMascota ? "Editar Mascota" : "Nueva Mascota"}
-          values={formValues}
-          onChange={handleChange}
-          onClose={() => {
-            setDialogOpen(false)
-            resetForm()
-          }}
-          onSubmit={handleSubmit}
-        />
+        {!loading && (
+          <MascotaDialog
+            open={dialogOpen}
+            title={editingMascota ? "Editar Mascota" : "Nueva Mascota"}
+            values={formValues}
+            clientes={clientes}
+            especies={especies}
+            razas={razas}
+            onChange={handleChange}
+            onEspecieChange={(value) => {
+              setFormValues((prev) => ({
+                ...prev,
+                id_especie: value === "" ? "" : Number(value),
+                id_raza: "",
+              }))
+              loadRazasByEspecie(value === "" ? "" : Number(value))
+            }}
+            onClose={() => {
+              setDialogOpen(false)
+              resetForm()
+            }}
+            onSubmit={handleSubmit}
+          />
+        )}
 
         <MascotaDetailsDialog
           open={detailsOpen}

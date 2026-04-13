@@ -1,16 +1,25 @@
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import type { MascotaFormValues } from "../types"
+import type {
+  ClienteOption,
+  EspecieOption,
+  MascotaFormValues,
+  RazaOption,
+} from "../types"
 import { MascotaForm } from "./MascotaForm"
 
 interface MascotaDialogProps {
   open: boolean
   title: string
   values: MascotaFormValues
+  clientes: ClienteOption[]
+  especies: EspecieOption[]
+  razas: RazaOption[]
   onChange: (
     field: keyof MascotaFormValues,
     value: string | number | boolean,
   ) => void
+  onEspecieChange: (value: string) => void
   onClose: () => void
   onSubmit: () => void
 }
@@ -19,7 +28,11 @@ export function MascotaDialog({
   open,
   title,
   values,
+  clientes,
+  especies,
+  razas,
   onChange,
+  onEspecieChange,
   onClose,
   onSubmit,
 }: MascotaDialogProps) {
@@ -65,7 +78,14 @@ export function MascotaDialog({
           </div>
 
           <div className="flex-1 overflow-y-auto p-6">
-            <MascotaForm values={values} onChange={onChange} />
+            <MascotaForm
+              values={values}
+              clientes={clientes}
+              especies={especies}
+              razas={razas}
+              onChange={onChange}
+              onEspecieChange={onEspecieChange}
+            />
           </div>
 
           <div className="border-t border-[#FFEDD5] bg-white px-6 py-4">

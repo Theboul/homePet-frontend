@@ -1,20 +1,24 @@
-import { useMemo, type ChangeEvent } from "react"
+import type { ChangeEvent } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { MascotaFormValues } from "../types"
-import {
-  especiesOptions,
-  razasOptions,
-  tamanoOptions,
-  usuariosOptions,
-} from "../store"
+import type {
+  ClienteOption,
+  EspecieOption,
+  MascotaFormValues,
+  RazaOption,
+} from "../types"
+import { tamanoOptions } from "../store"
 
 interface MascotaFormProps {
   values: MascotaFormValues
+  clientes: ClienteOption[]
+  especies: EspecieOption[]
+  razas: RazaOption[]
   onChange: (
     field: keyof MascotaFormValues,
     value: string | number | boolean,
   ) => void
+  onEspecieChange: (value: string) => void
 }
 
 const inputClassName =
@@ -25,7 +29,19 @@ const selectClassName =
 
 const labelClassName = "text-sm font-medium text-[#18181B]"
 
-export function MascotaForm({ values, onChange }: MascotaFormProps) {
+const optionStyle = {
+  color: "#18181B",
+  backgroundColor: "#FFFFFF",
+}
+
+export function MascotaForm({
+  values,
+  clientes,
+  especies,
+  razas,
+  onChange,
+  onEspecieChange,
+}: MascotaFormProps) {
   const handleInput =
     (field: keyof MascotaFormValues) =>
     (
@@ -35,13 +51,6 @@ export function MascotaForm({ values, onChange }: MascotaFormProps) {
       const value = target.type === "checkbox" ? target.checked : target.value
       onChange(field, value)
     }
-
-  const razasFiltradas = useMemo(() => {
-    if (!values.id_especie) return []
-    return razasOptions.filter(
-      (raza) => raza.id_especie === Number(values.id_especie),
-    )
-  }, [values.id_especie])
 
   return (
     <div className="grid gap-6">
@@ -64,10 +73,17 @@ export function MascotaForm({ values, onChange }: MascotaFormProps) {
                 value={values.id_usuario}
                 onChange={handleInput("id_usuario")}
                 className={selectClassName}
+                style={{ color: "#18181B", backgroundColor: "#FFFFFF" }}
               >
-                <option value="">Selecciona un propietario</option>
-                {usuariosOptions.map((usuario) => (
-                  <option key={usuario.id} value={usuario.id}>
+                <option value="" style={optionStyle}>
+                  Selecciona un propietario
+                </option>
+                {clientes.map((usuario) => (
+                  <option
+                    key={usuario.id_usuario}
+                    value={usuario.id_usuario}
+                    style={optionStyle}
+                  >
                     {usuario.nombre}
                   </option>
                 ))}
@@ -81,15 +97,19 @@ export function MascotaForm({ values, onChange }: MascotaFormProps) {
               <select
                 id="id_especie"
                 value={values.id_especie}
-                onChange={(e) => {
-                  onChange("id_especie", e.target.value)
-                  onChange("id_raza", "")
-                }}
+                onChange={(e) => onEspecieChange(e.target.value)}
                 className={selectClassName}
+                style={{ color: "#18181B", backgroundColor: "#FFFFFF" }}
               >
-                <option value="">Selecciona una especie</option>
-                {especiesOptions.map((especie) => (
-                  <option key={especie.id_especie} value={especie.id_especie}>
+                <option value="" style={optionStyle}>
+                  Selecciona una especie
+                </option>
+                {especies.map((especie) => (
+                  <option
+                    key={especie.id_especie}
+                    value={especie.id_especie}
+                    style={optionStyle}
+                  >
                     {especie.nombre}
                   </option>
                 ))}
@@ -108,14 +128,19 @@ export function MascotaForm({ values, onChange }: MascotaFormProps) {
                 onChange={handleInput("id_raza")}
                 className={selectClassName}
                 disabled={!values.id_especie}
+                style={{ color: "#18181B", backgroundColor: "#FFFFFF" }}
               >
-                <option value="">
+                <option value="" style={optionStyle}>
                   {values.id_especie
                     ? "Selecciona una raza"
                     : "Primero selecciona especie"}
                 </option>
-                {razasFiltradas.map((raza) => (
-                  <option key={raza.id_raza} value={raza.id_raza}>
+                {razas.map((raza) => (
+                  <option
+                    key={raza.id_raza}
+                    value={raza.id_raza}
+                    style={optionStyle}
+                  >
                     {raza.nombre}
                   </option>
                 ))}
@@ -159,9 +184,14 @@ export function MascotaForm({ values, onChange }: MascotaFormProps) {
                 value={values.sexo}
                 onChange={handleInput("sexo")}
                 className={selectClassName}
+                style={{ color: "#18181B", backgroundColor: "#FFFFFF" }}
               >
-                <option value="MACHO">Macho</option>
-                <option value="HEMBRA">Hembra</option>
+                <option value="MACHO" style={optionStyle}>
+                  Macho
+                </option>
+                <option value="HEMBRA" style={optionStyle}>
+                  Hembra
+                </option>
               </select>
             </div>
           </div>
@@ -176,9 +206,10 @@ export function MascotaForm({ values, onChange }: MascotaFormProps) {
                 value={values.tamano}
                 onChange={handleInput("tamano")}
                 className={selectClassName}
+                style={{ color: "#18181B", backgroundColor: "#FFFFFF" }}
               >
                 {tamanoOptions.map((item) => (
-                  <option key={item} value={item}>
+                  <option key={item} value={item} style={optionStyle}>
                     {item}
                   </option>
                 ))}
