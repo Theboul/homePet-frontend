@@ -6,15 +6,26 @@ import {
   ShieldCheck, 
   Users,       
   PawPrint,
+  CalendarPlus,
   ChevronLeft,
   ChevronDown,
   ChevronRight,
   type LucideIcon,
 } from 'lucide-react'
+import { useAppSelector } from '#/store/hooks'
 
 type MenuChild = {
   label: string
-  to: '/dashboard' | '/Gestionar_Clientes' | '/Gestionar_Usuarios' | '/bitacora' | '/about' | '/login'
+  to:
+    | '/dashboard'
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Usuarios'
+    | '/bitacora'
+    | '/cliente'
+    | '/mis-mascotas'
+    | '/mis-reservas'
+    | '/about'
+    | '/login'
 }
 
 type MenuItem = {
@@ -24,7 +35,7 @@ type MenuItem = {
   children?: MenuChild[]
 }
 
-const menuSections: Array<{ section: string; items: MenuItem[] }> = [
+const adminMenuSections: Array<{ section: string; items: MenuItem[] }> = [
   {
     section: 'Principal',
     items: [
@@ -53,6 +64,31 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
   },
 ]
 
+const clientMenuSections: Array<{ section: string; items: MenuItem[] }> = [
+  {
+    section: 'Principal',
+    items: [{ label: 'Inicio', icon: Home, to: '/cliente' }],
+  },
+  {
+    section: 'Mi cuenta',
+    items: [
+      {
+        label: 'Mascotas',
+        icon: PawPrint,
+        children: [{ label: 'Agregar mascota', to: '/mis-mascotas' }],
+      },
+      {
+        label: 'Reservas',
+        icon: CalendarPlus,
+        children: [
+          { label: 'Agregar reserva', to: '/mis-reservas' },
+          { label: 'Modificar reserva', to: '/mis-reservas' },
+        ],
+      },
+    ],
+  },
+]
+
 function childIsActive(children: MenuChild[] | undefined, pathname: string) {
   if (!children) return false
   return children.some((child) => child.to === pathname)
@@ -66,6 +102,8 @@ export function Sidebar({
   toggleSidebar?: () => void; 
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
+  const user = useAppSelector((state) => state.auth.user)
+  const menuSections = user?.role === 'CLIENT' ? clientMenuSections : adminMenuSections
   
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
 
@@ -195,12 +233,12 @@ export function Sidebar({
       {/* Profile Section */}
       <div className={`p-4 border-t border-white/10 m-4 mt-auto flex items-center ${isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'} overflow-hidden`}>
         <div className="bg-orange-500 text-white text-sm font-bold w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center">
-          AD
+          {user?.correo?.slice(0, 2).toUpperCase() || 'AD'}
         </div>
         {!isCollapsed && (
           <div className="flex flex-col whitespace-nowrap">
-            <span className="text-sm font-medium">Admin</span>
-            <span className="text-xs text-white/60">admin@vetcare.com</span>
+            <span className="text-sm font-medium">{user?.role === 'CLIENT' ? 'Cliente' : 'Admin'}</span>
+            <span className="text-xs text-white/60">{user?.correo || 'admin@vetcare.com'}</span>
           </div>
         )}
       </div>

@@ -42,7 +42,7 @@ const LoginScreen = () => {
           refreshToken: result.refreshToken,
         }),
       )
-      navigate({ to: '/dashboard' })
+      navigate({ to: result.user.role === 'CLIENT' ? '/cliente' : '/dashboard' })
     } catch {
       setFormError('Correo o contraseña incorrectos.')
     }

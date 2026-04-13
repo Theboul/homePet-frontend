@@ -12,7 +12,6 @@ export const HeaderClient = () => {
   const dispatch = useAppDispatch()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-  // Cambié text-slate-700 por text-slate-900 para máximo contraste
   const navLinkStyles =
     'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
   const mobileLinkStyles =
@@ -21,6 +20,7 @@ export const HeaderClient = () => {
   return (
     <header className="w-full border-b border-[#E5E7EB] bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#F97316] flex items-center justify-center shadow-md">
@@ -31,18 +31,10 @@ export const HeaderClient = () => {
 
         {/* Desktop Navegación */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="/" className={navLinkStyles}>
-            Inicio
-          </Link>
-          <a href="/servicios" className={navLinkStyles}>
-            Servicios
-          </a>
-          <a href="/citas" className={navLinkStyles}>
-            Citas
-          </a>
-          <a href="/contacto" className={navLinkStyles}>
-            Contacto
-          </a>
+          <Link to="/" className={navLinkStyles}>Inicio</Link>
+          <a href="/servicios" className={navLinkStyles}>Servicios</a>
+          <a href="/citas" className={navLinkStyles}>Citas</a>
+          <a href="/contacto" className={navLinkStyles}>Contacto</a>
         </nav>
 
         {/* Desktop acciones */}
@@ -56,19 +48,17 @@ export const HeaderClient = () => {
             </Button>
           ) : (
             <>
-              <Link to="/login" search={{ register: false }}>
-                <Button
-                  variant="outline"
-                  className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
-                >
+              <Button asChild>
+                <Link to="/login" search={{ register: false }}>
                   Iniciar sesión
-                </Button>
-              </Link>
-              <Link to="/login" search={{ register: true }}>
-                <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
+                </Link>
+              </Button>
+
+              <Button asChild>
+                <Link to="/login" search={{ register: true }}>
                   Registrarse
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </>
           )}
         </div>
@@ -86,32 +76,16 @@ export const HeaderClient = () => {
       {open && (
         <div className="md:hidden px-4 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-xl">
           <div className="py-4 space-y-1">
-            <Link
-              to="/"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
+            <Link to="/" onClick={() => setOpen(false)} className={mobileLinkStyles}>
               Inicio
             </Link>
-            <a
-              href="/servicios"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
+            <a href="/servicios" onClick={() => setOpen(false)} className={mobileLinkStyles}>
               Servicios
             </a>
-            <a
-              href="/citas"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
+            <a href="/citas" onClick={() => setOpen(false)} className={mobileLinkStyles}>
               Citas
             </a>
-            <a
-              href="/contacto"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
+            <a href="/contacto" onClick={() => setOpen(false)} className={mobileLinkStyles}>
               Contacto
             </a>
           </div>
@@ -129,19 +103,17 @@ export const HeaderClient = () => {
               </Button>
             ) : (
               <>
-                <Link to="/login" search={{ register: false }}>
-                  <Button
-                    variant="outline"
-                    className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
-                  >
+                <Button asChild>
+                  <Link to="/login" search={{ register: false }}>
                     Iniciar sesión
-                  </Button>
-                </Link>
-                <Link to="/login" search={{ register: true }}>
-                  <Button className="w-full bg-[#F97316] text-white font-bold border-none">
+                  </Link>
+                </Button>
+
+                <Button asChild>
+                  <Link to="/login" search={{ register: true }}>
                     Registrarse
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </>
             )}
           </div>
