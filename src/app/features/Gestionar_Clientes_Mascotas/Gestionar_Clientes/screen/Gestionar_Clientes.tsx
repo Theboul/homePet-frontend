@@ -16,8 +16,14 @@ import {
 import { Plus, Search, Filter, Users, PawPrint, MapPin } from 'lucide-react'
 
 export const GestionarClientes = () => {
+<<<<<<< HEAD
+=======
+  const [clientes, setClientes] = useState<Cliente[]>(initialClientes)
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'all' | 'activo' | 'inactivo'>('all')
+  const [statusFilter, setStatusFilter] = useState<
+    'all' | 'activo' | 'inactivo'
+  >('all')
   const [locationFilter, setLocationFilter] = useState('')
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -57,6 +63,7 @@ export const GestionarClientes = () => {
     setIsDialogOpen(true)
   }
 
+<<<<<<< HEAD
   const handleSubmit = async (data: ClienteCreatePayload) => {
     try {
       if (editingCliente) {
@@ -66,6 +73,26 @@ export const GestionarClientes = () => {
         await updateCliente({ id: editingCliente.id_perfil, data: payload }).unwrap()
       } else {
         await createCliente(data).unwrap()
+=======
+  const handleSubmit = async (data: ClienteFormData) => {
+    setIsLoading(true)
+
+    await new Promise((resolve) => setTimeout(resolve, 800))
+
+    if (editingCliente) {
+      setClientes((prev) =>
+        prev.map((cliente) =>
+          cliente.id === editingCliente.id ? { ...cliente, ...data } : cliente,
+        ),
+      )
+    } else {
+      const newCliente: Cliente = {
+        id: Date.now().toString(),
+        idUsuario: Math.floor(Math.random() * 1000) + 100,
+        ...data,
+        rol: 'cliente',
+        fechaRegistro: new Date().toISOString().split('T')[0],
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
       }
       setIsDialogOpen(false)
       setEditingCliente(undefined)
@@ -82,6 +109,7 @@ export const GestionarClientes = () => {
 
   const handleDeleteConfirm = async () => {
     if (clienteToDelete) {
+<<<<<<< HEAD
       try {
         await deleteCliente(clienteToDelete).unwrap()
         setDeleteDialogOpen(false)
@@ -89,9 +117,16 @@ export const GestionarClientes = () => {
       } catch (err) {
         console.error('Failed to delete the client: ', err)
       }
+=======
+      setClientes((prev) =>
+        prev.filter((cliente) => cliente.id !== clienteToDelete),
+      )
+      setClienteToDelete(null)
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
     }
   }
 
+<<<<<<< HEAD
   const handleToggleStatus = async (clienteId: number) => {
     try {
         // Nota: en el backend original estado es read_only en PerfilSerializer, 
@@ -103,6 +138,19 @@ export const GestionarClientes = () => {
     } catch (err) {
       console.error('Failed to toggle client status: ', err)
     }
+=======
+  const handleToggleStatus = (clienteId: string) => {
+    setClientes((prev) =>
+      prev.map((cliente) =>
+        cliente.id === clienteId
+          ? {
+              ...cliente,
+              estado: cliente.estado === 'activo' ? 'inactivo' : 'activo',
+            }
+          : cliente,
+      ),
+    )
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   }
 
   const isLoading = isCreating || isUpdating || isLoadingClientes

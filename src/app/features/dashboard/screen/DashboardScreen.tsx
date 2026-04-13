@@ -1,4 +1,9 @@
-import { Users, PawPrint, Calendar as CalendarIcon, DollarSign } from 'lucide-react'
+import {
+  Users,
+  PawPrint,
+  Calendar as CalendarIcon,
+  DollarSign,
+} from 'lucide-react'
 import { StatCard } from '../components/StatCard'
 import { AppointmentsTable } from '../components/AppointmentsTable'
 import { RecentActivity } from '../components/RecentActivity'
@@ -54,24 +59,36 @@ export function DashboardScreen() {
 
       {/* Chart Placeholder */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-80 flex flex-col">
-        <h3 className="text-lg font-bold text-gray-800 font-sans mb-4">Consultas de la Semana</h3>
+        <h3 className="text-lg font-bold text-gray-800 font-sans mb-4">
+          Consultas de la Semana
+        </h3>
         <div className="flex-1 border-t border-dashed border-gray-200 mt-2 relative flex items-end justify-between px-4 pb-2">
           {/* Simple SVG mock for the chart */}
-          <svg className="absolute inset-0 w-full h-full preserve-3d" preserveAspectRatio="none" viewBox="0 0 100 40">
-            <path 
-              d="M0 35 Q 15 20, 30 25 T 50 15 T 70 20 T 90 5 L 100 5 L 100 40 L 0 40 Z" 
-              fill="#F3E8FF" 
+          <svg
+            className="absolute inset-0 w-full h-full preserve-3d"
+            preserveAspectRatio="none"
+            viewBox="0 0 100 40"
+          >
+            <path
+              d="M0 35 Q 15 20, 30 25 T 50 15 T 70 20 T 90 5 L 100 5 L 100 40 L 0 40 Z"
+              fill="#F3E8FF"
               opacity="0.6"
             />
-            <path 
-              d="M0 35 Q 15 20, 30 25 T 50 15 T 70 20 T 90 5 L 100 5" 
-              fill="none" 
-              stroke="#9333EA" 
+            <path
+              d="M0 35 Q 15 20, 30 25 T 50 15 T 70 20 T 90 5 L 100 5"
+              fill="none"
+              stroke="#9333EA"
               strokeWidth="1.5"
             />
           </svg>
           <div className="z-10 text-xs text-gray-400 w-full flex justify-between absolute bottom-1">
-             <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+            <span>Lun</span>
+            <span>Mar</span>
+            <span>Mié</span>
+            <span>Jue</span>
+            <span>Vie</span>
+            <span>Sáb</span>
+            <span>Dom</span>
           </div>
         </div>
       </div>

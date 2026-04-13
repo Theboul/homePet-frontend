@@ -1,4 +1,4 @@
-import { api } from '../api/api';
+import { api } from '../api/api'
 import type {
   LoginRequest,
   LoginResponse,
@@ -7,7 +7,7 @@ import type {
   BackendUser,
   User,
   UserRole,
-} from './auth.types';
+} from './auth.types'
 
 const normalizeRole = (value: string) =>
   value
@@ -51,28 +51,37 @@ const mapIsActive = (user: BackendUser): boolean => {
 
 function mapBackendUser(user: BackendUser): User {
   return {
+<<<<<<< HEAD
     id: user.id_usuario ?? user.id ?? 0,
     correo: user.correo ?? '',
     role: mapRole(user),
     isActive: mapIsActive(user),
     dateJoined: user.date_joined ?? user.fecha_creacion ?? '',
   };
+=======
+    id_usuario: user.id_usuario,
+    correo: user.correo,
+    role: (user.role?.nombre ?? 'CLIENT') as UserRole,
+    isActive: user.is_active,
+    dateJoined: user.date_joined,
+  }
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 }
 
 export type LoginMutationResult = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-};
+  user: User
+  accessToken: string
+  refreshToken: string
+}
 
 export type RegisterMutationResult = {
-  user: User;
+  user: User
   perfil: {
-    nombre: string;
-    telefono: string;
-    direccion: string;
-  };
-};
+    nombre: string
+    telefono: string
+    direccion: string
+  }
+}
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -113,11 +122,11 @@ export const authApi = api.injectEndpoints({
     }),
   }),
   overrideExisting: false,
-});
+})
 
 export const {
   useLoginMutation,
   useRegisterMutation,
   useGetProfileQuery,
   useLogoutSessionMutation,
-} = authApi;
+} = authApi

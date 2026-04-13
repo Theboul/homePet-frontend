@@ -16,6 +16,7 @@ import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
+<<<<<<< HEAD
 import { Route as ClientMisReservasRouteImport } from './routes/_client/mis-reservas'
 import { Route as ClientMisMascotasRouteImport } from './routes/_client/mis-mascotas'
 import { Route as ClientClienteRouteImport } from './routes/_client/cliente'
@@ -23,6 +24,11 @@ import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
 import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
+=======
+import { Route as AdminGestionar_usuariosRouteImport } from './routes/_admin/gestionar_usuarios'
+import { Route as AdminGestionar_clientesRouteImport } from './routes/_admin/gestionar_clientes'
+import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
@@ -58,6 +64,7 @@ const PublicAboutRoute = PublicAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => PublicRoute,
 } as any)
+<<<<<<< HEAD
 const ClientMisReservasRoute = ClientMisReservasRouteImport.update({
   id: '/mis-reservas',
   path: '/mis-reservas',
@@ -72,12 +79,24 @@ const ClientClienteRoute = ClientClienteRouteImport.update({
   id: '/cliente',
   path: '/cliente',
   getParentRoute: () => ClientRoute,
+=======
+const AdminGestionar_usuariosRoute = AdminGestionar_usuariosRouteImport.update({
+  id: '/gestionar_usuarios',
+  path: '/gestionar_usuarios',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_clientesRoute = AdminGestionar_clientesRouteImport.update({
+  id: '/gestionar_clientes',
+  path: '/gestionar_clientes',
+  getParentRoute: () => AdminRoute,
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+<<<<<<< HEAD
 const AdminBitacoraRoute = AdminBitacoraRouteImport.update({
   id: '/bitacora',
   path: '/bitacora',
@@ -93,6 +112,8 @@ const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
   path: '/Gestionar_Clientes',
   getParentRoute: () => AdminRoute,
 } as any)
+=======
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
 const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
   id: '/demo/form/simple',
   path: '/demo/form/simple',
@@ -106,6 +127,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+<<<<<<< HEAD
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/bitacora': typeof AdminBitacoraRoute
@@ -113,6 +135,11 @@ export interface FileRoutesByFullPath {
   '/cliente': typeof ClientClienteRoute
   '/mis-mascotas': typeof ClientMisMascotasRoute
   '/mis-reservas': typeof ClientMisReservasRoute
+=======
+  '/dashboard': typeof AdminDashboardRoute
+  '/gestionar_clientes': typeof AdminGestionar_clientesRoute
+  '/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -121,6 +148,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+<<<<<<< HEAD
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/bitacora': typeof AdminBitacoraRoute
@@ -128,6 +156,11 @@ export interface FileRoutesByTo {
   '/cliente': typeof ClientClienteRoute
   '/mis-mascotas': typeof ClientMisMascotasRoute
   '/mis-reservas': typeof ClientMisReservasRoute
+=======
+  '/dashboard': typeof AdminDashboardRoute
+  '/gestionar_clientes': typeof AdminGestionar_clientesRoute
+  '/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -139,6 +172,7 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_client': typeof ClientRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+<<<<<<< HEAD
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
@@ -146,6 +180,11 @@ export interface FileRoutesById {
   '/_client/cliente': typeof ClientClienteRoute
   '/_client/mis-mascotas': typeof ClientMisMascotasRoute
   '/_client/mis-reservas': typeof ClientMisReservasRoute
+=======
+  '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/gestionar_clientes': typeof AdminGestionar_clientesRoute
+  '/_admin/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   '/_public/about': typeof PublicAboutRoute
   '/_public/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
@@ -157,6 +196,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+<<<<<<< HEAD
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/bitacora'
@@ -164,6 +204,11 @@ export interface FileRouteTypes {
     | '/cliente'
     | '/mis-mascotas'
     | '/mis-reservas'
+=======
+    | '/dashboard'
+    | '/gestionar_clientes'
+    | '/gestionar_usuarios'
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
     | '/about'
     | '/login'
     | '/demo/table'
@@ -172,6 +217,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+<<<<<<< HEAD
     | '/Gestionar_Clientes'
     | '/Gestionar_Usuarios'
     | '/bitacora'
@@ -179,6 +225,11 @@ export interface FileRouteTypes {
     | '/cliente'
     | '/mis-mascotas'
     | '/mis-reservas'
+=======
+    | '/dashboard'
+    | '/gestionar_clientes'
+    | '/gestionar_usuarios'
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
     | '/about'
     | '/login'
     | '/demo/table'
@@ -189,6 +240,7 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_client'
     | '/_public'
+<<<<<<< HEAD
     | '/_admin/Gestionar_Clientes'
     | '/_admin/Gestionar_Usuarios'
     | '/_admin/bitacora'
@@ -196,6 +248,11 @@ export interface FileRouteTypes {
     | '/_client/cliente'
     | '/_client/mis-mascotas'
     | '/_client/mis-reservas'
+=======
+    | '/_admin/dashboard'
+    | '/_admin/gestionar_clientes'
+    | '/_admin/gestionar_usuarios'
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
     | '/_public/about'
     | '/_public/login'
     | '/demo/table'
@@ -264,6 +321,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAboutRouteImport
       parentRoute: typeof PublicRoute
     }
+<<<<<<< HEAD
     '/_client/mis-reservas': {
       id: '/_client/mis-reservas'
       path: '/mis-reservas'
@@ -284,6 +342,21 @@ declare module '@tanstack/react-router' {
       fullPath: '/cliente'
       preLoaderRoute: typeof ClientClienteRouteImport
       parentRoute: typeof ClientRoute
+=======
+    '/_admin/gestionar_usuarios': {
+      id: '/_admin/gestionar_usuarios'
+      path: '/gestionar_usuarios'
+      fullPath: '/gestionar_usuarios'
+      preLoaderRoute: typeof AdminGestionar_usuariosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/gestionar_clientes': {
+      id: '/_admin/gestionar_clientes'
+      path: '/gestionar_clientes'
+      fullPath: '/gestionar_clientes'
+      preLoaderRoute: typeof AdminGestionar_clientesRouteImport
+      parentRoute: typeof AdminRoute
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
     }
     '/_admin/dashboard': {
       id: '/_admin/dashboard'
@@ -292,6 +365,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+<<<<<<< HEAD
     '/_admin/bitacora': {
       id: '/_admin/bitacora'
       path: '/bitacora'
@@ -313,6 +387,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_ClientesRouteImport
       parentRoute: typeof AdminRoute
     }
+=======
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
     '/demo/form/simple': {
       id: '/demo/form/simple'
       path: '/demo/form/simple'
@@ -331,17 +407,27 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+<<<<<<< HEAD
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
+=======
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminGestionar_clientesRoute: typeof AdminGestionar_clientesRoute
+  AdminGestionar_usuariosRoute: typeof AdminGestionar_usuariosRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+<<<<<<< HEAD
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
+=======
+>>>>>>> 540bde1dc3d7fe50f1f40baa579f7b8e9920449b
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminGestionar_clientesRoute: AdminGestionar_clientesRoute,
+  AdminGestionar_usuariosRoute: AdminGestionar_usuariosRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
