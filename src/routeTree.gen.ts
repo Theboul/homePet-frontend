@@ -18,6 +18,7 @@ import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
 import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
+import { Route as AdminGestionar_MascotasRouteImport } from './routes/_admin/Gestionar_Mascotas'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
@@ -65,6 +66,11 @@ const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
   path: '/Gestionar_Usuarios',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGestionar_MascotasRoute = AdminGestionar_MascotasRouteImport.update({
+  id: '/Gestionar_Mascotas',
+  path: '/Gestionar_Mascotas',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
   id: '/Gestionar_Clientes',
   path: '/Gestionar_Clientes',
@@ -84,6 +90,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/_admin/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/Gestionar_Clientes'
+    | '/Gestionar_Mascotas'
     | '/Gestionar_Usuarios'
     | '/bitacora'
     | '/dashboard'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/Gestionar_Clientes'
+    | '/Gestionar_Mascotas'
     | '/Gestionar_Usuarios'
     | '/bitacora'
     | '/dashboard'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_public'
     | '/_admin/Gestionar_Clientes'
+    | '/_admin/Gestionar_Mascotas'
     | '/_admin/Gestionar_Usuarios'
     | '/_admin/bitacora'
     | '/_admin/dashboard'
@@ -234,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_UsuariosRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Gestionar_Mascotas': {
+      id: '/_admin/Gestionar_Mascotas'
+      path: '/Gestionar_Mascotas'
+      fullPath: '/Gestionar_Mascotas'
+      preLoaderRoute: typeof AdminGestionar_MascotasRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Clientes': {
       id: '/_admin/Gestionar_Clientes'
       path: '/Gestionar_Clientes'
@@ -260,6 +279,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
+  AdminGestionar_MascotasRoute: typeof AdminGestionar_MascotasRoute
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
@@ -267,6 +287,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
+  AdminGestionar_MascotasRoute: AdminGestionar_MascotasRoute,
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
