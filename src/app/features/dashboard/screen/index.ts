@@ -1,1 +1,1 @@
-export { DashboardScreen } from './DashboardScreen'
+export * from './DashboardScreen'

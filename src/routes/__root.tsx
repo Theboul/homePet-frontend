@@ -1,4 +1,10 @@
-import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Link,
+  Outlet,
+  Scripts,
+  createRootRoute,
+} from '@tanstack/react-router'
 import { Suspense, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '#/store/hooks'
@@ -20,6 +26,7 @@ export const Route = createRootRoute({
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
   // Cambiamos shellComponent por component para el renderizado estándar
+  notFoundComponent: NotFoundPage,
   component: RootDocument,
   notFoundComponent: () => (
     <div className="mx-auto max-w-3xl px-6 py-16 text-center">
@@ -64,4 +71,28 @@ function AuthBootstrap() {
   }, [data, dispatch])
 
   return null
+}
+
+function NotFoundPage() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-[#F8F9FA] px-4">
+      <section className="max-w-md text-center">
+        <p className="text-sm font-bold uppercase tracking-wide text-orange-600">
+          404
+        </p>
+        <h1 className="mt-2 text-3xl font-bold text-gray-900">
+          Pagina no encontrada
+        </h1>
+        <p className="mt-3 text-gray-600">
+          La ruta que intentas abrir no existe o ya no esta disponible.
+        </p>
+        <Link
+          to="/"
+          className="mt-6 inline-flex h-10 items-center justify-center rounded-lg bg-[#F97316] px-4 text-sm font-bold text-white transition-colors hover:bg-[#EA580C]"
+        >
+          Volver al inicio
+        </Link>
+      </section>
+    </main>
+  )
 }

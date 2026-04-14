@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sidebar } from './Sidebar'
+import { Sidebar } from '#/components/ui/Layout/components/Sidebar'
 import { Topbar } from './Topbar'
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
