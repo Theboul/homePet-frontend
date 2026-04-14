@@ -14,6 +14,13 @@ export const gestionarMascotasApi = api.injectEndpoints({
       providesTags: ["Pets"],
     }),
 
+    getMascotasMe: builder.query<Mascota[], void>({
+      query: () => "/gestion/clientes/mascotas/me/",
+      transformResponse: (response: { mascotas: Mascota[] }) =>
+        response.mascotas,
+      providesTags: ["Pets"],
+    }),
+
     getClientesMascota: builder.query<ClienteOption[], void>({
       query: () => "/gestion/clientes/usuarios/",
       providesTags: ["Pets"],
@@ -63,6 +70,7 @@ export const gestionarMascotasApi = api.injectEndpoints({
 
 export const {
   useGetMascotasQuery,
+  useGetMascotasMeQuery,
   useGetClientesMascotaQuery,
   useGetEspeciesMascotaQuery,
   useLazyGetRazasByEspecieQuery,

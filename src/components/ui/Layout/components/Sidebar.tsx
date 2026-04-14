@@ -20,6 +20,7 @@ type MenuChild = {
     | '/Gestionar_Mascotas'
     | '/Gestionar_Usuarios'
     | '/bitacora'
+    | '/Perfil_Mascota'
     | '/about'
     | '/login'
 }
@@ -53,6 +54,7 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         children: [
           { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' },
           { label: 'Gestionar Mascotas', to: '/Gestionar_Mascotas' },
+          { label: 'Perfil de Mascota', to: '/Perfil_Mascota' },
         ],
       },
     ],

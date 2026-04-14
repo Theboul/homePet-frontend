@@ -8,5 +8,3 @@ export const TAG_TYPES = [
 ] as const;
 
 export type TagType = (typeof TAG_TYPES)[number];
-
->>>>>>>>> Temporary merge branch 2
