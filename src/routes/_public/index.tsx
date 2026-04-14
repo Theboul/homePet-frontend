@@ -1,40 +1,79 @@
-import { Label } from '#/components/ui/label'
-import { createFileRoute } from '@tanstack/react-router'
-import { CardSim } from 'lucide-react'
+import { Link, createFileRoute } from '@tanstack/react-router'
+import { CalendarCheck, Heart, ShieldCheck, Stethoscope } from 'lucide-react'
+import { Button } from '#/components/ui/button'
 
-export const Route = createFileRoute('/_public/')({ component: App })
+export const Route = createFileRoute('/_public/')({ component: HomePage })
 
-function App() {
+function HomePage() {
   return (
-    <main className="flex-1 max-w-7xl mx-auto w-full px-4">
-      <h1>Home Pet Home </h1>
+    <main className="bg-[#7C3AED] text-white">
+      <section className="mx-auto flex min-h-[520px] w-full max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
+        <div className="max-w-3xl space-y-6">
+          <div className="inline-flex items-center gap-3 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold">
+            <Heart className="h-5 w-5 text-[#F97316]" fill="currentColor" />
+            Pet Home
+          </div>
 
-      <a href="/login">Ir al login</a>
-      <a href="/Gestionar_Usuarios">Ir al Gestionar_Usuarios</a>
-      <a href="/Gestionar_Clientes">Ir al Gestionar_Clientes</a>
-      <a href="/Gestionar_Mascotas">Ir al Gestionar_Mascotas</a>
-      <p className="m-0 max-w-3xl text-base leading-8 text-[var(--sea-ink-soft)]">
-        Bienvenido a Home Pet Home, tu refugio digital para el cuidado de tus
-        mascotas. Aquí encontrarás todo lo que necesitas para mantener a tus
-        amigos peludos felices y saludables. Desde consejos de alimentación y
-        cuidado hasta productos recomendados, estamos aquí para ayudarte a
-        brindarles el mejor cuidado posible. ¡Explora nuestro sitio y descubre
-        cómo hacer que la vida de tu mascota sea aún más maravillosa!
-      </p>    
-      <CardSim className="w-6 h-6" />
-      <Label></Label>
-      MAS INFORMACION SOBRE EL PROYECTO
-          
-     <p className="m-0 max-w-3xl text-base leading-8 text-[var(--sea-ink-soft)]">
-        Home Pet Home es un proyecto dedicado a proporcionar recursos y
-        servicios para el cuidado de mascotas. Nuestro objetivo es crear una
-        comunidad donde los amantes de los animales puedan compartir consejos,
-        experiencias y productos relacionados con el bienestar de sus mascotas.
-        Ofrecemos información sobre alimentación, salud, entrenamiento y
-        actividades para mantener a tus mascotas felices y saludables. ¡Únete a
-        nosotros en esta aventura de cuidar a nuestros amigos peludos!
-      </p>    
+          <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">
+            Cuidamos a tus mascotas con amor y tecnologia.
+          </h1>
+
+          <p className="max-w-2xl text-lg leading-8 text-white/90">
+            Agenda servicios, administra tus mascotas y mantente cerca de su
+            bienestar desde un solo lugar.
+          </p>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button
+              asChild
+              className="bg-[#F97316] font-bold text-white hover:bg-[#EA580C]"
+            >
+              <Link to="/login" search={{ register: false }}>
+                Iniciar sesion
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              variant="outline"
+              className="border-white bg-white text-[#7C3AED] font-bold hover:bg-white/90"
+            >
+              <Link to="/login" search={{ register: true }}>
+                Crear cuenta
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-14 text-slate-900">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 md:grid-cols-3 lg:px-8">
+          <article className="rounded-lg border border-slate-200 p-6">
+            <Stethoscope className="mb-4 h-8 w-8 text-[#F97316]" />
+            <h2 className="text-xl font-bold text-[#7C3AED]">Servicios</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Encuentra atencion y cuidado para cada etapa de vida de tu
+              mascota.
+            </p>
+          </article>
+
+          <article className="rounded-lg border border-slate-200 p-6">
+            <CalendarCheck className="mb-4 h-8 w-8 text-[#F97316]" />
+            <h2 className="text-xl font-bold text-[#7C3AED]">Reservas</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Organiza tus citas y consulta el historial cuando lo necesites.
+            </p>
+          </article>
+
+          <article className="rounded-lg border border-slate-200 p-6">
+            <ShieldCheck className="mb-4 h-8 w-8 text-[#F97316]" />
+            <h2 className="text-xl font-bold text-[#7C3AED]">Confianza</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Tus datos y los de tus mascotas se mantienen protegidos.
+            </p>
+          </article>
+        </div>
+      </section>
     </main>
   )
 }
-

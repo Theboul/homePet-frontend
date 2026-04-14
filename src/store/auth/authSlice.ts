@@ -1,8 +1,7 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { AuthState, User } from './auth.types';
-import type { UserRole } from './auth.types';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import type { AuthState, User, UserRole } from './auth.types'
 
-const AUTH_STORAGE_KEY = 'homePet_auth';
+const AUTH_STORAGE_KEY = 'homePet_auth'
 
 function loadPersistedAuth() {
   if (typeof window === 'undefined') {
@@ -10,47 +9,47 @@ function loadPersistedAuth() {
       user: null,
       accessToken: null,
       refreshToken: null,
-    };
+    }
   }
 
   try {
-    const raw = window.localStorage.getItem(AUTH_STORAGE_KEY);
+    const raw = window.localStorage.getItem(AUTH_STORAGE_KEY)
     if (!raw) {
       return {
         user: null,
         accessToken: null,
         refreshToken: null,
-      };
+      }
     }
 
     const parsed = JSON.parse(raw) as {
       user?: {
-        id: number;
-        correo: string;
-        role: UserRole;
-        isActive: boolean;
-        dateJoined: string;
-      } | null;
-      accessToken?: string | null;
-      refreshToken?: string | null;
-    };
+        id: number
+        correo: string
+        role: UserRole
+        isActive: boolean
+        dateJoined: string
+      } | null
+      accessToken?: string | null
+      refreshToken?: string | null
+    }
 
     return {
       user: parsed.user ?? null,
       accessToken: parsed.accessToken ?? null,
       refreshToken: parsed.refreshToken ?? null,
-    };
+    }
   } catch {
     return {
       user: null,
       accessToken: null,
       refreshToken: null,
-    };
+    }
   }
 }
 
 function persistAuth(state: AuthState) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined') return
 
   window.localStorage.setItem(
     AUTH_STORAGE_KEY,
@@ -59,10 +58,10 @@ function persistAuth(state: AuthState) {
       accessToken: state.accessToken,
       refreshToken: state.refreshToken,
     }),
-  );
+  )
 }
 
-const persisted = loadPersistedAuth();
+const persisted = loadPersistedAuth()
 
 const initialState: AuthState = {
   user: persisted.user,
@@ -71,7 +70,7 @@ const initialState: AuthState = {
   isAuthenticated: Boolean(persisted.accessToken && persisted.user),
   status: 'idle',
   error: null,
-};
+}
 
 const authSlice = createSlice({
   name: 'auth',
@@ -79,36 +78,41 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      action: PayloadAction<{ user: User; accessToken: string; refreshToken: string }>
+      action: PayloadAction<{
+        user: User
+        accessToken: string
+        refreshToken: string
+      }>,
     ) => {
-      const { user, accessToken, refreshToken } = action.payload;
-      state.user = user;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-      state.isAuthenticated = true;
-      state.error = null;
-      persistAuth(state);
+      const { user, accessToken, refreshToken } = action.payload
+      state.user = user
+      state.accessToken = accessToken
+      state.refreshToken = refreshToken
+      state.isAuthenticated = true
+      state.error = null
+      persistAuth(state)
     },
     setAccessToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
-      state.isAuthenticated = Boolean(state.user);
-      persistAuth(state);
+      state.accessToken = action.payload
+      state.isAuthenticated = Boolean(state.user)
+      persistAuth(state)
     },
     updateUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
-      state.isAuthenticated = Boolean(state.accessToken);
-      persistAuth(state);
+      state.user = action.payload
+      state.isAuthenticated = Boolean(state.accessToken)
+      persistAuth(state)
     },
     logout: (state) => {
-      state.user = null;
-      state.accessToken = null;
-      state.refreshToken = null;
-      state.isAuthenticated = false;
-      state.error = null;
-      persistAuth(state);
+      state.user = null
+      state.accessToken = null
+      state.refreshToken = null
+      state.isAuthenticated = false
+      state.error = null
+      persistAuth(state)
     },
   },
-});
+})
 
-export const { setCredentials, setAccessToken, updateUser, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const { setCredentials, setAccessToken, updateUser, logout } =
+  authSlice.actions
+export default authSlice.reducer
