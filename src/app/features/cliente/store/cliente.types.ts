@@ -16,8 +16,10 @@ export interface Raza {
 
 export interface Mascota {
   id_mascota: number
-  usuario: number
-  especie: number
+  usuario?: number | { id_usuario: number; nombre?: string } | null
+  usuario_id?: number
+  id_usuario?: number
+  especie: number | { id_especie: number; nombre?: string }
   especie_nombre?: string
   raza?: number | null
   raza_nombre?: string | null

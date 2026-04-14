@@ -3,12 +3,13 @@ import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
 import { Textarea } from '#/components/ui/textarea'
 import {
-  useCreateMascotaMutation,
+  useCreateMiMascotaMutation,
   useGetEspeciesQuery,
   useGetMisMascotasQuery,
   useGetRazasQuery,
 } from '../store/clienteApi'
-import type { MascotaPayload, SexoMascota } from '../store/cliente.types'
+import { useAppSelector } from '#/store/hooks'
+import type { Mascota, MascotaPayload, SexoMascota } from '../store/cliente.types'
 
 const initialForm = {
   nombre: '',
@@ -23,15 +24,38 @@ const initialForm = {
   notas_generales: '',
 }
 
+function getMascotaOwnerId(mascota: Mascota) {
+  if (typeof mascota.usuario === 'number') return mascota.usuario
+  if (mascota.usuario && typeof mascota.usuario === 'object') {
+    return mascota.usuario.id_usuario
+  }
+
+  return mascota.usuario_id ?? mascota.id_usuario
+}
+
+function getEspecieName(mascota: Mascota) {
+  if (mascota.especie_nombre) return mascota.especie_nombre
+  if (typeof mascota.especie === 'object') return mascota.especie.nombre
+  return 'Especie'
+}
+
 export function MisMascotasScreen() {
   const [form, setForm] = useState(initialForm)
   const [message, setMessage] = useState<string | null>(null)
   const especieId = form.especie ? Number(form.especie) : undefined
+  const user = useAppSelector((state) => state.auth.user)
 
-  const { data: mascotas = [], isLoading: loadingMascotas } = useGetMisMascotasQuery()
+  const { data: rawMascotas = [], isLoading: loadingMascotas } = useGetMisMascotasQuery()
   const { data: especies = [] } = useGetEspeciesQuery()
   const { data: razas = [] } = useGetRazasQuery(especieId)
-  const [createMascota, { isLoading: saving }] = useCreateMascotaMutation()
+  const [createMascota, { isLoading: saving }] = useCreateMiMascotaMutation()
+  const mascotasWithOwner = rawMascotas.filter(
+    (mascota) => getMascotaOwnerId(mascota) !== undefined,
+  )
+  const mascotas =
+    user?.role === 'CLIENT' && user.id && mascotasWithOwner.length > 0
+      ? rawMascotas.filter((mascota) => getMascotaOwnerId(mascota) === user.id)
+      : rawMascotas
 
   const canSubmit = useMemo(
     () => Boolean(form.nombre.trim() && form.especie),
@@ -151,7 +175,7 @@ export function MisMascotasScreen() {
               <div key={mascota.id_mascota} className="rounded-lg border border-gray-200 p-4">
                 <p className="font-semibold text-gray-900">{mascota.nombre}</p>
                 <p className="text-sm text-gray-600">
-                  {mascota.especie_nombre || 'Especie'} {mascota.raza_nombre ? `- ${mascota.raza_nombre}` : ''}
+                  {getEspecieName(mascota)} {mascota.raza_nombre ? `- ${mascota.raza_nombre}` : ''}
                 </p>
                 <p className="text-sm text-gray-500">{mascota.sexo || 'Sin sexo registrado'}</p>
               </div>

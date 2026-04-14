@@ -13,15 +13,17 @@ export const HeaderClient = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
   const navLinkStyles =
-    'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
+    'text-sm font-bold !text-[#111827] hover:!text-[#7C3AED] transition-colors'
   const mobileLinkStyles =
-    'block text-base font-bold text-slate-900 hover:text-[#7C3AED] py-2'
+    'block text-base font-bold !text-[#111827] hover:!text-[#7C3AED] py-2'
+  const loginLinkStyles =
+    'inline-flex h-10 items-center justify-center rounded-lg border border-[#7C3AED] bg-white px-4 text-sm font-bold !text-[#7C3AED] transition-colors hover:bg-[#7C3AED] hover:!text-white'
+  const registerLinkStyles =
+    'inline-flex h-10 items-center justify-center rounded-lg bg-[#F97316] px-4 text-sm font-bold !text-white transition-colors hover:bg-[#EA580C]'
 
   return (
     <header className="w-full border-b border-[#E5E7EB] bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#F97316] flex items-center justify-center shadow-md">
             <Heart className="w-5 h-5 text-white" fill="currentColor" />
@@ -29,15 +31,21 @@ export const HeaderClient = () => {
           <h1 className="text-xl font-extrabold text-[#7C3AED]">Pet Home</h1>
         </Link>
 
-        {/* Desktop Navegación */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="/" className={navLinkStyles}>Inicio</Link>
-          <a href="/servicios" className={navLinkStyles}>Servicios</a>
-          <a href="/citas" className={navLinkStyles}>Citas</a>
-          <a href="/contacto" className={navLinkStyles}>Contacto</a>
+          <Link to="/" className={navLinkStyles}>
+            Inicio
+          </Link>
+          <a href="/servicios" className={navLinkStyles}>
+            Servicios
+          </a>
+          <a href="/citas" className={navLinkStyles}>
+            Citas
+          </a>
+          <a href="/contacto" className={navLinkStyles}>
+            Contacto
+          </a>
         </nav>
 
-        {/* Desktop acciones */}
         <div className="hidden md:flex items-center gap-3">
           {isAuthenticated ? (
             <Button
@@ -48,22 +56,24 @@ export const HeaderClient = () => {
             </Button>
           ) : (
             <>
-              <Button asChild>
-                <Link to="/login" search={{ register: false }}>
-                  Iniciar sesión
-                </Link>
-              </Button>
-
-              <Button asChild>
-                <Link to="/login" search={{ register: true }}>
-                  Registrarse
-                </Link>
-              </Button>
+              <Link
+                to="/login"
+                search={{ register: false }}
+                className={loginLinkStyles}
+              >
+                Iniciar sesión
+              </Link>
+              <Link
+                to="/login"
+                search={{ register: true }}
+                className={registerLinkStyles}
+              >
+                Registrarse
+              </Link>
             </>
           )}
         </div>
 
-        {/* Mobile button */}
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-slate-900 p-2"
@@ -72,20 +82,35 @@ export const HeaderClient = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {open && (
         <div className="md:hidden px-4 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-xl">
           <div className="py-4 space-y-1">
-            <Link to="/" onClick={() => setOpen(false)} className={mobileLinkStyles}>
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
               Inicio
             </Link>
-            <a href="/servicios" onClick={() => setOpen(false)} className={mobileLinkStyles}>
+            <a
+              href="/servicios"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
               Servicios
             </a>
-            <a href="/citas" onClick={() => setOpen(false)} className={mobileLinkStyles}>
+            <a
+              href="/citas"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
               Citas
             </a>
-            <a href="/contacto" onClick={() => setOpen(false)} className={mobileLinkStyles}>
+            <a
+              href="/contacto"
+              onClick={() => setOpen(false)}
+              className={mobileLinkStyles}
+            >
               Contacto
             </a>
           </div>
@@ -103,17 +128,22 @@ export const HeaderClient = () => {
               </Button>
             ) : (
               <>
-                <Button asChild>
-                  <Link to="/login" search={{ register: false }}>
-                    Iniciar sesión
-                  </Link>
-                </Button>
-
-                <Button asChild>
-                  <Link to="/login" search={{ register: true }}>
-                    Registrarse
-                  </Link>
-                </Button>
+                <Link
+                  to="/login"
+                  search={{ register: false }}
+                  onClick={() => setOpen(false)}
+                  className={`${loginLinkStyles} w-full`}
+                >
+                  Iniciar sesión
+                </Link>
+                <Link
+                  to="/login"
+                  search={{ register: true }}
+                  onClick={() => setOpen(false)}
+                  className={`${registerLinkStyles} w-full`}
+                >
+                  Registrarse
+                </Link>
               </>
             )}
           </div>

@@ -10,13 +10,21 @@ import type {
   Servicio,
 } from './cliente.types'
 
+type ListResponse<T> = T[] | { results?: T[] }
+
+function normalizeListResponse<T>(response: ListResponse<T>) {
+  if (Array.isArray(response)) return response
+  return response.results ?? []
+}
+
 export const clienteApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMisMascotas: builder.query<Mascota[], void>({
       query: () => '/gestion/clientes/mascotas/',
+      transformResponse: normalizeListResponse<Mascota>,
       providesTags: ['Pets'],
     }),
-    createMascota: builder.mutation<Mascota, MascotaPayload>({
+    createMiMascota: builder.mutation<Mascota, MascotaPayload>({
       query: (body) => ({
         url: '/gestion/clientes/mascotas/',
         method: 'POST',
@@ -26,21 +34,26 @@ export const clienteApi = api.injectEndpoints({
     }),
     getEspecies: builder.query<Especie[], void>({
       query: () => '/gestion/clientes/especies/',
+      transformResponse: normalizeListResponse<Especie>,
     }),
     getRazas: builder.query<Raza[], number | undefined>({
       query: (especie) => ({
         url: '/gestion/clientes/razas/',
         params: especie ? { especie } : undefined,
       }),
+      transformResponse: normalizeListResponse<Raza>,
     }),
     getServicios: builder.query<Servicio[], void>({
       query: () => '/gestion/servicios/',
+      transformResponse: normalizeListResponse<Servicio>,
     }),
     getPreciosServicio: builder.query<PrecioServicio[], void>({
       query: () => '/gestion/servicios/precios-servicio/',
+      transformResponse: normalizeListResponse<PrecioServicio>,
     }),
     getMisCitas: builder.query<Cita[], void>({
       query: () => '/gestion/servicios/citas/',
+      transformResponse: normalizeListResponse<Cita>,
       providesTags: ['Appointments'],
     }),
     createCita: builder.mutation<Cita, CitaPayload>({
@@ -54,7 +67,7 @@ export const clienteApi = api.injectEndpoints({
     updateCita: builder.mutation<Cita, { id: number; body: Partial<CitaPayload> }>({
       query: ({ id, body }) => ({
         url: `/gestion/servicios/citas/${id}/`,
-        method: 'PATCH',
+        method: 'PUT',
         body,
       }),
       invalidatesTags: ['Appointments'],
@@ -77,7 +90,7 @@ export const clienteApi = api.injectEndpoints({
 export const {
   useCancelCitaMutation,
   useCreateCitaMutation,
-  useCreateMascotaMutation,
+  useCreateMiMascotaMutation,
   useGetEspeciesQuery,
   useGetMisCitasQuery,
   useGetMisMascotasQuery,

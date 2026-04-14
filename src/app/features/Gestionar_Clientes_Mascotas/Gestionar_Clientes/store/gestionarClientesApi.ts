@@ -12,7 +12,7 @@ export const clientesApi = api.injectEndpoints({
     // Obtener lista de clientes con paginación y filtros (Admin)
     getClientes: builder.query<PaginatedClientesResponse, ClientesQueryParams | void>({
       query: (params) => ({
-        url: 'gestion/clientes/',
+        url: 'gestion/clientes/clientes/',
         params: params || {},
       }),
       providesTags: ['Clients'],
