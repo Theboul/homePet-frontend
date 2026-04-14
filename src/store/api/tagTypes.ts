@@ -9,7 +9,7 @@ export const TAG_TYPES = [
   'Appointments',
 
   'Bitacora',
-  ,
+
   'Servicios',
   'PreciosServicio',
   'CategoriasServicio',
