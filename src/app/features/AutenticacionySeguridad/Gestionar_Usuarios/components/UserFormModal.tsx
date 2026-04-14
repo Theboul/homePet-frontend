@@ -1,22 +1,22 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { X, User, Mail, Phone, MapPin, Shield, Lock } from 'lucide-react'
-import type { PerfilUsuario, CreateUsuarioInput } from '../schemas'
-import type { UsuarioUpdateInput } from '../types'
+import { useEffect, useState, type FormEvent } from 'react';
+import type {
+  Usuario,
+  UsuarioFormData,
+  UserRole,
+  UserStatus,
+} from '../store';
 
 interface UserFormModalProps {
-  open: boolean
-  modo: 'crear' | 'editar'
-  usuarioInicial?: PerfilUsuario | null
-  onClose: () => void
-  // Usamos el tipo de creación para el save, ya que cubre los campos base
-  onSave: (data: CreateUsuarioInput | UsuarioUpdateInput) => void
+  open: boolean;
+  modo: 'crear' | 'editar';
+  usuarioInicial?: Usuario | null;
+  onClose: () => void;
+  onSave: (data: UsuarioFormData) => void;
 }
 
-// Inicializador basado en CreateUsuarioInput
-const initialForm: CreateUsuarioInput = {
+const initialForm: UsuarioFormData = {
   nombre: '',
   correo: '',
-  password: '',
   telefono: '',
   direccion: '',
   rol: 'Veterinario',
@@ -30,14 +30,12 @@ export const UserFormModal = ({
   onClose,
   onSave,
 }: UserFormModalProps) => {
-  const [form, setForm] = useState<CreateUsuarioInput>(initialForm)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [form, setForm] = useState<UsuarioFormData>(initialForm);
 
   useEffect(() => {
-    if (!open) return
+    if (!open) return;
 
     if (modo === 'editar' && usuarioInicial) {
-      // Mapeamos de PerfilUsuario (lectura) a el estado del formulario
       setForm({
         nombre: usuarioInicial.nombre,
         correo: usuarioInicial.correo,
@@ -47,19 +45,24 @@ export const UserFormModal = ({
         estado: usuarioInicial.estado,
       });
     } else {
-      setForm(initialForm)
+      setForm(initialForm);
     }
-    setErrors({})
-  }, [open, modo, usuarioInicial])
+  }, [open, modo, usuarioInicial]);
 
-  if (!open) return null
+  if (!open) return null;
 
-  const handleChange = (field: keyof CreateUsuarioInput, value: any) => {
-    setForm((prev) => ({ ...prev, [field]: value }))
-  }
+  const handleChange = (
+    field: keyof UsuarioFormData,
+    value: string | UserRole | UserStatus
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (
       !form.nombre.trim() ||
@@ -75,81 +78,56 @@ export const UserFormModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl rounded-3xl border border-[#7C3AED] bg-[#7C3AED] p-8 shadow-2xl">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-2xl rounded-2xl border border-[#7C3AED] bg-[#7C3AED] p-6 shadow-xl">
+        <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-black text-white uppercase italic">
-              {modo === 'editar' ? 'Actualizar Usuario' : 'Registrar Personal'}
+            <h2 className="text-xl font-semibold text-white">
+              {modo === 'editar' ? 'Editar usuario' : 'Nuevo usuario'}
             </h2>
+            <p className="mt-1 text-sm text-white/85">
+              {modo === 'editar'
+                ? 'Modifica los datos del usuario interno'
+                : 'Completa los datos para registrar un nuevo usuario'}
+            </p>
           </div>
-          <button onClick={onClose} className="text-white/50 hover:text-white">
-            <X size={24} />
+
+          <button
+            onClick={onClose}
+            className="rounded-lg bg-white px-3 py-2 text-[#7C3AED] hover:opacity-90"
+          >
+            Cerrar
           </button>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 gap-5 md:grid-cols-2"
-        >
-          <div className="md:col-span-2 relative">
-            <label className={labelClass}>Nombre Completo</label>
-            <User className="absolute left-3 top-[38px] h-5 w-5 text-[#7C3AED]" />
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="md:col-span-2">
+            <label className="mb-2 block text-sm text-white">Nombre</label>
             <input
               type="text"
               value={form.nombre}
               onChange={(e) => handleChange('nombre', e.target.value)}
-              className={inputClass}
-              required
+              className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
             />
           </div>
 
-          <div
-            className={
-              modo === 'crear'
-                ? 'md:col-span-1 relative'
-                : 'md:col-span-2 relative'
-            }
-          >
-            <label className={labelClass}>Correo Electrónico</label>
-            <Mail className="absolute left-3 top-[38px] h-5 w-5 text-[#7C3AED]" />
+          <div className="md:col-span-2">
+            <label className="mb-2 block text-sm text-white">Correo</label>
             <input
               type="email"
               value={form.correo}
               onChange={(e) => handleChange('correo', e.target.value)}
-              className={inputClass}
-              required
+              className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
             />
           </div>
 
-          {modo === 'crear' && (
-            <div className="relative">
-              <label className={labelClass}>Contraseña</label>
-              <Lock className="absolute left-3 top-[38px] h-5 w-5 text-[#7C3AED]" />
-              <input
-                type="password"
-                value={form.password}
-                onChange={(e) => handleChange('password', e.target.value)}
-                className={inputClass}
-                required
-              />
-              {errors.password && (
-                <span className="text-xs text-orange-400">
-                  {errors.password}
-                </span>
-              )}
-            </div>
-          )}
-
-          <div className="relative">
-            <label className={labelClass}>Teléfono</label>
-            <Phone className="absolute left-3 top-[38px] h-5 w-5 text-[#7C3AED]" />
+          <div>
+            <label className="mb-2 block text-sm text-white">Teléfono</label>
             <input
               type="text"
               value={form.telefono}
               onChange={(e) => handleChange('telefono', e.target.value)}
-              className={inputClass}
+              className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
             />
           </div>
 
@@ -188,23 +166,24 @@ export const UserFormModal = ({
             />
           </div>
 
-          <div className="md:col-span-2 flex justify-end gap-4 mt-4">
+          <div className="md:col-span-2 flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="font-bold text-white/70 hover:text-white"
+              className="rounded-xl bg-white px-5 py-2.5 text-[#7C3AED] hover:opacity-90"
             >
-              CANCELAR
+              Cancelar
             </button>
+
             <button
               type="submit"
-              className="rounded-xl bg-[#F97316] px-10 py-3 font-black text-white hover:bg-[#ea580c] transition-all"
+              className="rounded-xl bg-[#F97316] px-5 py-2.5 font-medium text-white hover:opacity-90"
             >
-              {modo === 'editar' ? 'GUARDAR' : 'REGISTRAR'}
+              {modo === 'editar' ? 'Guardar cambios' : 'Guardar usuario'}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};

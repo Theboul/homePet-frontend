@@ -17,9 +17,7 @@ import { Plus, Search, Filter, Users, PawPrint, MapPin } from 'lucide-react'
 
 export const GestionarClientes = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<
-    'all' | 'activo' | 'inactivo'
-  >('all')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'activo' | 'inactivo'>('all')
   const [locationFilter, setLocationFilter] = useState('')
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)

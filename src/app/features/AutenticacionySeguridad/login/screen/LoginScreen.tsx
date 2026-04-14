@@ -18,9 +18,6 @@ const LoginScreen = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
-
-  // Nota: Asegúrate de que en tu useSearch el 'from' coincida
-  // con el ID de ruta que TypeScript reconoció (vimos que era '/login')
   const search = useSearch({ from: '/_public/login' })
 
   useEffect(() => {
@@ -34,10 +31,8 @@ const LoginScreen = () => {
     setFormError(null)
 
     try {
-      // 1. Ejecutamos la mutación (Ya viene mapeada por tu transformResponse)
       const result = await login({ correo, password }).unwrap()
 
-      // 2. Guardamos en Redux y LocalStorage
       dispatch(
         setCredentials({
           user: result.user,
@@ -46,24 +41,24 @@ const LoginScreen = () => {
         }),
       )
 
-      // 3. Redirigimos al Dashboard o Admin según corresponda
-      navigate({ to: '/dashboard' })
+      navigate({
+        to: result.user.role === 'CLIENT' ? '/cliente' : '/dashboard',
+      })
     } catch (error: any) {
-      // Manejo de errores específicos de Django
-      if (error.status === 401) {
+      if (error?.status === 401) {
         setFormError(
           'Credenciales incorrectas. Verifica tu correo y contraseña.',
         )
-      } else {
-        setFormError('Ocurrió un error en el servidor. Inténtalo más tarde.')
+        return
       }
+
+      setFormError('Ocurrió un error en el servidor. Inténtalo más tarde.')
     }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#7C3AED] px-4">
       <div className="w-full max-w-md">
-        {/* Logo Sección */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-14 h-14 rounded-full bg-[#F97316] flex items-center justify-center shadow-lg">
@@ -78,7 +73,6 @@ const LoginScreen = () => {
           </p>
         </div>
 
-        {/* Tarjeta de Login */}
         <div className="bg-white rounded-2xl shadow-2xl p-8 space-y-6 border border-white/20">
           <div>
             <h2 className="text-2xl font-bold text-[#7C3AED]">Bienvenido</h2>
@@ -161,7 +155,6 @@ const LoginScreen = () => {
         </div>
       </div>
 
-      {/* Modal de Registro */}
       <FormCrearPerfil open={openModal} onOpenChange={setOpenModal} />
     </div>
   )

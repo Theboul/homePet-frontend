@@ -1,13 +1,13 @@
-import type { UserRole, UserStatus } from '../store'
+import type { UserRole, UserStatus } from '../store';
 
 interface UserFiltersProps {
-  search: string
-  setSearch: (value: string) => void
-  rolFilter: UserRole | 'Todos'
-  setRolFilter: (value: UserRole | 'Todos') => void
-  estadoFilter: UserStatus | 'Todos'
-  setEstadoFilter: (value: UserStatus | 'Todos') => void
-  onNuevoUsuario: () => void
+  search: string;
+  setSearch: (value: string) => void;
+  rolFilter: UserRole | 'Todos';
+  setRolFilter: (value: UserRole | 'Todos') => void;
+  estadoFilter: UserStatus | 'Todos';
+  setEstadoFilter: (value: UserStatus | 'Todos') => void;
+  onNuevoUsuario: () => void;
 }
 
 export const UserFilters = ({
@@ -55,12 +55,12 @@ export const UserFilters = ({
         </select>
       </div>
 
-      <button
-        onClick={onNuevoUsuario}
-        className="h-11 rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:bg-[#EA580C]"
-      >
-        Nuevo usuario
-      </button>
+        <button
+             onClick={onNuevoUsuario}
+           className="h-11 rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:bg-[#EA580C]"
+          >
+  Nuevo usuario
+</button>
     </div>
-  )
-}
+  );
+};

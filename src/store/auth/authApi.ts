@@ -1,4 +1,4 @@
-import { api } from '../api/api'
+import { api } from '../api/api';
 import type {
   LoginRequest,
   LoginResponse,
@@ -60,19 +60,19 @@ function mapBackendUser(user: BackendUser): User {
 }
 
 export type LoginMutationResult = {
-  user: User
-  accessToken: string
-  refreshToken: string
-}
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+};
 
 export type RegisterMutationResult = {
-  user: User
+  user: User;
   perfil: {
-    nombre: string
-    telefono: string
-    direccion: string
-  }
-}
+    nombre: string;
+    telefono: string;
+    direccion: string;
+  };
+};
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -113,11 +113,11 @@ export const authApi = api.injectEndpoints({
     }),
   }),
   overrideExisting: false,
-})
+});
 
 export const {
   useLoginMutation,
   useRegisterMutation,
   useGetProfileQuery,
   useLogoutSessionMutation,
-} = authApi
+} = authApi;

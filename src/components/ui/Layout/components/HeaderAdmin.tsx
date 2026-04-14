@@ -1,7 +1,19 @@
-import { Bell, Search } from 'lucide-react'
-import { Button } from '#/components/ui/button'
+'use client'
 
-export function HeaderAdmin() {
+import { useState } from 'react'
+import { Heart, Menu, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Link } from '@tanstack/react-router'
+
+export const HeaderAdmin = () => {
+  const [open, setOpen] = useState(false)
+
+  // Cambié text-slate-700 por text-slate-900 para máximo contraste
+  const navLinkStyles =
+    'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
+  const mobileLinkStyles =
+    'block text-base font-bold text-slate-900 hover:text-[#7C3AED] py-2'
+
   return (
     <header className="w-full border-b border-[#E5E7EB] bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -89,11 +101,24 @@ export function HeaderAdmin() {
               Contacto
             </a>
           </div>
-          <span className="text-sm font-semibold text-gray-800 hidden sm:block">
-            Admin
-          </span>
-        </Button>
-      </div>
-    </div>
+
+          <div className="flex flex-col gap-3 pb-2">
+            <Link to="/login" search={{ register: false }}>
+              <Button
+                variant="outline"
+                className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
+              >
+                Iniciar sesión
+              </Button>
+            </Link>
+            <Link to="/login" search={{ register: true }}>
+              <Button className="bg-[#F97316] text-white font-bold border-none">
+                Registrarse
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
   )
 }
