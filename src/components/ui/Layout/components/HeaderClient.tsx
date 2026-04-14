@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
@@ -9,34 +9,19 @@ import { logout } from '#/store/auth/authSlice'
 
 export const HeaderClient = () => {
   const [open, setOpen] = useState(false)
-  const [isHydrated, setIsHydrated] = useState(false)
   const dispatch = useAppDispatch()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-  useEffect(() => {
-    setIsHydrated(true)
-  }, [])
-
-  const showAuthenticatedActions = isHydrated && isAuthenticated
-
-  useEffect(() => {
-    setIsHydrated(true)
-  }, [])
-
-  const showAuthenticatedActions = isHydrated && isAuthenticated
-
+  // Cambié text-slate-700 por text-slate-900 para máximo contraste
   const navLinkStyles =
-    'text-sm font-bold !text-[#111827] hover:!text-[#7C3AED] transition-colors'
+    'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
   const mobileLinkStyles =
-    'block text-base font-bold !text-[#111827] hover:!text-[#7C3AED] py-2'
-  const loginLinkStyles =
-    'inline-flex h-10 items-center justify-center rounded-lg border border-[#7C3AED] bg-white px-4 text-sm font-bold !text-[#7C3AED] transition-colors hover:bg-[#7C3AED] hover:!text-white'
-  const registerLinkStyles =
-    'inline-flex h-10 items-center justify-center rounded-lg bg-[#F97316] px-4 text-sm font-bold !text-white transition-colors hover:bg-[#EA580C]'
+    'block text-base font-bold text-slate-900 hover:text-[#7C3AED] py-2'
 
   return (
     <header className="w-full border-b border-[#E5E7EB] bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#F97316] flex items-center justify-center shadow-md">
             <Heart className="w-5 h-5 text-white" fill="currentColor" />
@@ -44,6 +29,7 @@ export const HeaderClient = () => {
           <h1 className="text-xl font-extrabold text-[#7C3AED]">Pet Home</h1>
         </Link>
 
+        {/* Desktop Navegación */}
         <nav className="hidden md:flex items-center gap-8">
           <Link to="/" className={navLinkStyles}>
             Inicio
@@ -59,8 +45,9 @@ export const HeaderClient = () => {
           </a>
         </nav>
 
+        {/* Desktop acciones */}
         <div className="hidden md:flex items-center gap-3">
-          {showAuthenticatedActions ? (
+          {isAuthenticated ? (
             <Button
               onClick={() => dispatch(logout())}
               className="bg-red-100 text-red-600 hover:bg-red-200 border-none font-bold"
@@ -69,24 +56,24 @@ export const HeaderClient = () => {
             </Button>
           ) : (
             <>
-              <Link
-                to="/login"
-                search={{ register: false }}
-                className={loginLinkStyles}
+              <Link to="/login" search={{ register: false }}>
+                <Button
+                  variant="outline"
+                  className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
               >
                 Iniciar sesión
+                </Button>
               </Link>
-              <Link
-                to="/login"
-                search={{ register: true }}
-                className={registerLinkStyles}
-              >
+              <Link to="/login" search={{ register: true }}>
+                <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
                 Registrarse
+                </Button>
               </Link>
             </>
           )}
         </div>
 
+        {/* Mobile button */}
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-slate-900 p-2"
@@ -95,6 +82,7 @@ export const HeaderClient = () => {
         </button>
       </div>
 
+      {/* Mobile menu */}
       {open && (
         <div className="md:hidden px-4 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-xl">
           <div className="py-4 space-y-1">
@@ -129,7 +117,7 @@ export const HeaderClient = () => {
           </div>
 
           <div className="flex flex-col gap-3 pb-2">
-            {showAuthenticatedActions ? (
+            {isAuthenticated ? (
               <Button
                 onClick={() => {
                   dispatch(logout())
@@ -141,21 +129,18 @@ export const HeaderClient = () => {
               </Button>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  search={{ register: false }}
-                  onClick={() => setOpen(false)}
-                  className={`${loginLinkStyles} w-full`}
+                <Link to="/login" search={{ register: false }}>
+                  <Button
+                    variant="outline"
+                    className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
                 >
                   Iniciar sesión
+                  </Button>
                 </Link>
-                <Link
-                  to="/login"
-                  search={{ register: true }}
-                  onClick={() => setOpen(false)}
-                  className={`${registerLinkStyles} w-full`}
-                >
+                <Link to="/login" search={{ register: true }}>
+                  <Button className="w-full bg-[#F97316] text-white font-bold border-none">
                   Registrarse
+                  </Button>
                 </Link>
               </>
             )}
