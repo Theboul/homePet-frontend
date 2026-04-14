@@ -14,7 +14,14 @@ import {
 
 type MenuChild = {
   label: string
-  to: '/dashboard' | '/Gestionar_Clientes' | '/Gestionar_Usuarios' | '/bitacora' | '/about' | '/login'
+  to:
+    | '/dashboard'
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Usuarios'
+    | '/Gestionar_Servicios_Precios_Catalogo'
+    | '/bitacora'
+    | '/about'
+    | '/login'
 }
 
 type MenuItem = {
@@ -47,6 +54,16 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         icon: Users,
         children: [
           { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' }, 
+        ],
+      },
+      {
+        label: 'Servicios y Reservas',
+        icon: PawPrint,
+        children: [
+          {
+            label: 'Catálogo de Servicios',
+            to: '/Gestionar_Servicios_Precios_Catalogo',
+          },
         ],
       },
     ],
