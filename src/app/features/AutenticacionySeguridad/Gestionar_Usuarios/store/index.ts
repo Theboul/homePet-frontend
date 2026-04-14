@@ -1,4 +1,3 @@
-export * from './gestionarUsuarios.types'
-export * from './gestionarUsuarios.data'
-export * from './useGestionarUsuarios'
-export * from './gestionarUsuariosApi'
+export * from './gestionarUsuarios.types';
+export * from './gestionarUsuariosApi';
+export * from './useGestionarUsuarios';

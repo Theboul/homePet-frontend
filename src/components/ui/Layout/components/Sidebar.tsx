@@ -3,13 +3,8 @@ import { Link, useLocation } from '@tanstack/react-router'
 import { Button } from '#/components/ui/button'
 import {
   Home,
-  ShieldCheck, // Icono para Autenticación
-  Users, // Icono para Gestión de Clientes
-  Stethoscope,
-  Package,
-  DollarSign,
-  BarChart2,
-  Settings,
+  ShieldCheck,
+  Users,
   PawPrint,
   ChevronLeft,
   ChevronDown,
@@ -21,8 +16,10 @@ type MenuChild = {
   label: string
   to:
     | '/dashboard'
-    | '/gestionar_clientes'
-    | '/gestionar_usuarios'
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Mascotas'
+    | '/Gestionar_Usuarios'
+    | '/bitacora'
     | '/about'
     | '/login'
 }
@@ -40,23 +37,25 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
     items: [{ label: 'Inicio', icon: Home, to: '/dashboard' }],
   },
   {
-    section: 'Gestión',
+    section: 'Módulos del Sistema',
     items: [
       {
-        label: 'Autenticación y Seguridad',
+        label: 'Autenticación y Seg.',
         icon: ShieldCheck,
-        children: [{ label: 'Gestionar Usuarios', to: '/gestionar_usuarios' }],
+        children: [
+          { label: 'Gestionar Usuarios', to: '/Gestionar_Usuarios' },
+          { label: 'Bitácora y Seguridad', to: '/bitacora' },
+        ],
       },
       {
-        label: 'Gestión de Clientes y Mascotas',
+        label: 'Clientes y Mascotas',
         icon: Users,
-        children: [{ label: 'Gestionar Clientes', to: '/gestionar_clientes' }],
+        children: [
+          { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' },
+          { label: 'Gestionar Mascotas', to: '/Gestionar_Mascotas' },
+        ],
       },
     ],
-  },
-  {
-    section: 'Sistema',
-    items: [{ label: 'Configuración', icon: Settings, to: '/login' }],
   },
 ]
 
@@ -73,6 +72,7 @@ export function Sidebar({
   toggleSidebar?: () => void
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
+
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
 
   const toggleMenu = (label: string) => {
@@ -81,31 +81,37 @@ export function Sidebar({
 
   return (
     <aside
-      className={`bg-[#6A24D4] h-screen flex flex-col text-white flex-shrink-0 sticky top-0 transition-all duration-300 z-20 ${isCollapsed ? 'w-20' : 'w-64'}`}
+      className={`sticky top-0 z-20 flex h-screen flex-shrink-0 flex-col bg-[#6A24D4] text-white transition-all duration-300 ${
+        isCollapsed ? 'w-20' : 'w-64'
+      }`}
     >
-      {/* Logo & Header */}
       <div
-        className={`flex items-center select-none ${isCollapsed ? 'flex-col gap-4 py-6 px-4' : 'gap-3 p-6'}`}
+        className={`flex items-center select-none ${
+          isCollapsed ? 'flex-col gap-4 px-4 py-6' : 'gap-3 p-6'
+        }`}
       >
-        <div className="bg-orange-500 rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center shadow-lg">
-          <PawPrint className="w-5 h-5 text-white" fill="currentColor" />
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 shadow-lg">
+          <PawPrint className="h-5 w-5 text-white" fill="currentColor" />
         </div>
+
         {!isCollapsed && (
-          <h1 className="text-xl font-bold tracking-wide flex-1 whitespace-nowrap">
-            VetCare
+          <h1 className="flex-1 whitespace-nowrap text-xl font-bold tracking-wide">
+            PetHome
           </h1>
         )}
+
         <Button
           onClick={toggleSidebar}
           variant="ghost"
-          className={`text-purple-300 hover:bg-white/10 hover:text-orange-400 transition-colors p-2 rounded-full h-auto flex-shrink-0 ${isCollapsed ? 'rotate-180' : ''}`}
+          className={`h-auto flex-shrink-0 rounded-full p-2 text-purple-300 transition-colors hover:bg-white/10 hover:text-orange-400 ${
+            isCollapsed ? 'rotate-180' : ''
+          }`}
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="h-5 w-5" />
         </Button>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-4 py-2 mt-2">
+      <nav className="mt-2 flex-1 overflow-y-auto px-4 py-2">
         {menuSections.map((section) => (
           <div key={section.section} className="mb-6">
             {!isCollapsed ? (
@@ -120,12 +126,12 @@ export function Sidebar({
               {section.items.map((item) => {
                 const Icon = item.icon
                 const hasChildren = Boolean(item.children?.length)
-                const itemActive =
-                  item.to === pathname || childIsActive(item.children, pathname)
+
+                const isChildActive = childIsActive(item.children, pathname)
+                const itemActive = item.to === pathname || isChildActive
                 const itemOpen =
-                  hasChildren &&
-                  (openMenus[item.label] ??
-                    childIsActive(item.children, pathname))
+                  hasChildren && (openMenus[item.label] ?? isChildActive)
+
                 const isActiveOrOpen = itemActive || itemOpen
 
                 if (hasChildren) {
@@ -145,18 +151,27 @@ export function Sidebar({
                           }
                         }}
                         title={isCollapsed ? item.label : undefined}
-                        className={`flex w-full items-center ${isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} rounded-xl py-2.5 text-left text-sm transition-all ${
+                        className={`flex w-full items-center rounded-xl py-2.5 text-left text-sm transition-all ${
+                          isCollapsed
+                            ? 'justify-center px-0'
+                            : 'gap-3 px-3'
+                        } ${
                           isActiveOrOpen
                             ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
                             : 'text-white/75 hover:bg-white/8 hover:text-white'
                         }`}
                       >
                         <Icon
-                          className={`h-5 w-5 flex-shrink-0 ${isActiveOrOpen ? 'text-orange-300' : 'text-white/70'}`}
+                          className={`h-5 w-5 flex-shrink-0 ${
+                            isActiveOrOpen
+                              ? 'text-orange-300'
+                              : 'text-white/70'
+                          }`}
                         />
+
                         {!isCollapsed && (
                           <>
-                            <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                            <span className="flex-1 whitespace-nowrap">
                               {item.label}
                             </span>
                             {itemOpen ? (
@@ -198,19 +213,21 @@ export function Sidebar({
                     key={item.label}
                     to={item.to ?? '/dashboard'}
                     title={isCollapsed ? item.label : undefined}
-                    className={`flex items-center ${isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} rounded-xl py-2.5 text-sm transition-all ${
+                    className={`flex items-center rounded-xl py-2.5 text-sm transition-all ${
+                      isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+                    } ${
                       itemActive
                         ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
                         : 'text-white/75 hover:bg-white/8 hover:text-white'
                     }`}
                   >
                     <Icon
-                      className={`h-5 w-5 flex-shrink-0 ${itemActive ? 'text-orange-300' : 'text-white/70'}`}
+                      className={`h-5 w-5 flex-shrink-0 ${
+                        itemActive ? 'text-orange-300' : 'text-white/70'
+                      }`}
                     />
                     {!isCollapsed && (
-                      <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-                        {item.label}
-                      </span>
+                      <span className="whitespace-nowrap">{item.label}</span>
                     )}
                   </Link>
                 )
@@ -220,13 +237,15 @@ export function Sidebar({
         ))}
       </nav>
 
-      {/* Profile Section */}
       <div
-        className={`p-4 border-t border-white/10 m-4 mt-auto flex items-center ${isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'} overflow-hidden`}
+        className={`m-4 mt-auto flex items-center overflow-hidden border-t border-white/10 p-4 ${
+          isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'
+        }`}
       >
-        <div className="bg-orange-500 text-white text-sm font-bold w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center">
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
           AD
         </div>
+
         {!isCollapsed && (
           <div className="flex flex-col whitespace-nowrap">
             <span className="text-sm font-medium">Admin</span>

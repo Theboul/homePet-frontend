@@ -19,8 +19,9 @@ const initialForm: CreateUsuarioInput = {
   password: '',
   telefono: '',
   direccion: '',
-  id_rol: 2, // Por defecto Veterinario
-}
+  rol: 'Veterinario',
+  estado: 'Activo',
+};
 
 export const UserFormModal = ({
   open,
@@ -42,11 +43,9 @@ export const UserFormModal = ({
         correo: usuarioInicial.correo,
         telefono: usuarioInicial.telefono,
         direccion: usuarioInicial.direccion,
-        // Nota: El backend envía 'rol' como string, pero para editar
-        // necesitamos el id_rol. Mapeo temporal:
-        id_rol: usuarioInicial.rol === 'Administrador' ? 1 : 2,
-        password: '', // No se edita el password por defecto
-      })
+        rol: usuarioInicial.rol,
+        estado: usuarioInicial.estado,
+      });
     } else {
       setForm(initialForm)
     }
@@ -62,25 +61,18 @@ export const UserFormModal = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // Validación manual rápida basada en tus mensajes de Zod
-    if (modo === 'crear' && (!form.password || form.password.length < 8)) {
-      setErrors({ password: 'Mínimo 8 caracteres' })
-      return
+    if (
+      !form.nombre.trim() ||
+      !form.correo.trim() ||
+      !form.telefono.trim()
+    ) {
+      return;
     }
 
-    // Si es editar, eliminamos el password del objeto si está vacío
-    if (modo === 'editar') {
-      const { password, ...updateData } = form
-      onSave(updateData)
-    } else {
-      onSave(form)
-    }
-  }
-
-  const inputClass =
-    'h-11 w-full rounded-xl border border-white/20 bg-white px-10 text-black outline-none focus:ring-2 focus:ring-[#F97316] transition-all'
-  const labelClass =
-    'mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/80 ml-1'
+    onSave(form);
+    setForm(initialForm);
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -161,17 +153,27 @@ export const UserFormModal = ({
             />
           </div>
 
-          <div className="relative">
-            <label className={labelClass}>Rol</label>
-            <Shield className="absolute left-3 top-[38px] h-5 w-5 text-[#7C3AED]" />
+          <div>
+            <label className="mb-2 block text-sm text-white">Dirección</label>
+            <input
+              type="text"
+              value={form.direccion}
+              onChange={(e) => handleChange('direccion', e.target.value)}
+              className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm text-white">Rol</label>
             <select
               value={form.id_rol}
               onChange={(e) => handleChange('id_rol', Number(e.target.value))}
               className={`${inputClass} appearance-none`}
             >
-              <option value={1}>Cliente</option>
-              <option value={2}>Veterinario</option>
-              <option value={3}>Administrador</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Veterinario">Veterinario</option>
+              <option value="Recepcionista">Recepcionista</option>
+              <option value="Cliente">Cliente</option>
             </select>
           </div>
 

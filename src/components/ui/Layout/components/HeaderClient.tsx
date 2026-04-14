@@ -4,9 +4,13 @@ import { useState } from 'react'
 import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
+import { useAppDispatch, useAppSelector } from '#/store/hooks'
+import { logout } from '#/store/auth/authSlice'
 
 export const HeaderClient = () => {
   const [open, setOpen] = useState(false)
+  const dispatch = useAppDispatch()
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
   // Cambié text-slate-700 por text-slate-900 para máximo contraste
   const navLinkStyles =
@@ -30,33 +34,43 @@ export const HeaderClient = () => {
           <Link to="/" className={navLinkStyles}>
             Inicio
           </Link>
-          <Link to="/servicios" className={navLinkStyles}>
+          <a href="/servicios" className={navLinkStyles}>
             Servicios
-          </Link>
-          <Link to="/citas" className={navLinkStyles}>
+          </a>
+          <a href="/citas" className={navLinkStyles}>
             Citas
-          </Link>
-          <Link to="/contacto" className={navLinkStyles}>
+          </a>
+          <a href="/contacto" className={navLinkStyles}>
             Contacto
-          </Link>
+          </a>
         </nav>
 
         {/* Desktop acciones */}
         <div className="hidden md:flex items-center gap-3">
-          <Link to="/login" search={{ register: false }}>
+          {isAuthenticated ? (
             <Button
-              variant="outline"
-              className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
+              onClick={() => dispatch(logout())}
+              className="bg-red-100 text-red-600 hover:bg-red-200 border-none font-bold"
             >
-              Iniciar sesión
+              Cerrar sesión
             </Button>
-          </Link>
-
-          <Link to="/login" search={{ register: true }}>
-            <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
-              Registrarse
-            </Button>
-          </Link>
+          ) : (
+            <>
+              <Link to="/login" search={{ register: false }}>
+                <Button
+                  variant="outline"
+                  className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
+                >
+                  Iniciar sesión
+                </Button>
+              </Link>
+              <Link to="/login" search={{ register: true }}>
+                <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
+                  Registrarse
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile button */}
@@ -79,43 +93,57 @@ export const HeaderClient = () => {
             >
               Inicio
             </Link>
-            <Link
-              to="/servicios"
+            <a
+              href="/servicios"
               onClick={() => setOpen(false)}
               className={mobileLinkStyles}
             >
               Servicios
-            </Link>
-            <Link
-              to="/citas"
+            </a>
+            <a
+              href="/citas"
               onClick={() => setOpen(false)}
               className={mobileLinkStyles}
             >
               Citas
-            </Link>
-            <Link
-              to="/contacto"
+            </a>
+            <a
+              href="/contacto"
               onClick={() => setOpen(false)}
               className={mobileLinkStyles}
             >
               Contacto
-            </Link>
+            </a>
           </div>
 
           <div className="flex flex-col gap-3 pb-2">
-            <Link to="/login" search={{ register: false }}>
+            {isAuthenticated ? (
               <Button
-                variant="outline"
-                className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
+                onClick={() => {
+                  dispatch(logout())
+                  setOpen(false)
+                }}
+                className="w-full bg-red-100 text-red-600 hover:bg-red-200 font-bold border-none"
               >
-                Iniciar sesión
+                Cerrar sesión
               </Button>
-            </Link>
-            <Link to="/login" search={{ register: true }}>
-              <Button className="bg-[#F97316] text-white font-bold border-none">
-                Registrarse
-              </Button>
-            </Link>
+            ) : (
+              <>
+                <Link to="/login" search={{ register: false }}>
+                  <Button
+                    variant="outline"
+                    className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
+                  >
+                    Iniciar sesión
+                  </Button>
+                </Link>
+                <Link to="/login" search={{ register: true }}>
+                  <Button className="w-full bg-[#F97316] text-white font-bold border-none">
+                    Registrarse
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -25,7 +25,6 @@ import {
 import type { DateRange } from "react-day-picker"
 import type {
   ColumnDef,
-  ColumnFiltersState,
   OnChangeFn,
   SortingState,
 } from "@tanstack/react-table"
@@ -158,6 +157,10 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns: finalColumns,
+    // Required by project-wide TanStack type augmentation in demo/table.tsx
+    filterFns: {
+      fuzzy: () => true,
+    },
     pageCount: serverPageCount ?? -1,
     manualPagination,
     state: {
@@ -218,7 +221,7 @@ export function DataTable<TData, TValue>({
     return range
   }
 
-  const hasLeftControls = enableSearch || enableStatusFilter || enableDateFilter
+
 
   return (
     <div className="space-y-4">

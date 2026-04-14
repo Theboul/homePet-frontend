@@ -41,26 +41,14 @@ export const UserTable = ({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1000px] border-collapse">
           <thead>
-            <tr className="bg-[#7C3AED] text-left">
-              <th className="px-6 py-4 text-sm font-semibold text-white">
-                Usuario
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold text-white">
-                Teléfono
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold text-white">
-                Dirección
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold text-white">
-                Rol
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold text-white">
-                Estado
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold text-white">
-                Creado
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold text-white text-right">
+    <tr className="bg-[#7C3AED] text-left">
+              <th className="px-4 py-4 text-sm font-semibold text-white">Usuario</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white">Teléfono</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white">Dirección</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white">Rol</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white">Estado</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white">Creado</th>
+              <th className="px-4 py-4 text-sm font-semibold text-white text-right">
                 Acciones
               </th>
             </tr>
@@ -93,12 +81,8 @@ export const UserTable = ({
                     </div>
                   </td>
 
-                  <td className="px-6 py-4 text-sm text-gray-700">
-                    {usuario.telefono}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-700 max-w-[200px] truncate">
-                    {usuario.direccion}
-                  </td>
+                  <td className="px-4 py-4 text-black">{usuario.telefono}</td>
+                  <td className="px-4 py-4 text-black">{usuario.direccion}</td>
 
                   <td className="px-6 py-4">
                     <span className="inline-flex items-center rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-semibold text-[#7C3AED] border border-purple-100 uppercase">
@@ -108,10 +92,18 @@ export const UserTable = ({
 
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center gap-1.5 text-sm font-medium ${usuario.estado ? 'text-green-600' : 'text-red-500'}`}
+                      className={`inline-flex items-center gap-2 text-sm ${
+                        usuario.estado === 'Activo'
+                          ? 'text-green-700'
+                          : 'text-red-700'
+                      }`}
                     >
                       <span
-                        className={`h-2 w-2 rounded-full ${usuario.estado ? 'bg-green-500' : 'bg-red-500'}`}
+                        className={`h-2.5 w-2.5 rounded-full ${
+                          usuario.estado === 'Activo'
+                            ? 'bg-green-600'
+                            : 'bg-red-600'
+                        }`}
                       />
                       {usuario.estado ? 'Activo' : 'Inactivo'}
                     </span>

@@ -1,18 +1,10 @@
-import * as React from 'react'
-import {
-  HeadContent,
-  Scripts,
-  createRootRoute,
-  Outlet,
-} from '@tanstack/react-router'
-import { useEffect } from 'react'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
+import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
+import { Suspense, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '#/store/hooks'
 import { store } from '#/store/store'
 import { useGetProfileQuery } from '#/store/auth/authApi'
-import { logout, updateUser } from '#/store/auth/authSlice'
+import { updateUser } from '#/store/auth/authSlice'
 
 import appCss from '../styles.css?url'
 
@@ -37,24 +29,14 @@ function RootDocument() {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased selection:bg-[rgba(79,184,178,0.24)]">
+      <body className="font-sans antialiased">
         <Provider store={store}>
           <AuthBootstrap />
-          {/* Usamos React.Suspense y Outlet para que las rutas funcionen correctamente */}
-          <React.Suspense fallback={null}>
+          <Suspense>
             <Outlet />
-          </React.Suspense>
+          </Suspense>
         </Provider>
 
-        <TanStackDevtools
-          config={{ position: 'bottom-right' }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: () => <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
         <Scripts />
       </body>
     </html>
@@ -64,7 +46,7 @@ function RootDocument() {
 function AuthBootstrap() {
   const dispatch = useAppDispatch()
   const accessToken = useAppSelector((state) => state.auth.accessToken)
-  const { data, isError } = useGetProfileQuery(undefined, {
+  const { data } = useGetProfileQuery(undefined, {
     skip: !accessToken,
   })
 
@@ -73,12 +55,6 @@ function AuthBootstrap() {
       dispatch(updateUser(data))
     }
   }, [data, dispatch])
-
-  useEffect(() => {
-    if (isError && accessToken) {
-      dispatch(logout())
-    }
-  }, [isError, accessToken, dispatch])
 
   return null
 }

@@ -18,6 +18,13 @@ import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as AdminGestionar_usuariosRouteImport } from './routes/_admin/gestionar_usuarios'
 import { Route as AdminGestionar_clientesRouteImport } from './routes/_admin/gestionar_clientes'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+<<<<<<< HEAD
+=======
+import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
+import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
+import { Route as AdminGestionar_MascotasRouteImport } from './routes/_admin/Gestionar_Mascotas'
+import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
+>>>>>>> main
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
@@ -64,6 +71,29 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const AdminBitacoraRoute = AdminBitacoraRouteImport.update({
+  id: '/bitacora',
+  path: '/bitacora',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
+  id: '/Gestionar_Usuarios',
+  path: '/Gestionar_Usuarios',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_MascotasRoute = AdminGestionar_MascotasRouteImport.update({
+  id: '/Gestionar_Mascotas',
+  path: '/Gestionar_Mascotas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
+  id: '/Gestionar_Clientes',
+  path: '/Gestionar_Clientes',
+  getParentRoute: () => AdminRoute,
+} as any)
+>>>>>>> main
 const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
   id: '/demo/form/simple',
   path: '/demo/form/simple',
@@ -77,6 +107,13 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+<<<<<<< HEAD
+=======
+  '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
+  '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/bitacora': typeof AdminBitacoraRoute
+>>>>>>> main
   '/dashboard': typeof AdminDashboardRoute
   '/gestionar_clientes': typeof AdminGestionar_clientesRoute
   '/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
@@ -88,6 +125,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+<<<<<<< HEAD
+=======
+  '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
+  '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/bitacora': typeof AdminBitacoraRoute
+>>>>>>> main
   '/dashboard': typeof AdminDashboardRoute
   '/gestionar_clientes': typeof AdminGestionar_clientesRoute
   '/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
@@ -101,6 +145,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_admin': typeof AdminRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+<<<<<<< HEAD
+=======
+  '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/_admin/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
+  '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/_admin/bitacora': typeof AdminBitacoraRoute
+>>>>>>> main
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/gestionar_clientes': typeof AdminGestionar_clientesRoute
   '/_admin/gestionar_usuarios': typeof AdminGestionar_usuariosRoute
@@ -115,6 +166,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+<<<<<<< HEAD
+=======
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Mascotas'
+    | '/Gestionar_Usuarios'
+    | '/bitacora'
+>>>>>>> main
     | '/dashboard'
     | '/gestionar_clientes'
     | '/gestionar_usuarios'
@@ -126,6 +184,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+<<<<<<< HEAD
+=======
+    | '/Gestionar_Clientes'
+    | '/Gestionar_Mascotas'
+    | '/Gestionar_Usuarios'
+    | '/bitacora'
+>>>>>>> main
     | '/dashboard'
     | '/gestionar_clientes'
     | '/gestionar_usuarios'
@@ -138,6 +203,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_admin'
     | '/_public'
+<<<<<<< HEAD
+=======
+    | '/_admin/Gestionar_Clientes'
+    | '/_admin/Gestionar_Mascotas'
+    | '/_admin/Gestionar_Usuarios'
+    | '/_admin/bitacora'
+>>>>>>> main
     | '/_admin/dashboard'
     | '/_admin/gestionar_clientes'
     | '/_admin/gestionar_usuarios'
@@ -222,6 +294,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+<<<<<<< HEAD
+=======
+    '/_admin/bitacora': {
+      id: '/_admin/bitacora'
+      path: '/bitacora'
+      fullPath: '/bitacora'
+      preLoaderRoute: typeof AdminBitacoraRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Usuarios': {
+      id: '/_admin/Gestionar_Usuarios'
+      path: '/Gestionar_Usuarios'
+      fullPath: '/Gestionar_Usuarios'
+      preLoaderRoute: typeof AdminGestionar_UsuariosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Mascotas': {
+      id: '/_admin/Gestionar_Mascotas'
+      path: '/Gestionar_Mascotas'
+      fullPath: '/Gestionar_Mascotas'
+      preLoaderRoute: typeof AdminGestionar_MascotasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Clientes': {
+      id: '/_admin/Gestionar_Clientes'
+      path: '/Gestionar_Clientes'
+      fullPath: '/Gestionar_Clientes'
+      preLoaderRoute: typeof AdminGestionar_ClientesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+>>>>>>> main
     '/demo/form/simple': {
       id: '/demo/form/simple'
       path: '/demo/form/simple'
@@ -240,12 +343,26 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+<<<<<<< HEAD
+=======
+  AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
+  AdminGestionar_MascotasRoute: typeof AdminGestionar_MascotasRoute
+  AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
+  AdminBitacoraRoute: typeof AdminBitacoraRoute
+>>>>>>> main
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminGestionar_clientesRoute: typeof AdminGestionar_clientesRoute
   AdminGestionar_usuariosRoute: typeof AdminGestionar_usuariosRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+<<<<<<< HEAD
+=======
+  AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
+  AdminGestionar_MascotasRoute: AdminGestionar_MascotasRoute,
+  AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
+  AdminBitacoraRoute: AdminBitacoraRoute,
+>>>>>>> main
   AdminDashboardRoute: AdminDashboardRoute,
   AdminGestionar_clientesRoute: AdminGestionar_clientesRoute,
   AdminGestionar_usuariosRoute: AdminGestionar_usuariosRoute,

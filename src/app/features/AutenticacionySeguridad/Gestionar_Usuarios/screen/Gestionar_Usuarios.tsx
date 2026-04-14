@@ -10,36 +10,31 @@ import type { PerfilUsuario, CreateUsuarioInput } from '../schemas'
 import type { UsuarioUpdateInput } from '../types'
 
 export const Gestionar_Usuarios = () => {
-  const [openModal, setOpenModal] = useState(false)
-  const [modoModal, setModoModal] = useState<'crear' | 'editar'>('crear')
-  const [usuarioSeleccionado, setUsuarioSeleccionado] =
-    useState<PerfilUsuario | null>(null)
+  const [openModal, setOpenModal] = useState(false);
+  const [modoModal, setModoModal] = useState<'crear' | 'editar'>('crear');
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
 
-  const [search, setSearch] = useState('')
-  const [rolFilter, setRolFilter] = useState('')
-  const [estadoFilter, setEstadoFilter] = useState<string>('Todos')
-
-  const { data: usuarios = [], isLoading } = useGetUsuariosQuery({
-    search: search || undefined,
-    usuario__role__nombre:
-      rolFilter !== 'Todos' && rolFilter !== '' ? rolFilter : undefined,
-    usuario__is_active:
-      estadoFilter === 'Activo'
-        ? true
-        : estadoFilter === 'Inactivo'
-          ? false
-          : undefined,
-  })
-
-  const [createUsuario] = useCreateUsuarioMutation()
-  const [updateUsuario] = useUpdateUsuarioMutation()
-  const [deleteUsuario] = useDeleteUsuarioMutation()
-
-  const totalUsuarios = usuarios.length
-  const usuariosActivos = usuarios.filter((u) => u.estado).length
-  const administradores = usuarios.filter(
-    (u) => u.rol === 'Administrador',
-  ).length
+  const {
+    usuariosFiltrados,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    refetch,
+    search,
+    setSearch,
+    rolFilter,
+    setRolFilter,
+    estadoFilter,
+    setEstadoFilter,
+    totalUsuarios,
+    usuariosActivos,
+    administradores,
+    crearUsuario,
+    editarUsuario,
+    eliminarUsuario,
+    cambiarEstadoUsuario,
+  } = useGestionarUsuarios();
 
   const abrirModalCrear = () => {
     setModoModal('crear')
@@ -138,22 +133,33 @@ export const Gestionar_Usuarios = () => {
           onNuevoUsuario={abrirModalCrear}
         />
 
-        {isLoading ? (
-          <div className="flex h-64 items-center justify-center">
-            <div className="flex flex-col items-center gap-2">
-              <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#7C3AED] border-t-transparent" />
-              <span className="text-[#7C3AED] font-bold animate-pulse">
-                Sincronizando con Pet Home...
-              </span>
-            </div>
+        <p className="text-sm text-zinc-400">
+          Mostrando {usuariosFiltrados.length} de {totalUsuarios} usuarios
+        </p>
+
+        {isLoading && (
+          <p className="text-sm text-gray-500">Cargando usuarios desde backend...</p>
+        )}
+
+        {isError && (
+          <div className="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+            No se pudo cargar la lista de usuarios desde backend.
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="ml-2 font-semibold underline"
+            >
+              Reintentar
+            </button>
+            <pre className="mt-2 overflow-auto text-xs text-red-800/80">
+              {JSON.stringify(error, null, 2)}
+            </pre>
           </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-bold text-gray-400">
-                LISTADO DE PERSONAL ({usuarios.length})
-              </p>
-            </div>
+        )}
+
+        {isFetching && !isLoading && (
+          <p className="text-xs text-gray-400">Actualizando datos...</p>
+        )}
 
             <UserTable
               usuarios={usuarios}

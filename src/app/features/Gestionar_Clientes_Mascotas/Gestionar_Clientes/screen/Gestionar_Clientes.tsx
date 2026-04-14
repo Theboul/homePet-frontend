@@ -1,8 +1,13 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import type { Cliente, ClienteFormData } from '../types'
-import { initialClientes } from '../store'
+import {
+  useGetClientesQuery,
+  useCreateClienteMutation,
+  useUpdateClienteMutation,
+  useDeleteClienteMutation,
+} from '../store'
+import type { Cliente, ClienteCreatePayload } from '../store/gestionarClientes.types'
 import {
   ClientesTable,
   ClienteDialog,
@@ -11,7 +16,6 @@ import {
 import { Plus, Search, Filter, Users, PawPrint, MapPin } from 'lucide-react'
 
 export const GestionarClientes = () => {
-  const [clientes, setClientes] = useState<Cliente[]>(initialClientes)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<
     'all' | 'activo' | 'inactivo'
@@ -20,36 +24,30 @@ export const GestionarClientes = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingCliente, setEditingCliente] = useState<Cliente | undefined>()
-  const [isLoading, setIsLoading] = useState(false)
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [clienteToDelete, setClienteToDelete] = useState<string | null>(null)
+  const [clienteToDelete, setClienteToDelete] = useState<number | null>(null)
 
-  const filteredClientes = useMemo(() => {
-    return clientes.filter((cliente) => {
-      const matchesSearch =
-        searchQuery === '' ||
-        cliente.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        cliente.correo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        cliente.telefono.includes(searchQuery)
+  const {
+    data: paginatedData,
+    isLoading: isLoadingClientes,
+  } = useGetClientesQuery({
+    search: searchQuery,
+    estado: statusFilter !== 'all' ? (statusFilter === 'activo' ? true : false) : undefined,
+  })
 
-      const matchesStatus =
-        statusFilter === 'all' || cliente.estado === statusFilter
+  const [createCliente, { isLoading: isCreating }] = useCreateClienteMutation()
+  const [updateCliente, { isLoading: isUpdating }] = useUpdateClienteMutation()
+  const [deleteCliente] = useDeleteClienteMutation()
 
-      const matchesLocation =
-        locationFilter.trim() === '' ||
-        cliente.direccion.toLowerCase().includes(locationFilter.toLowerCase())
-
-      return matchesSearch && matchesStatus && matchesLocation
-    })
-  }, [clientes, searchQuery, statusFilter, locationFilter])
+  const clientes = paginatedData?.results || []
 
   const stats = useMemo(() => {
-    const total = clientes.length
-    const activos = clientes.filter((c) => c.estado === 'activo').length
+    const total = paginatedData?.count || 0
+    const activos = clientes.filter((c) => c.estado === true).length
     const ciudades = new Set(clientes.map((c) => c.direccion)).size
     return { total, activos, ciudades }
-  }, [clientes])
+  }, [clientes, paginatedData])
 
   const handleCreateCliente = () => {
     setEditingCliente(undefined)
@@ -61,62 +59,55 @@ export const GestionarClientes = () => {
     setIsDialogOpen(true)
   }
 
-  const handleSubmit = async (data: ClienteFormData) => {
-    setIsLoading(true)
-
-    await new Promise((resolve) => setTimeout(resolve, 800))
-
-    if (editingCliente) {
-      setClientes((prev) =>
-        prev.map((cliente) =>
-          cliente.id === editingCliente.id ? { ...cliente, ...data } : cliente,
-        ),
-      )
-    } else {
-      const newCliente: Cliente = {
-        id: Date.now().toString(),
-        idUsuario: Math.floor(Math.random() * 1000) + 100,
-        ...data,
-        rol: 'cliente',
-        fechaRegistro: new Date().toISOString().split('T')[0],
+  const handleSubmit = async (data: ClienteCreatePayload) => {
+    try {
+      if (editingCliente) {
+        // En update parcial normalmente no se manda el password.
+        const payload: any = { ...data };
+        delete payload.password;
+        await updateCliente({ id: editingCliente.id_perfil, data: payload }).unwrap()
+      } else {
+        await createCliente(data).unwrap()
       }
-
-      setClientes((prev) => [newCliente, ...prev])
+      setIsDialogOpen(false)
+      setEditingCliente(undefined)
+    } catch (err) {
+      console.error('Failed to save the client: ', err)
+      throw err // Para que el form capte el error si es necesario
     }
-
-    setIsLoading(false)
-    setIsDialogOpen(false)
-    setEditingCliente(undefined)
   }
 
-  const handleDeleteClick = (clienteId: string) => {
+  const handleDeleteClick = (clienteId: number) => {
     setClienteToDelete(clienteId)
     setDeleteDialogOpen(true)
   }
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (clienteToDelete) {
-      setClientes((prev) =>
-        prev.filter((cliente) => cliente.id !== clienteToDelete),
-      )
-      setClienteToDelete(null)
+      try {
+        await deleteCliente(clienteToDelete).unwrap()
+        setDeleteDialogOpen(false)
+        setClienteToDelete(null)
+      } catch (err) {
+        console.error('Failed to delete the client: ', err)
+      }
     }
-
-    setDeleteDialogOpen(false)
   }
 
-  const handleToggleStatus = (clienteId: string) => {
-    setClientes((prev) =>
-      prev.map((cliente) =>
-        cliente.id === clienteId
-          ? {
-              ...cliente,
-              estado: cliente.estado === 'activo' ? 'inactivo' : 'activo',
-            }
-          : cliente,
-      ),
-    )
+  const handleToggleStatus = async (clienteId: number) => {
+    try {
+        // Nota: en el backend original estado es read_only en PerfilSerializer, 
+        // pero mandaremos el update. Quizas necesite backend update para esto.
+      const cliente = clientes.find((c) => c.id_perfil === clienteId);
+      if (cliente) {
+          await updateCliente({ id: clienteId, data: { ...cliente, estado: !cliente.estado } as any }).unwrap()
+      }
+    } catch (err) {
+      console.error('Failed to toggle client status: ', err)
+    }
   }
+
+  const isLoading = isCreating || isUpdating || isLoadingClientes
 
   return (
     <section className="min-h-screen bg-white px-6 py-8">
@@ -192,7 +183,7 @@ export const GestionarClientes = () => {
                 placeholder="Buscar clientes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 w-full rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 text-[#7C3AED] outline-none placeholder:text-[#7C3AED]/60"
+                className="h-11 w-full rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 text-black outline-none placeholder:text-gray-500"
               />
             </div>
 
@@ -206,7 +197,7 @@ export const GestionarClientes = () => {
                       e.target.value as 'all' | 'activo' | 'inactivo',
                     )
                   }
-                  className="h-11 rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 pr-8 text-[#7C3AED] outline-none"
+                  className="h-11 rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 pr-8 text-black outline-none"
                 >
                   <option value="all">Todos</option>
                   <option value="activo">Activos</option>
@@ -221,7 +212,7 @@ export const GestionarClientes = () => {
                   placeholder="Ubicación o dirección..."
                   value={locationFilter}
                   onChange={(e) => setLocationFilter(e.target.value)}
-                  className="h-11 rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 pr-4 text-[#7C3AED] outline-none placeholder:text-[#7C3AED]/60"
+                  className="h-11 rounded-xl border border-[#7C3AED] bg-white px-4 pl-9 pr-4 text-black outline-none placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -238,11 +229,11 @@ export const GestionarClientes = () => {
         </div>
 
         <p className="text-sm text-black">
-          Mostrando {filteredClientes.length} de {clientes.length} clientes
+          Mostrando {clientes.length} de {stats.total} clientes
         </p>
 
         <ClientesTable
-          clientes={filteredClientes}
+          clientes={clientes}
           onEdit={handleEditCliente}
           onDelete={handleDeleteClick}
           onToggleStatus={handleToggleStatus}
