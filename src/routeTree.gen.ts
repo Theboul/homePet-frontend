@@ -22,6 +22,7 @@ import { Route as ClientClienteRouteImport } from './routes/_client/cliente'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
 import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
+import { Route as AdminGestionar_Servicios_Precios_CatalogoRouteImport } from './routes/_admin/Gestionar_Servicios_Precios_Catalogo'
 import { Route as AdminGestionar_ReservasRouteImport } from './routes/_admin/Gestionar_Reservas'
 import { Route as AdminGestionar_MascotasRouteImport } from './routes/_admin/Gestionar_Mascotas'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
@@ -90,6 +91,12 @@ const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
   path: '/Gestionar_Usuarios',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGestionar_Servicios_Precios_CatalogoRoute =
+  AdminGestionar_Servicios_Precios_CatalogoRouteImport.update({
+    id: '/Gestionar_Servicios_Precios_Catalogo',
+    path: '/Gestionar_Servicios_Precios_Catalogo',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminGestionar_ReservasRoute = AdminGestionar_ReservasRouteImport.update({
   id: '/Gestionar_Reservas',
   path: '/Gestionar_Reservas',
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
+  '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
@@ -138,6 +146,7 @@ export interface FileRoutesByTo {
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
+  '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
@@ -158,6 +167,7 @@ export interface FileRoutesById {
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/_admin/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/_admin/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
+  '/_admin/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/Gestionar_Clientes'
     | '/Gestionar_Mascotas'
     | '/Gestionar_Reservas'
+    | '/Gestionar_Servicios_Precios_Catalogo'
     | '/Gestionar_Usuarios'
     | '/bitacora'
     | '/dashboard'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/Gestionar_Clientes'
     | '/Gestionar_Mascotas'
     | '/Gestionar_Reservas'
+    | '/Gestionar_Servicios_Precios_Catalogo'
     | '/Gestionar_Usuarios'
     | '/bitacora'
     | '/dashboard'
@@ -214,6 +226,7 @@ export interface FileRouteTypes {
     | '/_admin/Gestionar_Clientes'
     | '/_admin/Gestionar_Mascotas'
     | '/_admin/Gestionar_Reservas'
+    | '/_admin/Gestionar_Servicios_Precios_Catalogo'
     | '/_admin/Gestionar_Usuarios'
     | '/_admin/bitacora'
     | '/_admin/dashboard'
@@ -330,6 +343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_UsuariosRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Gestionar_Servicios_Precios_Catalogo': {
+      id: '/_admin/Gestionar_Servicios_Precios_Catalogo'
+      path: '/Gestionar_Servicios_Precios_Catalogo'
+      fullPath: '/Gestionar_Servicios_Precios_Catalogo'
+      preLoaderRoute: typeof AdminGestionar_Servicios_Precios_CatalogoRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Reservas': {
       id: '/_admin/Gestionar_Reservas'
       path: '/Gestionar_Reservas'
@@ -372,6 +392,7 @@ interface AdminRouteChildren {
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
   AdminGestionar_MascotasRoute: typeof AdminGestionar_MascotasRoute
   AdminGestionar_ReservasRoute: typeof AdminGestionar_ReservasRoute
+  AdminGestionar_Servicios_Precios_CatalogoRoute: typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
@@ -381,6 +402,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
   AdminGestionar_MascotasRoute: AdminGestionar_MascotasRoute,
   AdminGestionar_ReservasRoute: AdminGestionar_ReservasRoute,
+  AdminGestionar_Servicios_Precios_CatalogoRoute:
+    AdminGestionar_Servicios_Precios_CatalogoRoute,
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
