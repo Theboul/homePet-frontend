@@ -20,6 +20,7 @@ type MenuChild = {
     | '/dashboard'
     | '/Gestionar_Clientes'
     | '/Gestionar_Mascotas'
+    | '/Gestionar_Reservas'
     | '/Gestionar_Usuarios'
     | '/bitacora'
     | '/cliente'
@@ -58,6 +59,13 @@ const adminMenuSections: Array<{ section: string; items: MenuItem[] }> = [
         children: [
           { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' },
           { label: 'Gestionar Mascotas', to: '/Gestionar_Mascotas' },
+        ],
+      },
+      {
+        label: 'Servicios y Reservas',
+        icon: CalendarPlus,
+        children: [
+          { label: 'Gestionar Reservas', to: '/Gestionar_Reservas' },
         ],
       },
     ],
