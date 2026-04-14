@@ -1,4 +1,4 @@
-// Barrel exports for Dashboard feature
-export { DashboardLayout } from './components/DashboardLayout'
-export { DashboardScreen } from './screen/DashboardScreen'
+export * from './components'
+export * from './screen'
 export * from './store'
+export * from './screen/DashboardScreen'

@@ -18,7 +18,7 @@ const initialForm: UsuarioFormData = {
   nombre: '',
   correo: '',
   telefono: '',
-  departamento: '',
+  direccion: '',
   rol: 'Veterinario',
   estado: 'Activo',
 };
@@ -40,7 +40,7 @@ export const UserFormModal = ({
         nombre: usuarioInicial.nombre,
         correo: usuarioInicial.correo,
         telefono: usuarioInicial.telefono,
-        departamento: usuarioInicial.departamento,
+        direccion: usuarioInicial.direccion,
         rol: usuarioInicial.rol,
         estado: usuarioInicial.estado,
       });
@@ -132,11 +132,11 @@ export const UserFormModal = ({
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-white">Departamento</label>
+            <label className="mb-2 block text-sm text-white">Dirección</label>
             <input
               type="text"
-              value={form.departamento}
-              onChange={(e) => handleChange('departamento', e.target.value)}
+              value={form.direccion}
+              onChange={(e) => handleChange('direccion', e.target.value)}
               className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
             />
           </div>

@@ -1,9 +1,15 @@
 export const TAG_TYPES = [
   'Auth',
+
   'User',
+
   'Clients',
+
   'Pets',
+  'Appointments',
+
   'Bitacora',
+  ,
   'Servicios',
   'PreciosServicio',
   'CategoriasServicio',
