@@ -12,7 +12,13 @@ import {
   useUpdateCitaMutation,
 } from '../store/clienteApi'
 import { useAppSelector } from '#/store/hooks'
-import type { Cita, CitaPayload, Mascota, ModalidadCita } from '../store/cliente.types'
+import type {
+  Cita,
+  CitaPayload,
+  Mascota,
+  ModalidadCita,
+  PrecioServicio,
+} from '../store/cliente.types'
 
 const initialForm = {
   mascota: '',
@@ -70,6 +76,28 @@ function getMascotaOwnerId(mascota: Mascota) {
 
 function getCitaOwnerMatches(cita: Cita, userId: number, userEmail: string) {
   return cita.usuario === userId || cita.correo_usuario === userEmail
+}
+
+function getPrecioServicioId(precio: PrecioServicio) {
+  if (typeof precio.servicio === 'number') return precio.servicio
+  if (precio.servicio && typeof precio.servicio === 'object') {
+    return precio.servicio.id_servicio
+  }
+
+  return precio.servicio_id
+}
+
+function isActive(value: boolean | string | null | undefined) {
+  if (value === null || value === undefined) return false
+  if (typeof value === 'boolean') return value
+
+  const normalized = value.trim().toUpperCase()
+  return normalized === 'ACTIVO' || normalized === 'ACTIVE' || normalized === 'TRUE'
+}
+
+function normalizeModalidad(value: string | null | undefined) {
+  if (!value) return ''
+  return value.trim().toUpperCase()
 }
 
 export function MisReservasScreen() {
@@ -132,9 +160,9 @@ export function MisReservasScreen() {
   )
   const availablePrecios = precios.filter(
     (precio) =>
-      precio.estado &&
-      (!selectedServiceId || precio.servicio === selectedServiceId) &&
-      precio.modalidad === form.modalidad,
+      isActive(precio.estado) &&
+      (!selectedServiceId || getPrecioServicioId(precio) === selectedServiceId) &&
+      normalizeModalidad(precio.modalidad) === form.modalidad,
   )
   const selectedPriceId = form.precio_servicio
     ? Number(form.precio_servicio)
@@ -145,10 +173,10 @@ export function MisReservasScreen() {
   const serviceAllowsModality =
     form.modalidad === 'CLINICA' || Boolean(selectedService?.disponible_domicilio)
   const priceMatchesSelection = Boolean(
-    selectedPrice &&
-      selectedPrice.estado &&
-      selectedPrice.servicio === selectedServiceId &&
-      selectedPrice.modalidad === form.modalidad,
+      selectedPrice &&
+      isActive(selectedPrice.estado) &&
+      getPrecioServicioId(selectedPrice) === selectedServiceId &&
+      normalizeModalidad(selectedPrice.modalidad) === form.modalidad,
   )
   const dateTimeIsFuture = isFutureDateTime(
     form.fecha_programada,

@@ -39,7 +39,7 @@ export const clienteApi = api.injectEndpoints({
     getRazas: builder.query<Raza[], number | undefined>({
       query: (especie) => ({
         url: '/gestion/clientes/razas/',
-        params: especie ? { especie } : undefined,
+        params: especie ? { especie_id: especie } : undefined,
       }),
       transformResponse: normalizeListResponse<Raza>,
     }),

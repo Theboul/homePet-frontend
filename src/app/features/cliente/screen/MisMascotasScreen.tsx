@@ -9,7 +9,12 @@ import {
   useGetRazasQuery,
 } from '../store/clienteApi'
 import { useAppSelector } from '#/store/hooks'
-import type { Mascota, MascotaPayload, SexoMascota } from '../store/cliente.types'
+import type {
+  Mascota,
+  MascotaPayload,
+  Raza,
+  SexoMascota,
+} from '../store/cliente.types'
 
 const initialForm = {
   nombre: '',
@@ -39,6 +44,15 @@ function getEspecieName(mascota: Mascota) {
   return 'Especie'
 }
 
+function getRazaEspecieId(raza: Raza) {
+  if (typeof raza.especie === 'number') return raza.especie
+  if (raza.especie && typeof raza.especie === 'object') {
+    return raza.especie.id_especie
+  }
+
+  return raza.especie_id
+}
+
 export function MisMascotasScreen() {
   const [form, setForm] = useState(initialForm)
   const [message, setMessage] = useState<string | null>(null)
@@ -49,6 +63,13 @@ export function MisMascotasScreen() {
   const { data: especies = [] } = useGetEspeciesQuery()
   const { data: razas = [] } = useGetRazasQuery(especieId)
   const [createMascota, { isLoading: saving }] = useCreateMiMascotaMutation()
+  const razasWithEspecie = razas.filter(
+    (raza) => getRazaEspecieId(raza) !== undefined,
+  )
+  const filteredRazas =
+    especieId && razasWithEspecie.length > 0
+      ? razas.filter((raza) => getRazaEspecieId(raza) === especieId)
+      : razas
   const mascotasWithOwner = rawMascotas.filter(
     (mascota) => getMascotaOwnerId(mascota) !== undefined,
   )
@@ -77,8 +98,8 @@ export function MisMascotasScreen() {
 
     const payload: MascotaPayload = {
       nombre: form.nombre.trim(),
-      especie: Number(form.especie),
-      raza: form.raza ? Number(form.raza) : null,
+      especie_id: Number(form.especie),
+      raza_id: form.raza ? Number(form.raza) : null,
       sexo: form.sexo as SexoMascota | '',
       color: form.color.trim(),
       fecha_nac: form.fecha_nac,
@@ -130,7 +151,7 @@ export function MisMascotasScreen() {
           disabled={!form.especie}
         >
           <option value="">Raza opcional</option>
-          {razas.map((raza) => (
+          {filteredRazas.map((raza) => (
             <option key={raza.id_raza} value={raza.id_raza}>
               {raza.nombre}
             </option>

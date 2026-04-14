@@ -10,7 +10,8 @@ export interface Especie {
 export interface Raza {
   id_raza: number
   nombre: string
-  especie: number
+  especie?: number | { id_especie: number; nombre?: string }
+  especie_id?: number
   especie_nombre?: string
 }
 
@@ -35,8 +36,8 @@ export interface Mascota {
 }
 
 export interface MascotaPayload {
-  especie: number
-  raza?: number | null
+  especie_id: number
+  raza_id?: number | null
   nombre: string
   color?: string
   sexo?: SexoMascota | ''
@@ -60,13 +61,14 @@ export interface Servicio {
 
 export interface PrecioServicio {
   id_precio: number
-  servicio: number
+  servicio: number | { id_servicio: number; nombre?: string }
+  servicio_id?: number
   servicio_nombre?: string
   variacion: string
-  modalidad: ModalidadCita
+  modalidad: ModalidadCita | string | null
   precio: string
   descripcion?: string | null
-  estado: boolean
+  estado: boolean | string | null
 }
 
 export interface Cita {
