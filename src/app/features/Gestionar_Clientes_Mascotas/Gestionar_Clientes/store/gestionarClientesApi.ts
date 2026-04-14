@@ -1,18 +1,21 @@
-import { api } from '#/store/api/api';
+import { api } from '#/store/api/api'
 import type {
   Cliente,
   ClienteCreatePayload,
   ClienteUpdatePayload,
   ClientesQueryParams,
   PaginatedClientesResponse,
-} from './gestionarClientes.types';
+} from './gestionarClientes.types'
 
 export const clientesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     // Obtener lista de clientes con paginación y filtros (Admin)
-    getClientes: builder.query<PaginatedClientesResponse, ClientesQueryParams | void>({
+    getClientes: builder.query<
+      PaginatedClientesResponse,
+      ClientesQueryParams | void
+    >({
       query: (params) => ({
-        url: 'gestion/clientes/',
+        url: 'gestion/clientes/clientes/',
         params: params || {},
       }),
       providesTags: ['Clients'],
@@ -70,7 +73,7 @@ export const clientesApi = api.injectEndpoints({
       invalidatesTags: ['Clients'],
     }),
   }),
-});
+})
 
 export const {
   useGetClientesQuery,
@@ -80,4 +83,4 @@ export const {
   useRegisterClientePublicMutation,
   useUpdateClienteMutation,
   useDeleteClienteMutation,
-} = clientesApi;
+} = clientesApi
