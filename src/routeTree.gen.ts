@@ -26,6 +26,7 @@ import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Ges
 import { Route as AdminGestionar_Servicios_Precios_CatalogoRouteImport } from './routes/_admin/Gestionar_Servicios_Precios_Catalogo'
 import { Route as AdminGestionar_ReservasRouteImport } from './routes/_admin/Gestionar_Reservas'
 import { Route as AdminGestionar_MascotasRouteImport } from './routes/_admin/Gestionar_Mascotas'
+import { Route as AdminGestionar_Historia_ClinicaRouteImport } from './routes/_admin/Gestionar_Historia_Clinica'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
@@ -113,6 +114,12 @@ const AdminGestionar_MascotasRoute = AdminGestionar_MascotasRouteImport.update({
   path: '/Gestionar_Mascotas',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGestionar_Historia_ClinicaRoute =
+  AdminGestionar_Historia_ClinicaRouteImport.update({
+    id: '/Gestionar_Historia_Clinica',
+    path: '/Gestionar_Historia_Clinica',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
   id: '/Gestionar_Clientes',
   path: '/Gestionar_Clientes',
@@ -132,6 +139,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
   '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
@@ -151,6 +159,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
   '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
@@ -173,6 +182,7 @@ export interface FileRoutesById {
   '/_client': typeof ClientRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/_admin/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/_admin/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
   '/_admin/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
   '/_admin/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/Gestionar_Clientes'
+    | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Mascotas'
     | '/Gestionar_Reservas'
     | '/Gestionar_Servicios_Precios_Catalogo'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/Gestionar_Clientes'
+    | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Mascotas'
     | '/Gestionar_Reservas'
     | '/Gestionar_Servicios_Precios_Catalogo'
@@ -235,6 +247,7 @@ export interface FileRouteTypes {
     | '/_client'
     | '/_public'
     | '/_admin/Gestionar_Clientes'
+    | '/_admin/Gestionar_Historia_Clinica'
     | '/_admin/Gestionar_Mascotas'
     | '/_admin/Gestionar_Reservas'
     | '/_admin/Gestionar_Servicios_Precios_Catalogo'
@@ -383,6 +396,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_MascotasRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Gestionar_Historia_Clinica': {
+      id: '/_admin/Gestionar_Historia_Clinica'
+      path: '/Gestionar_Historia_Clinica'
+      fullPath: '/Gestionar_Historia_Clinica'
+      preLoaderRoute: typeof AdminGestionar_Historia_ClinicaRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Clientes': {
       id: '/_admin/Gestionar_Clientes'
       path: '/Gestionar_Clientes'
@@ -409,6 +429,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
+  AdminGestionar_Historia_ClinicaRoute: typeof AdminGestionar_Historia_ClinicaRoute
   AdminGestionar_MascotasRoute: typeof AdminGestionar_MascotasRoute
   AdminGestionar_ReservasRoute: typeof AdminGestionar_ReservasRoute
   AdminGestionar_Servicios_Precios_CatalogoRoute: typeof AdminGestionar_Servicios_Precios_CatalogoRoute
@@ -419,6 +440,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
+  AdminGestionar_Historia_ClinicaRoute: AdminGestionar_Historia_ClinicaRoute,
   AdminGestionar_MascotasRoute: AdminGestionar_MascotasRoute,
   AdminGestionar_ReservasRoute: AdminGestionar_ReservasRoute,
   AdminGestionar_Servicios_Precios_CatalogoRoute:
