@@ -6,6 +6,7 @@ import {
   ShieldCheck,
   Users,
   PawPrint,
+  Stethoscope,
   ChevronLeft,
   ChevronDown,
   ChevronRight,
@@ -15,12 +16,14 @@ import {
 type MenuChild = {
   label: string
   to:
-    | '/'
+    | '/dashboard'
     | '/Gestionar_Clientes'
     | '/Gestionar_Mascotas'
     | '/Gestionar_Usuarios'
+    | '/Gestionar_Servicios_Precios_Catalogo'
+    | '/Gestionar_Historia_Clinica'
+    | '/Gestionar_Reservas'
     | '/bitacora'
-    | '/Perfil_Mascota'
     | '/about'
     | '/login'
 }
@@ -35,7 +38,7 @@ type MenuItem = {
 const menuSections: Array<{ section: string; items: MenuItem[] }> = [
   {
     section: 'Principal',
-    items: [{ label: 'Inicio', icon: Home, to: '/' }],
+    items: [{ label: 'Inicio', icon: Home, to: '/dashboard' }],
   },
   {
     section: 'Módulos del Sistema',
@@ -54,7 +57,30 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         children: [
           { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' },
           { label: 'Gestionar Mascotas', to: '/Gestionar_Mascotas' },
-          { label: 'Perfil de Mascota', to: '/Perfil_Mascota' },
+        ],
+      },
+      {
+        label: 'Clínica Veterinaria',
+        icon: Stethoscope,
+        children: [
+          {
+            label: 'Gestionar Historial Clínico',
+            to: '/Gestionar_Historia_Clinica',
+          },
+        ],
+      },
+      {
+        label: 'Servicios y Reservas',
+        icon: PawPrint,
+        children: [
+          {
+            label: 'Catálogo de Servicios',
+            to: '/Gestionar_Servicios_Precios_Catalogo',
+          },
+          {
+            label: 'Gestionar Reservas',
+            to: '/Gestionar_Reservas',
+          },
         ],
       },
     ],
@@ -75,7 +101,9 @@ export function Sidebar({
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
 
-  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
+    'Clínica Veterinaria': true,
+  })
 
   const toggleMenu = (label: string) => {
     setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }))
@@ -154,9 +182,7 @@ export function Sidebar({
                         }}
                         title={isCollapsed ? item.label : undefined}
                         className={`flex w-full items-center rounded-xl py-2.5 text-left text-sm transition-all ${
-                          isCollapsed
-                            ? 'justify-center px-0'
-                            : 'gap-3 px-3'
+                          isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
                         } ${
                           isActiveOrOpen
                             ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
