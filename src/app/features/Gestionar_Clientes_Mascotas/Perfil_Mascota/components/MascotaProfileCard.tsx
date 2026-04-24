@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import type { Mascota } from "../../Gestionar_Mascotas/types"
+import { PawPrint } from "lucide-react"
 
 interface MascotaProfileCardProps {
   mascota: Mascota
@@ -77,10 +78,10 @@ export function MascotaProfileCard({
   }
 
   return (
-    <Card className="border-[#FED7AA] bg-white">
-      <CardHeader className="bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#8B5CF6] text-white">
-        <CardTitle className="flex items-center gap-3">
-          <span className="text-3xl">🐾</span>
+    <Card className="border-[#e97426] bg-orange">
+      <CardHeader className="bg-gradient-to-r from-[#ff852d] via-[#ff852d] to-[#ff852d] text-white">
+        <CardTitle className="flex items-center gap-3 text-white text-2xl font-bold">
+          <PawPrint className="w-7 h-7 text-purple-500" />
           {mascota.nombre}
         </CardTitle>
       </CardHeader>

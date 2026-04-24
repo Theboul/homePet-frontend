@@ -5,6 +5,7 @@ import type { Mascota } from "../../Gestionar_Mascotas/types"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { PawPrint } from "lucide-react"
 import {
   useGetMascotaPerfilQuery,
   useGetMascotaHistorialClinicoQuery,
@@ -60,9 +61,9 @@ export function PerfilMascotaScreen() {
 
       {/* Selector de Mascotas */}
       <Card className="border-[#FED7AA] bg-white">
-        <CardHeader className="bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#8B5CF6] text-white">
-          <CardTitle className="flex items-center gap-3">
-            <span className="text-2xl">🐾</span>
+        <CardHeader className="bg-gradient-to-r from-[#ff8d23] via-[#ff8d23] to-[#ff8d23] text-white">
+          <CardTitle className="flex items-center gap-3 text-white text-2xl font-bold">
+            
             Mis Mascotas
           </CardTitle>
         </CardHeader>
@@ -92,7 +93,7 @@ export function PerfilMascotaScreen() {
                       : "border-[#FFEDD5] text-[#7C3AED] hover:bg-[#FFFDFB]"
                   }`}
                 >
-                  🐕 {mascota.nombre}
+                   {mascota.nombre}
                 </Button>
               ))}
             </div>
@@ -106,7 +107,7 @@ export function PerfilMascotaScreen() {
           {/* Perfil Básico */}
           {mascota && (
             <MascotaProfileCard
-              mascota={mascota}
+              mascota={mascota}  text-white
               isLoading={isLoadingMascota}
             />
           )}

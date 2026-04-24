@@ -1,28 +1,23 @@
 import { useState } from 'react'
 import { Link, useLocation } from '@tanstack/react-router'
-import { Button } from '#/components/ui/button'
 import {
-  Home,
-  ShieldCheck,
-  Users,
-  PawPrint,
-  ChevronLeft,
+  BriefcaseBusinessIcon,
+  CalendarPlus,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
+  ClipboardList,
+  Home,
+  PawPrint,
+  ShoppingBagIcon,
   type LucideIcon,
 } from 'lucide-react'
+import { Button } from '#/components/ui/button'
+import { useAppSelector } from '#/store/hooks'
 
 type MenuChild = {
   label: string
-  to:
-    | '/'
-    | '/Gestionar_Clientes'
-    | '/Gestionar_Mascotas'
-    | '/Gestionar_Usuarios'
-    | '/bitacora'
-    | '/Perfil_Mascota'
-    | '/about'
-    | '/login'
+  to: '/cliente' | '/mis-mascotas' | '/mis-reservas' | '/Perfil_Mascota'
 }
 
 type MenuItem = {
@@ -35,27 +30,44 @@ type MenuItem = {
 const menuSections: Array<{ section: string; items: MenuItem[] }> = [
   {
     section: 'Principal',
-    items: [{ label: 'Inicio', icon: Home, to: '/' }],
+    items: [{ label: 'Inicio', icon: Home, to: '/cliente' }],
   },
   {
-    section: 'Módulos del Sistema',
+    section: 'Portal cliente',
     items: [
       {
-        label: 'Autenticación y Seg.',
-        icon: ShieldCheck,
+        label: 'Mis mascotas',
+        icon: PawPrint,
         children: [
-          { label: 'Gestionar Usuarios', to: '/Gestionar_Usuarios' },
-          { label: 'Bitácora y Seguridad', to: '/bitacora' },
+          { label: 'Registrar y ver mascotas', to: '/mis-mascotas' },
+          { label: 'Perfil de mascota', to: '/Perfil_Mascota' },
         ],
       },
       {
-        label: 'Clientes y Mascotas',
-        icon: Users,
+        label: 'Reservas y citas',
+        icon: CalendarPlus,
         children: [
-          { label: 'Gestionar Clientes', to: '/Gestionar_Clientes' },
-          { label: 'Gestionar Mascotas', to: '/Gestionar_Mascotas' },
-          { label: 'Perfil de Mascota', to: '/Perfil_Mascota' },
+          { label: 'Solicitar y editar reservas', to: '/mis-reservas' },
         ],
+      },
+      {
+        label: 'Catálogo',
+        icon: ShoppingBagIcon,
+        children: [
+          
+        ],
+      },
+      {
+        label: 'Sobre Nosotros',
+        icon: BriefcaseBusinessIcon,
+        children: [
+          
+        ],
+      },
+      {
+        label: 'Historial rapido',
+        icon: ClipboardList,
+        to: '/mis-reservas',
       },
     ],
   },
@@ -66,7 +78,7 @@ function childIsActive(children: MenuChild[] | undefined, pathname: string) {
   return children.some((child) => child.to === pathname)
 }
 
-export function Sidebar({
+export function SidebarCliente({
   isCollapsed = false,
   toggleSidebar,
 }: {
@@ -74,7 +86,7 @@ export function Sidebar({
   toggleSidebar?: () => void
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
-
+  const user = useAppSelector((state) => state.auth.user)
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
 
   const toggleMenu = (label: string) => {
@@ -128,12 +140,10 @@ export function Sidebar({
               {section.items.map((item) => {
                 const Icon = item.icon
                 const hasChildren = Boolean(item.children?.length)
-
                 const isChildActive = childIsActive(item.children, pathname)
                 const itemActive = item.to === pathname || isChildActive
                 const itemOpen =
                   hasChildren && (openMenus[item.label] ?? isChildActive)
-
                 const isActiveOrOpen = itemActive || itemOpen
 
                 if (hasChildren) {
@@ -213,7 +223,7 @@ export function Sidebar({
                 return (
                   <Link
                     key={item.label}
-                    to={item.to ?? '/dashboard'}
+                    to={item.to ?? '/cliente'}
                     title={isCollapsed ? item.label : undefined}
                     className={`flex items-center rounded-xl py-2.5 text-sm transition-all ${
                       isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
@@ -241,17 +251,19 @@ export function Sidebar({
 
       <div
         className={`m-4 mt-auto flex items-center overflow-hidden border-t border-white/10 p-4 ${
-          isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'
+          isCollapsed ? 'mx-1 justify-center px-0' : 'gap-3'
         }`}
       >
         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
-          AD
+          CL
         </div>
 
         {!isCollapsed && (
           <div className="flex flex-col whitespace-nowrap">
-            <span className="text-sm font-medium">Admin</span>
-            <span className="text-xs text-white/60">admin@vetcare.com</span>
+            <span className="text-sm font-medium">Cliente</span>
+            <span className="text-xs text-white/60">
+              {user?.correo ?? 'cliente@pethome.com'}
+            </span>
           </div>
         )}
       </div>

@@ -1,15 +1,16 @@
 'use client'
 
 import { useState } from 'react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Heart, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Link } from '@tanstack/react-router'
 import { useAppDispatch, useAppSelector } from '#/store/hooks'
 import { logout } from '#/store/auth/authSlice'
 
 export const HeaderClient = () => {
   const [open, setOpen] = useState(false)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
   const navLinkStyles =
@@ -21,17 +22,26 @@ export const HeaderClient = () => {
   const registerLinkStyles =
     'inline-flex h-10 items-center justify-center rounded-lg bg-[#F97316] px-4 text-sm font-bold !text-white transition-colors hover:bg-[#EA580C]'
 
+  const handleLogout = () => {
+    dispatch(logout())
+    setOpen(false)
+    navigate({
+      to: '/login',
+      search: { register: false },
+    })
+  }
+
   return (
-    <header className="w-full border-b border-[#E5E7EB] bg-white sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-[#E5E7EB] bg-white shadow-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#F97316] flex items-center justify-center shadow-md">
-            <Heart className="w-5 h-5 text-white" fill="currentColor" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F97316] shadow-md">
+            <Heart className="h-5 w-5 text-white" fill="currentColor" />
           </div>
           <h1 className="text-xl font-extrabold text-[#7C3AED]">Pet Home</h1>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden items-center gap-8 md:flex">
           <Link to="/" className={navLinkStyles}>
             Inicio
           </Link>
@@ -46,13 +56,13 @@ export const HeaderClient = () => {
           </a>
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden items-center gap-3 md:flex">
           {isAuthenticated ? (
             <Button
-              onClick={() => dispatch(logout())}
-              className="bg-red-100 text-red-600 hover:bg-red-200 border-none font-bold"
+              onClick={handleLogout}
+              className="border-none bg-red-100 font-bold text-red-600 hover:bg-red-200"
             >
-              Cerrar sesión
+              Cerrar sesion
             </Button>
           ) : (
             <>
@@ -61,7 +71,7 @@ export const HeaderClient = () => {
                 search={{ register: false }}
                 className={loginLinkStyles}
               >
-                Iniciar sesión
+                Iniciar sesion
               </Link>
               <Link
                 to="/login"
@@ -76,15 +86,15 @@ export const HeaderClient = () => {
 
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-slate-900 p-2"
+          className="p-2 text-slate-900 md:hidden"
         >
-          {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          {open ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden px-4 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-xl">
-          <div className="py-4 space-y-1">
+        <div className="space-y-2 border-t border-slate-100 bg-white px-4 pb-6 shadow-xl md:hidden">
+          <div className="space-y-1 py-4">
             <Link
               to="/"
               onClick={() => setOpen(false)}
@@ -118,13 +128,10 @@ export const HeaderClient = () => {
           <div className="flex flex-col gap-3 pb-2">
             {isAuthenticated ? (
               <Button
-                onClick={() => {
-                  dispatch(logout())
-                  setOpen(false)
-                }}
-                className="w-full bg-red-100 text-red-600 hover:bg-red-200 font-bold border-none"
+                onClick={handleLogout}
+                className="w-full border-none bg-red-100 font-bold text-red-600 hover:bg-red-200"
               >
-                Cerrar sesión
+                Cerrar sesion
               </Button>
             ) : (
               <>
@@ -134,7 +141,7 @@ export const HeaderClient = () => {
                   onClick={() => setOpen(false)}
                   className={`${loginLinkStyles} w-full`}
                 >
-                  Iniciar sesión
+                  Iniciar sesion
                 </Link>
                 <Link
                   to="/login"

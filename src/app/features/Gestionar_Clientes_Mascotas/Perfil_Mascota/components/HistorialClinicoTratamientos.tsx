@@ -64,7 +64,7 @@ export function HistorialClinicoTratamientos({
       <Card className="border-[#FED7AA] bg-white">
         <CardHeader className="bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#8B5CF6] text-white">
           <CardTitle className="flex items-center gap-3">
-            <span className="text-2xl">📋</span>
+            <span className="text-2xl"></span>
             Historial Clínico
           </CardTitle>
         </CardHeader>
@@ -81,7 +81,7 @@ export function HistorialClinicoTratamientos({
     <Card className="border-[#FED7AA] bg-white">
       <CardHeader className="bg-gradient-to-r from-[#6D28D9] via-[#7C3AED] to-[#8B5CF6] text-white">
         <CardTitle className="flex items-center gap-3">
-          <span className="text-2xl">📋</span>
+          <span className="text-2xl"></span>
           Historial Clínico
         </CardTitle>
       </CardHeader>
