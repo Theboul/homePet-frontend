@@ -34,6 +34,8 @@ export const HeaderClient = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#E5E7EB] bg-white shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+        
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F97316] shadow-md">
             <Heart className="h-5 w-5 text-white" fill="currentColor" />
@@ -41,21 +43,25 @@ export const HeaderClient = () => {
           <h1 className="text-xl font-extrabold text-[#7C3AED]">Pet Home</h1>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          <Link to="/" className={navLinkStyles}>
-            Inicio
-          </Link>
-          <a href="/servicios" className={navLinkStyles}>
-            Servicios
-          </a>
-          <a href="/citas" className={navLinkStyles}>
-            Citas
-          </a>
-          <a href="/contacto" className={navLinkStyles}>
-            Contacto
-          </a>
-        </nav>
+        {/* 🔥 MENÚ DESKTOP SOLO SI NO ESTÁ LOGUEADA */}
+        {!isAuthenticated && (
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link to="/" className={navLinkStyles}>
+              Inicio
+            </Link>
+            <a href="/servicios" className={navLinkStyles}>
+              Servicios
+            </a>
+            <a href="/citas" className={navLinkStyles}>
+              Citas
+            </a>
+            <a href="/contacto" className={navLinkStyles}>
+              Contacto
+            </a>
+          </nav>
+        )}
 
+        {/* BOTONES */}
         <div className="hidden items-center gap-3 md:flex">
           {isAuthenticated ? (
             <Button
@@ -84,6 +90,7 @@ export const HeaderClient = () => {
           )}
         </div>
 
+        {/* BOTÓN MOBILE */}
         <button
           onClick={() => setOpen(!open)}
           className="p-2 text-slate-900 md:hidden"
@@ -92,39 +99,45 @@ export const HeaderClient = () => {
         </button>
       </div>
 
+      {/* 🔥 MENÚ MOBILE */}
       {open && (
         <div className="space-y-2 border-t border-slate-100 bg-white px-4 pb-6 shadow-xl md:hidden">
-          <div className="space-y-1 py-4">
-            <Link
-              to="/"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
-              Inicio
-            </Link>
-            <a
-              href="/servicios"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
-              Servicios
-            </a>
-            <a
-              href="/citas"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
-              Citas
-            </a>
-            <a
-              href="/contacto"
-              onClick={() => setOpen(false)}
-              className={mobileLinkStyles}
-            >
-              Contacto
-            </a>
-          </div>
 
+          {/* SOLO SI NO ESTÁ LOGUEADA */}
+          {!isAuthenticated && (
+            <div className="space-y-1 py-4">
+              <Link
+                to="/"
+                onClick={() => setOpen(false)}
+                className={mobileLinkStyles}
+              >
+                Inicio
+              </Link>
+              <a
+                href="/servicios"
+                onClick={() => setOpen(false)}
+                className={mobileLinkStyles}
+              >
+                Servicios
+              </a>
+              <a
+                href="/citas"
+                onClick={() => setOpen(false)}
+                className={mobileLinkStyles}
+              >
+                Citas
+              </a>
+              <a
+                href="/contacto"
+                onClick={() => setOpen(false)}
+                className={mobileLinkStyles}
+              >
+                Contacto
+              </a>
+            </div>
+          )}
+
+          {/* BOTONES */}
           <div className="flex flex-col gap-3 pb-2">
             {isAuthenticated ? (
               <Button
