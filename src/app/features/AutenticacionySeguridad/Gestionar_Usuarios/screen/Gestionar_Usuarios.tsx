@@ -47,16 +47,12 @@ export const Gestionar_Usuarios = () => {
     setOpenModal(true);
   };
 
-  const handleGuardar = (data: UsuarioFormData) => {
+  const handleGuardar = async (data: UsuarioFormData) => {
     if (modoModal === 'editar' && usuarioSeleccionado) {
       editarUsuario(usuarioSeleccionado.id, data);
     } else {
-      crearUsuario(data);
+      await crearUsuario(data);
     }
-
-    setOpenModal(false);
-    setUsuarioSeleccionado(null);
-    setModoModal('crear');
   };
 
   return (

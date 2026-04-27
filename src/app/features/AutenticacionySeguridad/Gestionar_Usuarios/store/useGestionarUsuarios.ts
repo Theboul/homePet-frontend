@@ -46,18 +46,8 @@ export const useGestionarUsuarios = () => {
   const administradores = usuarios.filter((u) => u.rol === 'Administrador').length;
 
   const crearUsuario = async (data: UsuarioFormData) => {
-    try {
-      const result = await createUsuarioMutation(data).unwrap();
-      setUsuarios((prev) => [result, ...prev]);
-    } catch (error) {
-      console.error('Error al crear usuario en backend, fallback local:', error);
-      const nuevoUsuario: Usuario = {
-        id: Date.now(),
-        ...data,
-        creadoEn: new Date().toISOString().split('T')[0],
-      };
-      setUsuarios((prev) => [nuevoUsuario, ...prev]);
-    }
+    await createUsuarioMutation(data).unwrap();
+    await refetch();
   };
 
   const eliminarUsuario = (id: number) => {

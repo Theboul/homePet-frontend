@@ -11,7 +11,7 @@ interface UserFormModalProps {
   modo: 'crear' | 'editar';
   usuarioInicial?: Usuario | null;
   onClose: () => void;
-  onSave: (data: UsuarioFormData) => void;
+  onSave: (data: UsuarioFormData) => Promise<void> | void;
 }
 
 const initialForm: UsuarioFormData = {
@@ -31,9 +31,13 @@ export const UserFormModal = ({
   onSave,
 }: UserFormModalProps) => {
   const [form, setForm] = useState<UsuarioFormData>(initialForm);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!open) return;
+    setSubmitError(null);
+    setIsSubmitting(false);
 
     if (modo === 'editar' && usuarioInicial) {
       setForm({
@@ -61,7 +65,7 @@ export const UserFormModal = ({
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (
@@ -72,9 +76,19 @@ export const UserFormModal = ({
       return;
     }
 
-    onSave(form);
-    setForm(initialForm);
-    onClose();
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      await onSave(form);
+      setForm(initialForm);
+      onClose();
+    } catch (error) {
+      console.error('Error al guardar usuario:', error);
+      setSubmitError('No se pudo guardar el usuario en backend. Verifica permisos o datos.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -144,9 +158,9 @@ export const UserFormModal = ({
           <div>
             <label className="mb-2 block text-sm text-white">Rol</label>
             <select
-              value={form.id_rol}
-              onChange={(e) => handleChange('id_rol', Number(e.target.value))}
-              className={`${inputClass} appearance-none`}
+              value={form.rol}
+              onChange={(e) => handleChange('rol', e.target.value as UserRole)}
+              className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
             >
               <option value="Administrador">Administrador</option>
               <option value="Veterinario">Veterinario</option>
@@ -155,21 +169,29 @@ export const UserFormModal = ({
             </select>
           </div>
 
-          <div className="md:col-span-2 relative">
-            <label className={labelClass}>Dirección</label>
-            <MapPin className="absolute left-3 top-[38px] h-5 w-5 text-[#7C3AED]" />
-            <input
-              type="text"
-              value={form.direccion}
-              onChange={(e) => handleChange('direccion', e.target.value)}
-              className={inputClass}
-            />
+          <div>
+            <label className="mb-2 block text-sm text-white">Estado</label>
+            <select
+              value={form.estado}
+              onChange={(e) => handleChange('estado', e.target.value as UserStatus)}
+              className="h-11 w-full rounded-xl border border-white bg-white px-4 text-black outline-none"
+            >
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
           </div>
 
           <div className="md:col-span-2 flex justify-end gap-3 pt-2">
+            {submitError && (
+              <p className="mr-auto rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700">
+                {submitError}
+              </p>
+            )}
+
             <button
               type="button"
               onClick={onClose}
+              disabled={isSubmitting}
               className="rounded-xl bg-white px-5 py-2.5 text-[#7C3AED] hover:opacity-90"
             >
               Cancelar
@@ -177,9 +199,14 @@ export const UserFormModal = ({
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className="rounded-xl bg-[#F97316] px-5 py-2.5 font-medium text-white hover:opacity-90"
             >
-              {modo === 'editar' ? 'Guardar cambios' : 'Guardar usuario'}
+              {isSubmitting
+                ? 'Guardando...'
+                : modo === 'editar'
+                  ? 'Guardar cambios'
+                  : 'Guardar usuario'}
             </button>
           </div>
         </form>

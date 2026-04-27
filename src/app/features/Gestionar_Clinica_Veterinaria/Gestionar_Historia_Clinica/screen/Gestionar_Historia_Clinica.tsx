@@ -609,19 +609,21 @@ export function Gestionar_Historia_Clinica() {
         }}
       />
 
-      <NuevaConsultaDialog
-        open={openNuevaConsulta}
-        onOpenChange={setOpenNuevaConsulta}
-        idHistorialClinico={historialSeleccionado?.id_historial_clinico ?? null}
-      />
+          <NuevaConsultaDialog
+          open={openNuevaConsulta}
+            onOpenChange={setOpenNuevaConsulta}
+             idHistorialClinico={historialSeleccionado?.id_historial_clinico ?? null}
+             nombreMascota={historialSeleccionado?.mascota_nombre ?? undefined}
+       />
 
-      <NuevaConsultaDialog
-        open={openEditarConsulta}
-        onOpenChange={setOpenEditarConsulta}
-        idHistorialClinico={historialSeleccionado?.id_historial_clinico ?? null}
-        modo="editar"
-        consultaInicial={consultaSeleccionada}
-      />
+        <NuevaConsultaDialog
+         open={openEditarConsulta}
+          onOpenChange={setOpenEditarConsulta}
+         idHistorialClinico={historialSeleccionado?.id_historial_clinico ?? null}
+         nombreMascota={historialSeleccionado?.mascota_nombre ?? undefined}
+          modo="editar"
+           consultaInicial={consultaSeleccionada}
+        />
 
       <EditarHistorialClinicoDialog
         open={openEditarHistorial}
