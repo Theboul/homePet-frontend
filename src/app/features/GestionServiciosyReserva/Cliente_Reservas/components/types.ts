@@ -25,6 +25,7 @@ export type ReservaFormState = {
 
 export type ReservaFormProps = {
   availablePrecios: PrecioServicio[]
+  citas?: Cita[]
   canSubmit: boolean
   creating: boolean
   dateTimeIsFuture: boolean
@@ -63,3 +64,4 @@ export type ReservasListProps = {
   onOpenCancel: (id: number) => void
   onStartEdit: (cita: Cita) => void
 }
+

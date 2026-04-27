@@ -310,6 +310,7 @@ export function MisReservasScreen() {
         serviciosError={serviciosError}
         updateField={updateField}
         updating={updating}
+        citas={citas}
       />
 
       <ReservasList

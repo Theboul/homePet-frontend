@@ -11,8 +11,29 @@ import { Textarea } from '#/components/ui/textarea'
 import { HORAS_RESERVA, buildAddressSearchLink, buildMapUrl, buildMapsLink } from './utils'
 import type { ReservaFormProps } from './types'
 
+import type { Cita } from '../store/cliente.types'
+
+const getHorasDisponibles = (
+  horas: string[],
+  citas: Cita[],
+  fecha: string
+): string[] => {
+  if (!fecha) return horas
+
+  return horas.filter((hora) => {
+    return !citas.some((cita) => {
+      return (
+        cita.fecha_programada === fecha &&
+        cita.hora_inicio.slice(0, 5) === hora &&
+        (cita.estado === 'PENDIENTE' || cita.estado === 'CONFIRMADA')
+      )
+    })
+  })
+}
+
 export function ReservaForm({
   availablePrecios,
+  citas,
   canSubmit,
   creating,
   dateTimeIsFuture,
@@ -37,6 +58,21 @@ export function ReservaForm({
   updateField,
   updating,
 }: ReservaFormProps) {
+
+   
+   const horasDisponibles = getHorasDisponibles(
+      HORAS_RESERVA,
+      citas || [],
+      form.fecha_programada
+    )
+
+    const today = new Date()
+
+    const maxDate = new Date()
+    maxDate.setDate(today.getDate() + 10)
+
+    const formatDate = (date: Date) =>
+      date.toISOString().slice(0, 10)
   return (
     <Dialog open={isFormOpen} onOpenChange={openChange}>
       <DialogContent className="max-h-[90vh] max-w-3xl overflow-hidden bg-white p-0 sm:max-w-3xl">
@@ -92,7 +128,7 @@ export function ReservaForm({
             className="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-800"
             required
           >
-            <option value="">Selecciona servicio</option>
+           <option value="">Selecciona servicio</option>
             {servicios.map((servicio) => (
               <option key={servicio.id_servicio} value={servicio.id_servicio}>
                 {servicio.nombre}
@@ -127,10 +163,10 @@ export function ReservaForm({
           <Input
             type="date"
             value={form.fecha_programada}
-            min={new Date().toISOString().slice(0, 10)}
+            min={formatDate(today)}
+            max={formatDate(maxDate)}
             onChange={(e) => updateField('fecha_programada', e.target.value)}
             required
-            className="h-11 rounded-xl border border-gray-300 bg-white px-4 text-sm text-gray-700 shadow-sm transition focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
           />
 
           <select
@@ -140,7 +176,7 @@ export function ReservaForm({
             className="h-11 w-full rounded-lg border border-gray-300 bg-white px-4 text-sm text-gray-700 shadow-sm transition focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
           >
             <option value="">Selecciona hora</option>
-            {HORAS_RESERVA.map((hora) => (
+            {horasDisponibles.map((hora) => (
               <option key={hora} value={hora}>
                 {hora}
               </option>
@@ -257,5 +293,6 @@ export function ReservaForm({
         </form>
       </DialogContent>
     </Dialog>
+    
   )
 }

@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
+import { EditReservaModal } from '../components'
 import {
   useGetMascotasOptionsQuery,
   useGetPreciosOptionsQuery,
   useGetReservasQuery,
   useGetServiciosOptionsQuery,
   usePatchEstadoReservaMutation,
-  usePatchReservaMutation,
+  useUpdateReservaMutation,
 } from '../store/reservasApi'
 import type {
   EstadoReserva,
@@ -43,7 +44,7 @@ export const Gestionar_Reservas = () => {
   const { data: mascotas = [] } = useGetMascotasOptionsQuery()
   const { data: servicios = [] } = useGetServiciosOptionsQuery()
   const { data: precios = [] } = useGetPreciosOptionsQuery()
-  const [patchReserva, { isLoading: isSaving }] = usePatchReservaMutation()
+  const [updateReserva, { isLoading: isSaving }] = useUpdateReservaMutation()
   const [patchEstadoReserva, { isLoading: isSavingStatus }] = usePatchEstadoReservaMutation()
 
   const visibleReservas = useMemo(() => {
@@ -111,7 +112,7 @@ export const Gestionar_Reservas = () => {
     }
 
     try {
-      await patchReserva({ id: editing.id, body }).unwrap()
+      await updateReserva({ id: editing.id, body }).unwrap()
       await refetch()
       setMessage('Reserva actualizada correctamente.')
       setEditing(null)
@@ -174,9 +175,9 @@ export const Gestionar_Reservas = () => {
       {message && <p className="text-sm text-[#7C3AED]">{message}</p>}
 
       {/* TABLA */}
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white text-gray-900">
+      <div className="overflow-x-auto rounded-lg border border-violet-200 bg-white text-gray-900">
         <table className="min-w-full text-sm text-gray-900">
-          <thead className="bg-gray-100">
+          <thead className="bg-violet-600 text-white" >
             <tr>
               <th className="px-3 py-2">ID</th>
               <th className="px-3 py-2">Cliente</th>
@@ -200,122 +201,30 @@ export const Gestionar_Reservas = () => {
                 <td className="px-3 py-2">{(reserva.hora_inicio || '').slice(0, 5)}</td>
                 <td className="px-3 py-2">{reserva.estado}</td>
 
-                <td className="px-3 py-2">
-                  <Button onClick={() => startEdit(reserva)}>Editar</Button>
+                <td className="px-3 py-2 ">
+                 <Button 
+                    className="bg-orange-500 text-white"
+                    onClick={() => startEdit(reserva)}
+                     
+                    >  Editar
+                 </Button>
                 </td>
               </tr>
-            ))}
+            ))} 
           </tbody>
         </table>
       </div>
 
-      {editing && (
-  <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 text-gray-900">
-    
-    <div className="flex items-center justify-between">
-      <h2 className="text-lg font-semibold">Editar Reserva #{editing.id}</h2>
-      <Button onClick={() => setEditing(null)}>Cerrar</Button>
-    </div>
-
-    <div className="grid gap-3 md:grid-cols-3">
-
-      {/* Mascota */}
-      <select
-        value={editing.mascota}
-        onChange={(e) => onChangeEditing('mascota', e.target.value)}
-        className="h-10 border rounded px-3 text-sm text-gray-900"
-      >
-        <option value="">Mascota</option>
-        {mascotas.map((m) => (
-          <option key={m.id_mascota} value={m.id_mascota}>
-            {m.nombre}
-          </option>
-        ))}
-      </select>
-
-      {/* Servicio */}
-      <select
-        value={editing.servicio}
-        onChange={(e) => onChangeEditing('servicio', e.target.value)}
-        className="h-10 border rounded px-3 text-sm text-gray-900"
-      >
-        <option value="">Servicio</option>
-        {servicios.filter(s => s.estado).map((s) => (
-          <option key={s.id_servicio} value={s.id_servicio}>
-            {s.nombre}
-          </option>
-        ))}
-      </select>
-
-      {/* Modalidad */}
-      <select
-        value={editing.modalidad}
-        onChange={(e) => onChangeEditing('modalidad', e.target.value)}
-        className="h-10 border rounded px-3 text-sm text-gray-900"
-      >
-        {modalidadOptions.map((m) => (
-          <option key={m} value={m}>{m}</option>
-        ))}
-      </select>
-
-      {/* Precio */}
-      <select
-        value={editing.precio_servicio}
-        onChange={(e) => onChangeEditing('precio_servicio', e.target.value)}
-        className="h-10 border rounded px-3 text-sm text-gray-900"
-      >
-        <option value="">Precio</option>
-        {preciosFiltrados.map((p) => (
-          <option key={p.id_precio} value={p.id_precio}>
-            {p.variacion} - Bs. {p.precio}
-          </option>
-        ))}
-      </select>
-
-      {/* Fecha */}
-      <Input
-        type="date"
-        value={editing.fecha_programada}
-        onChange={(e) => onChangeEditing('fecha_programada', e.target.value)}
-      />
-
-      {/* Hora */}
-      <Input
-        type="time"
-        value={editing.hora_inicio}
-        onChange={(e) => onChangeEditing('hora_inicio', e.target.value)}
-      />
-
-      {/* Dirección */}
-      {editing.modalidad === 'DOMICILIO' && (
-        <Input
-          className="md:col-span-3"
-          placeholder="Dirección"
-          value={editing.direccion_cita}
-          onChange={(e) => onChangeEditing('direccion_cita', e.target.value)}
+        <EditReservaModal
+        editing={editing}
+        setEditing={setEditing}
+        onChangeEditing={onChangeEditing}
+        saveEdit={saveEdit}
+        mascotas={mascotas}
+        servicios={servicios}
+        preciosFiltrados={preciosFiltrados}
+        modalidadOptions={modalidadOptions}
         />
-      )}
-
-      {/* Descripción */}
-      <Input
-        className="md:col-span-3"
-        placeholder="Descripción"
-        value={editing.descripcion}
-        onChange={(e) => onChangeEditing('descripcion', e.target.value)}
-      />
-    </div>
-
-    <div className="flex gap-3">
-      <Button onClick={saveEdit}>
-        Guardar cambios
-      </Button>
-
-      <Button variant="outline" onClick={() => setEditing(null)}>
-        Cancelar
-      </Button>
-    </div>
-  </div>
-)}
     </section>
   )
 }
