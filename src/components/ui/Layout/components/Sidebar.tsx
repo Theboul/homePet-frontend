@@ -191,9 +191,7 @@ export function Sidebar({
                       >
                         <Icon
                           className={`h-5 w-5 flex-shrink-0 ${
-                            isActiveOrOpen
-                              ? 'text-orange-300'
-                              : 'text-white/70'
+                            isActiveOrOpen ? 'text-orange-300' : 'text-white/70'
                           }`}
                         />
 
