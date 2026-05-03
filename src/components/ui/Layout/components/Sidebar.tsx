@@ -2,17 +2,16 @@ import { useState } from 'react'
 import { Link, useLocation } from '@tanstack/react-router'
 import { Button } from '#/components/ui/button'
 import {
-  CalendarPlus,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Home,
-  PawPrint,
   ShieldCheck,
   Users,
+  PawPrint,
+  Stethoscope,
+  ChevronLeft,
+  ChevronDown,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react'
-import { useAppSelector } from '#/store/hooks'
 
 type MenuChild = {
   label: string
@@ -20,12 +19,11 @@ type MenuChild = {
     | '/dashboard'
     | '/Gestionar_Clientes'
     | '/Gestionar_Mascotas'
-    | '/Gestionar_Reservas'
     | '/Gestionar_Usuarios'
+    | '/Gestionar_Servicios_Precios_Catalogo'
+    | '/Gestionar_Historia_Clinica'
+    | '/Gestionar_Reservas'
     | '/bitacora'
-    | '/cliente'
-    | '/mis-mascotas'
-    | '/mis-reservas'
     | '/about'
     | '/login'
 }
@@ -37,7 +35,7 @@ type MenuItem = {
   children?: MenuChild[]
 }
 
-const adminMenuSections: Array<{ section: string; items: MenuItem[] }> = [
+const menuSections: Array<{ section: string; items: MenuItem[] }> = [
   {
     section: 'Principal',
     items: [{ label: 'Inicio', icon: Home, to: '/dashboard' }],
@@ -62,35 +60,27 @@ const adminMenuSections: Array<{ section: string; items: MenuItem[] }> = [
         ],
       },
       {
-        label: 'Servicios y Reservas',
-        icon: CalendarPlus,
+        label: 'Clínica Veterinaria',
+        icon: Stethoscope,
         children: [
-          { label: 'Gestionar Reservas', to: '/Gestionar_Reservas' },
+          {
+            label: 'Gestionar Historial Clínico',
+            to: '/Gestionar_Historia_Clinica',
+          },
         ],
       },
-    ],
-  },
-]
-
-const clientMenuSections: Array<{ section: string; items: MenuItem[] }> = [
-  {
-    section: 'Principal',
-    items: [{ label: 'Inicio', icon: Home, to: '/cliente' }],
-  },
-  {
-    section: 'Mi cuenta',
-    items: [
       {
-        label: 'Mascotas',
+        label: 'Servicios y Reservas',
         icon: PawPrint,
-        children: [{ label: 'Agregar mascota', to: '/mis-mascotas' }],
-      },
-      {
-        label: 'Reservas',
-        icon: CalendarPlus,
         children: [
-          { label: 'Agregar reserva', to: '/mis-reservas' },
-          { label: 'Modificar reserva', to: '/mis-reservas' },
+          {
+            label: 'Catálogo de Servicios',
+            to: '/Gestionar_Servicios_Precios_Catalogo',
+          },
+          {
+            label: 'Gestionar Reservas',
+            to: '/Gestionar_Reservas',
+          },
         ],
       },
     ],
@@ -110,10 +100,10 @@ export function Sidebar({
   toggleSidebar?: () => void
 }) {
   const pathname = useLocation({ select: (state) => state.pathname })
-  const user = useAppSelector((state) => state.auth.user)
-  const menuSections =
-    user?.role === 'CLIENT' ? clientMenuSections : adminMenuSections
-  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
+
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
+    'Clínica Veterinaria': true,
+  })
 
   const toggleMenu = (label: string) => {
     setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }))
@@ -166,10 +156,12 @@ export function Sidebar({
               {section.items.map((item) => {
                 const Icon = item.icon
                 const hasChildren = Boolean(item.children?.length)
+
                 const isChildActive = childIsActive(item.children, pathname)
                 const itemActive = item.to === pathname || isChildActive
                 const itemOpen =
                   hasChildren && (openMenus[item.label] ?? isChildActive)
+
                 const isActiveOrOpen = itemActive || itemOpen
 
                 if (hasChildren) {
@@ -190,9 +182,7 @@ export function Sidebar({
                         }}
                         title={isCollapsed ? item.label : undefined}
                         className={`flex w-full items-center rounded-xl py-2.5 text-left text-sm transition-all ${
-                          isCollapsed
-                            ? 'justify-center px-0'
-                            : 'gap-3 px-3'
+                          isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
                         } ${
                           isActiveOrOpen
                             ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
@@ -209,7 +199,7 @@ export function Sidebar({
 
                         {!isCollapsed && (
                           <>
-                            <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                            <span className="flex-1 whitespace-nowrap">
                               {item.label}
                             </span>
                             {itemOpen ? (
@@ -265,9 +255,7 @@ export function Sidebar({
                       }`}
                     />
                     {!isCollapsed && (
-                      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
-                        {item.label}
-                      </span>
+                      <span className="whitespace-nowrap">{item.label}</span>
                     )}
                   </Link>
                 )
@@ -283,17 +271,13 @@ export function Sidebar({
         }`}
       >
         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
-          {user?.correo?.slice(0, 2).toUpperCase() || 'AD'}
+          AD
         </div>
 
         {!isCollapsed && (
           <div className="flex flex-col whitespace-nowrap">
-            <span className="text-sm font-medium">
-              {user?.role === 'CLIENT' ? 'Cliente' : 'Admin'}
-            </span>
-            <span className="text-xs text-white/60">
-              {user?.correo || 'admin@vetcare.com'}
-            </span>
+            <span className="text-sm font-medium">Admin</span>
+            <span className="text-xs text-white/60">admin@vetcare.com</span>
           </div>
         )}
       </div>

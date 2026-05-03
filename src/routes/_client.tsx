@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { DashboardLayout } from '@/app/features/dashboard/components/DashboardLayout'
+import { DashboardLayoutClient } from '@/app/features/dashboard/components/DashboardLayoutcliente'
 import { authApi } from '#/store/auth/authApi'
 import { store } from '#/store/store'
 
@@ -49,8 +49,8 @@ export const Route = createFileRoute('/_client')({
 
 function ClientLayoutComponent() {
   return (
-    <DashboardLayout>
+    <DashboardLayoutClient>
       <Outlet />
-    </DashboardLayout>
+    </DashboardLayoutClient>
   )
 }
