@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { MoreVertical, Eye, Pencil, Trash2 } from "lucide-react"
 import type { Mascota } from "../types"
+import { useCanDelete, useCanEdit } from "#/store/components/component.hooks"
 
 interface MascotasTableProps {
   mascotas: Mascota[]
@@ -146,6 +147,9 @@ function ActionMenu({
   const itemClassName =
     "flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition"
 
+  const canEdit = useCanEdit("CLI_MASCOTAS")
+  const canDelete = useCanDelete("CLI_MASCOTAS")
+
   const menu =
     open && mounted
       ? createPortal(
@@ -172,29 +176,33 @@ function ActionMenu({
               <span>Ver detalles</span>
             </button>
 
-            <button
-              type="button"
-              onClick={() => {
-                onEdit(mascota)
-                setOpen(false)
-              }}
-              className={`${itemClassName} border-t border-[#F3F4F6] text-[#374151] hover:bg-[#FFF7ED]`}
-            >
-              <Pencil className="h-4 w-4 text-[#F97316]" />
-              <span>Editar</span>
-            </button>
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => {
+                  onEdit(mascota)
+                  setOpen(false)
+                }}
+                className={`${itemClassName} border-t border-[#F3F4F6] text-[#374151] hover:bg-[#FFF7ED]`}
+              >
+                <Pencil className="h-4 w-4 text-[#F97316]" />
+                <span>Editar</span>
+              </button>
+            )}
 
-            <button
-              type="button"
-              onClick={() => {
-                onDelete(mascota)
-                setOpen(false)
-              }}
-              className={`${itemClassName} border-t border-[#F3F4F6] text-red-600 hover:bg-red-50`}
-            >
-              <Trash2 className="h-4 w-4" />
-              <span>Eliminar</span>
-            </button>
+            {canDelete && (
+              <button
+                type="button"
+                onClick={() => {
+                  onDelete(mascota)
+                  setOpen(false)
+                }}
+                className={`${itemClassName} border-t border-[#F3F4F6] text-red-600 hover:bg-red-50`}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>Eliminar</span>
+              </button>
+            )}
           </div>,
           document.body,
         )

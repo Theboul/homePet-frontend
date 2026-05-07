@@ -13,14 +13,11 @@ export const HeaderClient = () => {
   const navigate = useNavigate()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
+  // Cambié text-slate-700 por text-slate-900 para máximo contraste
   const navLinkStyles =
-    'text-sm font-bold !text-[#111827] hover:!text-[#7C3AED] transition-colors'
+    'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
   const mobileLinkStyles =
     'block text-base font-bold !text-[#111827] hover:!text-[#7C3AED] py-2'
-  const loginLinkStyles =
-    'inline-flex h-10 items-center justify-center rounded-lg border border-[#7C3AED] bg-white px-4 text-sm font-bold !text-[#7C3AED] transition-colors hover:bg-[#7C3AED] hover:!text-white'
-  const registerLinkStyles =
-    'inline-flex h-10 items-center justify-center rounded-lg bg-[#F97316] px-4 text-sm font-bold !text-white transition-colors hover:bg-[#EA580C]'
 
   const handleLogout = () => {
     dispatch(logout())
@@ -34,7 +31,7 @@ export const HeaderClient = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#E5E7EB] bg-white shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-        
+
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F97316] shadow-md">
@@ -72,19 +69,18 @@ export const HeaderClient = () => {
             </Button>
           ) : (
             <>
-              <Link
-                to="/login"
-                search={{ register: false }}
-                className={loginLinkStyles}
-              >
-                Iniciar sesion
+              <Link to="/login" search={{ register: false }}>
+                <Button
+                  variant="outline"
+                  className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
+                >
+                  Iniciar sesion
+                </Button>
               </Link>
-              <Link
-                to="/login"
-                search={{ register: true }}
-                className={registerLinkStyles}
-              >
-                Registrarse
+              <Link to="/login" search={{ register: true }}>
+                <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
+                  Registrarse
+                </Button>
               </Link>
             </>
           )}
@@ -148,21 +144,18 @@ export const HeaderClient = () => {
               </Button>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  search={{ register: false }}
-                  onClick={() => setOpen(false)}
-                  className={`${loginLinkStyles} w-full`}
-                >
-                  Iniciar sesion
+                <Link to="/login" search={{ register: false }}>
+                  <Button
+                    variant="outline"
+                    className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
+                  >
+                    Iniciar sesion
+                  </Button>
                 </Link>
-                <Link
-                  to="/login"
-                  search={{ register: true }}
-                  onClick={() => setOpen(false)}
-                  className={`${registerLinkStyles} w-full`}
-                >
-                  Registrarse
+                <Link to="/login" search={{ register: true }}>
+                  <Button className="w-full bg-[#F97316] text-white font-bold border-none">
+                    Registrarse
+                  </Button>
                 </Link>
               </>
             )}

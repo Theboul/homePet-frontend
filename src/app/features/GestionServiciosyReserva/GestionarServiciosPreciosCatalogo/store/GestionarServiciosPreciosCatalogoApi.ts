@@ -7,19 +7,23 @@ import type {
   Servicio,
   ServicioPayload,
   ToggleEstadoResponse,
+  Especie,
+  EspeciePayload,
+  Raza,
+  RazaPayload,
 } from './GestionarServiciosPreciosCatalogo'
 
 export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getCategoriasServicio: builder.query<CategoriaServicio[], void>({
       query: () => ({
-        url: 'servicios/categorias-servicio/',
+        url: 'gestion/servicios/categorias-servicio/',
       }),
       providesTags: ['CategoriasServicio'],
     }),
 
     getCategoriaServicioById: builder.query<CategoriaServicio, number>({
-      query: (id) => `servicios/categorias/${id}/`,
+      query: (id) => `gestion/servicios/categorias/${id}/`,
       providesTags: (_result, _error, id) => [
         { type: 'CategoriasServicio', id },
       ],
@@ -30,7 +34,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
       CategoriaServicioPayload
     >({
       query: (body) => ({
-        url: 'servicios/categorias-servicio/',
+        url: 'gestion/servicios/categorias-servicio/',
         method: 'POST',
         body,
       }),
@@ -42,7 +46,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
       { id: number; data: CategoriaServicioPayload }
     >({
       query: ({ id, data }) => ({
-        url: `servicios/categorias/${id}/`,
+        url: `gestion/servicios/categorias/${id}/`,
         method: 'PUT',
         body: data,
       }),
@@ -54,7 +58,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
 
     deleteCategoriaServicio: builder.mutation<ToggleEstadoResponse, number>({
       query: (id) => ({
-        url: `servicios/categorias/${id}/`,
+        url: `gestion/servicios/categorias/${id}/`,
         method: 'DELETE',
       }),
       invalidatesTags: ['CategoriasServicio', 'Servicios'],
@@ -65,19 +69,19 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
     // =========================
     getServicios: builder.query<Servicio[], void>({
       query: () => ({
-        url: 'servicios/',
+        url: 'gestion/servicios/',
       }),
       providesTags: ['Servicios'],
     }),
 
     getServicioById: builder.query<Servicio, number>({
-      query: (id) => `servicios/${id}/`,
+      query: (id) => `gestion/servicios/${id}/`,
       providesTags: (_result, _error, id) => [{ type: 'Servicios', id }],
     }),
 
     createServicio: builder.mutation<Servicio, ServicioPayload>({
       query: (body) => ({
-        url: 'servicios/',
+        url: 'gestion/servicios/',
         method: 'POST',
         body,
       }),
@@ -89,7 +93,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
       { id: number; data: ServicioPayload }
     >({
       query: ({ id, data }) => ({
-        url: `servicios/${id}/`,
+        url: `gestion/servicios/${id}/`,
         method: 'PUT',
         body: data,
       }),
@@ -101,7 +105,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
 
     deleteServicio: builder.mutation<ToggleEstadoResponse, number>({
       query: (id) => ({
-        url: `servicios/${id}/`,
+        url: `gestion/servicios/${id}/`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Servicios', 'PreciosServicio'],
@@ -112,13 +116,13 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
     // =========================
     getPreciosServicio: builder.query<PrecioServicio[], void>({
       query: () => ({
-        url: 'servicios/precios-servicio/',
+        url: 'gestion/servicios/precios-servicio/',
       }),
       providesTags: ['PreciosServicio'],
     }),
 
     getPrecioServicioById: builder.query<PrecioServicio, number>({
-      query: (id) => `servicios/precios-servicio/${id}/`,
+      query: (id) => `gestion/servicios/precios-servicio/${id}/`,
       providesTags: (_result, _error, id) => [{ type: 'PreciosServicio', id }],
     }),
 
@@ -127,7 +131,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
       PrecioServicioPayload
     >({
       query: (body) => ({
-        url: 'servicios/precios-servicio/',
+        url: 'gestion/servicios/precios-servicio/',
         method: 'POST',
         body,
       }),
@@ -139,7 +143,7 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
       { id: number; data: PrecioServicioPayload }
     >({
       query: ({ id, data }) => ({
-        url: `servicios/precios-servicio/${id}/`,
+        url: `gestion/servicios/precios-servicio/${id}/`,
         method: 'PUT',
         body: data,
       }),
@@ -151,10 +155,83 @@ export const gestionarCatalogoServiciosPreciosApi = api.injectEndpoints({
 
     deletePrecioServicio: builder.mutation<ToggleEstadoResponse, number>({
       query: (id) => ({
-        url: `servicios/precios-servicio/${id}/`,
+        url: `gestion/servicios/precios-servicio/${id}/`,
         method: 'DELETE',
       }),
       invalidatesTags: ['PreciosServicio'],
+    }),
+
+    // =========================
+    // Especies
+    // =========================
+    getEspecies: builder.query<Especie[], void>({
+      query: () => ({
+        url: 'gestion/servicios/especies/',
+      }),
+      providesTags: ['Especies'],
+    }),
+
+    createEspecie: builder.mutation<Especie, EspeciePayload>({
+      query: (body) => ({
+        url: 'gestion/servicios/especies/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Especies'],
+    }),
+
+    updateEspecie: builder.mutation<Especie, { id: number; data: EspeciePayload }>({
+      query: ({ id, data }) => ({
+        url: `gestion/servicios/especies/${id}/`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Especies'],
+    }),
+
+    deleteEspecie: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `gestion/servicios/especies/${id}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Especies', 'Razas'],
+    }),
+
+    // =========================
+    // Razas
+    // =========================
+    getRazas: builder.query<Raza[], { especie_id?: number } | void>({
+      query: (params) => ({
+        url: 'gestion/servicios/razas/',
+        params: params || undefined,
+      }),
+      providesTags: ['Razas'],
+    }),
+
+    createRaza: builder.mutation<Raza, RazaPayload>({
+      query: (body) => ({
+        url: 'gestion/servicios/razas/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Razas'],
+    }),
+
+    updateRaza: builder.mutation<Raza, { id: number; data: RazaPayload }>({
+      query: ({ id, data }) => ({
+        url: `gestion/servicios/razas/${id}/`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Razas'],
+    }),
+
+    deleteRaza: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `gestion/servicios/razas/${id}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Razas'],
     }),
   }),
 })
@@ -180,4 +257,14 @@ export const {
   useCreatePrecioServicioMutation,
   useUpdatePrecioServicioMutation,
   useDeletePrecioServicioMutation,
+
+  useGetEspeciesQuery,
+  useCreateEspecieMutation,
+  useUpdateEspecieMutation,
+  useDeleteEspecieMutation,
+
+  useGetRazasQuery,
+  useCreateRazaMutation,
+  useUpdateRazaMutation,
+  useDeleteRazaMutation,
 } = gestionarCatalogoServiciosPreciosApi

@@ -15,12 +15,14 @@ interface PreciosServicioTableProps {
   data: PrecioServicio[]
   onEdit: (precio: PrecioServicio) => void
   onToggleStatus: (precio: PrecioServicio) => void
+  canEdit?: boolean
 }
 
 export function PreciosServicioTable({
   data,
   onEdit,
   onToggleStatus,
+  canEdit = true,
 }: PreciosServicioTableProps) {
   const [search, setSearch] = useState('')
   const [pagination, setPagination] = useState({
@@ -48,6 +50,7 @@ export function PreciosServicioTable({
   const columns = getPreciosServicioColumns({
     onEdit,
     onToggleStatus,
+    canEdit,
   })
 
   const table = useReactTable({

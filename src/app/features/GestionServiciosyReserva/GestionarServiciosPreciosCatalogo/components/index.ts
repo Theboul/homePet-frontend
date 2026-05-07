@@ -13,3 +13,9 @@ export * from './ServicioForm'
 export * from './serviciosColumns'
 export * from './ServiciosTable'
 export * from './DeleteServicioConfirmation'
+
+// Especies y Razas
+export * from './EspeciesTable'
+export * from './RazasTable'
+export * from './EspecieDialog'
+export * from './RazaDialog'

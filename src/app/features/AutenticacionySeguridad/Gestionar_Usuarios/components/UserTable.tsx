@@ -6,6 +6,7 @@ interface UserTableProps {
   onEliminar: (id: number) => void;
   onCambiarEstado: (id: number) => void;
   onEditar: (usuario: Usuario) => void;
+  canEdit?: boolean;
 }
 
 export const UserTable = ({
@@ -13,6 +14,7 @@ export const UserTable = ({
   onEliminar,
   onCambiarEstado,
   onEditar,
+  canEdit = true,
 }: UserTableProps) => {
   const [menuAbiertoId, setMenuAbiertoId] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -42,9 +44,11 @@ export const UserTable = ({
               <th className="px-4 py-4 text-sm font-semibold text-white">Rol</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Estado</th>
               <th className="px-4 py-4 text-sm font-semibold text-white">Creado</th>
-              <th className="px-4 py-4 text-sm font-semibold text-white text-right">
-                Acciones
-              </th>
+              {canEdit && (
+                <th className="px-4 py-4 text-sm font-semibold text-white text-right">
+                  Acciones
+                </th>
+              )}
             </tr>
           </thead>
 
@@ -95,68 +99,70 @@ export const UserTable = ({
 
                   <td className="px-4 py-4 text-black">{usuario.creadoEn}</td>
 
-                  <td className="relative px-4 py-4 text-right">
-                    <div
-                      className="inline-block"
-                      ref={menuAbiertoId === usuario.id ? menuRef : null}
-                    >
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMenuAbiertoId((prev) =>
-                            prev === usuario.id ? null : usuario.id
-                          )
-                        }
-                        className="rounded-lg px-3 py-2 text-[#F97316] hover:bg-[#F97316]/10"
+                  {canEdit && (
+                    <td className="relative px-4 py-4 text-right">
+                      <div
+                        className="inline-block"
+                        ref={menuAbiertoId === usuario.id ? menuRef : null}
                       >
-                        ⋯
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setMenuAbiertoId((prev) =>
+                              prev === usuario.id ? null : usuario.id
+                            )
+                          }
+                          className="rounded-lg px-3 py-2 text-[#F97316] hover:bg-[#F97316]/10"
+                        >
+                          ⋯
+                        </button>
 
-                      {menuAbiertoId === usuario.id && (
-                        <div className="absolute right-4 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-[#F97316]/40 bg-white shadow-2xl">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              onEditar(usuario);
-                              setMenuAbiertoId(null);
-                            }}
-                            className="flex w-full items-center gap-3 px-4 py-3 text-left text-black hover:bg-[#F97316]/10"
-                          >
-                            <span>✎</span>
-                            <span>Editar</span>
-                          </button>
+                        {menuAbiertoId === usuario.id && (
+                          <div className="absolute right-4 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-[#F97316]/40 bg-white shadow-2xl">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onEditar(usuario);
+                                setMenuAbiertoId(null);
+                              }}
+                              className="flex w-full items-center gap-3 px-4 py-3 text-left text-black hover:bg-[#F97316]/10"
+                            >
+                              <span>✎</span>
+                              <span>Editar</span>
+                            </button>
 
-                          <button
-                            type="button"
-                            onClick={() => {
-                              onCambiarEstado(usuario.id);
-                              setMenuAbiertoId(null);
-                            }}
-                            className="flex w-full items-center gap-3 px-4 py-3 text-left text-black hover:bg-[#F97316]/10"
-                          >
-                            <span>⟳</span>
-                            <span>
-                              {usuario.estado === 'Activo'
-                                ? 'Desactivar'
-                                : 'Activar'}
-                            </span>
-                          </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onCambiarEstado(usuario.id);
+                                setMenuAbiertoId(null);
+                              }}
+                              className="flex w-full items-center gap-3 px-4 py-3 text-left text-black hover:bg-[#F97316]/10"
+                            >
+                              <span>⟳</span>
+                              <span>
+                                {usuario.estado === 'Activo'
+                                  ? 'Desactivar'
+                                  : 'Activar'}
+                              </span>
+                            </button>
 
-                          <button
-                            type="button"
-                            onClick={() => {
-                              onEliminar(usuario.id);
-                              setMenuAbiertoId(null);
-                            }}
-                            className="flex w-full items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50"
-                          >
-                            <span>🗑</span>
-                            <span>Eliminar</span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </td>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onEliminar(usuario.id);
+                                setMenuAbiertoId(null);
+                              }}
+                              className="flex w-full items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50"
+                            >
+                              <span>🗑</span>
+                              <span>Eliminar</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))
             )}

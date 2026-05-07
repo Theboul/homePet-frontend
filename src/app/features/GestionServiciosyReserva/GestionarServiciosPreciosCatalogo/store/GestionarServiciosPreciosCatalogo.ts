@@ -45,6 +45,29 @@ export type PrecioServicioPayload = {
   descripcion?: string | null
   estado: boolean
 }
+
+// =========================
+// Especies y Razas
+// =========================
+export interface Especie {
+  id_especie: number
+  nombre: string
+}
+export interface EspeciePayload {
+  nombre: string
+}
+
+export interface Raza {
+  id_raza: number
+  nombre: string
+  especie: number
+  especie_nombre?: string
+}
+export interface RazaPayload {
+  nombre: string
+  especie: number
+}
+
 export interface ToggleEstadoResponse {
   message: string
   estado: boolean

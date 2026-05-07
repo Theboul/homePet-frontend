@@ -7,11 +7,15 @@ import {
 } from '../components';
 import { useGestionarUsuarios } from '../store';
 import type { Usuario, UsuarioFormData } from '../store';
+import { useCanCreate, useCanEdit } from '#/store/auth/auth.hooks';
 
 export const Gestionar_Usuarios = () => {
   const [openModal, setOpenModal] = useState(false);
   const [modoModal, setModoModal] = useState<'crear' | 'editar'>('crear');
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
+
+  const canCreate = useCanCreate('SEG_USUARIOS');
+  const canEdit = useCanEdit('SEG_USUARIOS');
 
   const {
     usuariosFiltrados,
@@ -79,6 +83,7 @@ export const Gestionar_Usuarios = () => {
           estadoFilter={estadoFilter}
           setEstadoFilter={setEstadoFilter}
           onNuevoUsuario={abrirModalCrear}
+          canCreate={canCreate}
         />
 
         <p className="text-sm text-zinc-400">
@@ -114,6 +119,7 @@ export const Gestionar_Usuarios = () => {
           onEliminar={eliminarUsuario}
           onCambiarEstado={cambiarEstadoUsuario}
           onEditar={abrirModalEditar}
+          canEdit={canEdit}
         />
 
         <UserFormModal

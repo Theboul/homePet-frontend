@@ -1,20 +1,21 @@
 export interface Bitacora {
   id_bitacora: number;
+  id_veterinaria?: number;
   fecha_hora: string;
-  usuario_id: number | null;
-  usuario_nombre: string;
+  id_usuario: number | null;
+  nombre_usuario: string;
+  correo_usuario?: string;
   accion: string;
-  accion_display: string;
   descripcion: string;
   ip: string | null;
   user_agent: string;
   modulo: string | null;
-  modulo_display: string | null;
   entidad_tipo: string;
   entidad_id: string;
   resultado: string;
-  resultado_display: string;
   metadatos: Record<string, any>;
+  path?: string;
+  method?: string;
 }
 
 export interface PaginatedResponse<T> {

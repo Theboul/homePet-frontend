@@ -30,17 +30,19 @@ export function useGestionarMascotas() {
     error: especiesError,
   } = useGetEspeciesMascotaQuery()
 
-  const [triggerRazas, { data: razasData = [], isLoading: razasLoading }] =
+  const [triggerRazas, { data: razasData, isLoading: razasLoading }] =
     useLazyGetRazasByEspecieQuery()
 
-  const [razas, setRazas] = useState(razasData)
+  const [razas, setRazas] = useState(razasData || [])
 
   const [createMascotaMutation] = useCreateMascotaMutation()
   const [updateMascotaMutation] = useUpdateMascotaMutation()
   const [deleteMascotaMutation] = useDeleteMascotaMutation()
 
   useEffect(() => {
-    setRazas(razasData)
+    if (razasData) {
+      setRazas(razasData)
+    }
   }, [razasData])
 
   useEffect(() => {
