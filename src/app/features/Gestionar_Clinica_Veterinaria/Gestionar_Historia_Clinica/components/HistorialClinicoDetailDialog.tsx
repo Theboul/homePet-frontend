@@ -6,12 +6,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import type {
-  ClinicalHistory,
-  ConsultaClinica,
-  Tratamiento,
-  VacunaAplicada,
+import {
+  type ClinicalHistory,
+  type ConsultaClinica,
+  type Tratamiento,
+  type VacunaAplicada,
 } from "../store"
+import { useCanCreate } from "@/store/auth/auth.hooks"
 
 interface HistorialClinicoDetailDialogProps {
   open: boolean
@@ -32,27 +33,11 @@ interface HistorialClinicoDetailDialogProps {
   onVerDetalleConsulta?: (consulta: ConsultaClinica) => void
 }
 
-function formatearFecha(fecha?: string | null) {
-  if (!fecha) return "Sin fecha"
-
-  const date = new Date(fecha)
-  if (Number.isNaN(date.getTime())) return fecha
-
-  return new Intl.DateTimeFormat("es-BO", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date)
-}
-
-function valorTexto(valor?: string | number | null, sufijo = "") {
-  if (valor === null || valor === undefined || valor === "") {
-    return "No registrado"
-  }
-  return `${valor}${sufijo}`
-}
+import {
+  HistorialGeneralInfo,
+  HistorialObservaciones,
+  ConsultaCard,
+} from "./sections"
 
 export function HistorialClinicoDetailDialog({
   open,
@@ -76,6 +61,8 @@ export function HistorialClinicoDetailDialog({
     })
   }, [historial])
 
+  const canCreate = useCanCreate("CLI_HISTORIALES")
+
   if (!historial) return null
 
   return (
@@ -87,88 +74,20 @@ export function HistorialClinicoDetailDialog({
               Detalle del historial clínico
             </DialogTitle>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500 md:text-base">
-              Revisa la información general del historial y las consultas clínicas
-              registradas.
+              Revisa la información general del historial y las consultas
+              clínicas registradas.
             </p>
           </DialogHeader>
 
           <div className="flex-1 overflow-y-auto bg-slate-50 px-6 py-6 md:px-8 md:py-8">
             <div className="space-y-6">
-              <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-violet-600">
-                      Mascota
-                    </p>
-                    <p className="mt-2 text-3xl font-extrabold text-slate-900">
-                      {historial.mascota_nombre || "Sin nombre"}
-                    </p>
-                  </div>
+              <HistorialGeneralInfo historial={historial} />
 
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-violet-600">
-                      Especie / Raza
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-slate-900">
-                      {historial.mascota_especie || "Sin especie"}
-                    </p>
-                    <p className="mt-1 text-sm text-slate-500">
-                      {historial.mascota_raza || "Sin raza"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-violet-600">
-                      Propietario
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-slate-900">
-                      {historial.propietario_nombre || "Sin propietario"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-violet-600">
-                      Estado
-                    </p>
-                    <div className="mt-2">
-                      <span
-                        className={`inline-flex rounded-full px-4 py-1.5 text-sm font-semibold ${
-                          historial.estado
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-slate-200 text-slate-600"
-                        }`}
-                      >
-                        {historial.estado ? "Activo" : "Inactivo"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex-1">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-violet-600">
-                      Observaciones generales
-                    </p>
-                    <p className="mt-3 text-base leading-7 text-slate-700">
-                      {historial.observaciones_generales ||
-                        "Sin observaciones generales."}
-                    </p>
-                  </div>
-
-                  {onEditarHistorial && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="rounded-xl border-slate-300 text-slate-700 hover:bg-slate-100"
-                      onClick={onEditarHistorial}
-                    >
-                      Editar historial
-                    </Button>
-                  )}
-                </div>
-              </section>
+              <HistorialObservaciones
+                historial={historial}
+                canCreate={canCreate}
+                onEditarHistorial={onEditarHistorial}
+              />
 
               <section className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -189,339 +108,18 @@ export function HistorialClinicoDetailDialog({
               {consultasOrdenadas.length > 0 ? (
                 <div className="space-y-5">
                   {consultasOrdenadas.map((consulta, index) => (
-                    <article
+                    <ConsultaCard
                       key={consulta.id_consulta_clinica}
-                      className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
-                    >
-                      <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 md:flex-row md:items-start md:justify-between">
-                        <div>
-                          <h4 className="text-2xl font-extrabold text-slate-900">
-                            Consulta #{index + 1}
-                          </h4>
-                          <p className="mt-2 text-base text-slate-600">
-                            {formatearFecha(consulta.fecha_consulta)}
-                          </p>
-                        </div>
-
-                        <div className="flex flex-col items-start gap-3 md:items-end">
-                          <span className="inline-flex rounded-full border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-medium text-violet-700">
-                            {consulta.veterinario_nombre || "Sin veterinario"}
-                          </span>
-
-                          <div className="flex flex-wrap gap-2">
-                            {onVerDetalleConsulta && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                className="rounded-xl border-violet-300 text-violet-700 hover:bg-violet-50"
-                                onClick={() => onVerDetalleConsulta(consulta)}
-                              >
-                                Ver detalle completo
-                              </Button>
-                            )}
-
-                            {onEditarConsulta && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                className="rounded-xl border-slate-300 text-slate-700 hover:bg-slate-100"
-                                onClick={() => onEditarConsulta(consulta)}
-                              >
-                                Editar consulta
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
-                        <div className="rounded-2xl bg-slate-50 p-4">
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-violet-600">
-                            Motivo de consulta
-                          </p>
-                          <p className="mt-2 text-base leading-7 text-slate-700">
-                            {consulta.motivo_consulta || "No registrado"}
-                          </p>
-                        </div>
-
-                        <div className="rounded-2xl bg-slate-50 p-4">
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-violet-600">
-                            Diagnóstico
-                          </p>
-                          <p className="mt-2 text-base leading-7 text-slate-700">
-                            {consulta.diagnostico || "No registrado"}
-                          </p>
-                        </div>
-
-                        <div className="rounded-2xl bg-slate-50 p-4 md:col-span-2">
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-violet-600">
-                            Observaciones
-                          </p>
-                          <p className="mt-2 text-base leading-7 text-slate-700">
-                            {consulta.observaciones || "Sin observaciones"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="mt-6">
-                        <h5 className="text-lg font-bold text-slate-900">
-                          Datos clínicos
-                        </h5>
-
-                        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
-                          <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                              Peso
-                            </p>
-                            <p className="mt-2 text-base font-semibold text-slate-900">
-                              {valorTexto(consulta.peso, " kg")}
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                              Temperatura
-                            </p>
-                            <p className="mt-2 text-base font-semibold text-slate-900">
-                              {valorTexto(consulta.temperatura, " °C")}
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                              F. cardiaca
-                            </p>
-                            <p className="mt-2 text-base font-semibold text-slate-900">
-                              {valorTexto(consulta.frecuencia_cardiaca, " lpm")}
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                              F. respiratoria
-                            </p>
-                            <p className="mt-2 text-base font-semibold text-slate-900">
-                              {valorTexto(consulta.frecuencia_respiratoria, " rpm")}
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                              Próxima revisión
-                            </p>
-                            <p className="mt-2 text-base font-semibold text-slate-900">
-                              {consulta.proxima_revision
-                                ? formatearFecha(consulta.proxima_revision)
-                                : "No registrada"}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-6">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                          <h5 className="text-lg font-bold text-slate-900">
-                            Tratamientos
-                          </h5>
-
-                          {onAgregarTratamiento && (
-                            <Button
-                              type="button"
-                              className="rounded-xl bg-orange-500 text-white hover:bg-orange-600"
-                              onClick={() => onAgregarTratamiento(consulta)}
-                            >
-                              Agregar tratamiento
-                            </Button>
-                          )}
-                        </div>
-
-                        {consulta.tratamientos && consulta.tratamientos.length > 0 ? (
-                          <div className="mt-4 space-y-3">
-                            {consulta.tratamientos.map((tratamiento) => (
-                              <div
-                                key={tratamiento.id_tratamiento}
-                                className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                              >
-                                <p className="font-semibold text-slate-900">
-                                  {tratamiento.tipo || "Tratamiento"}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  {tratamiento.descripcion || "Sin descripción"}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Observación:{" "}
-                                  {tratamiento.observacion || "Sin observación"}
-                                </p>
-                                <p className="mt-2 text-xs text-slate-500">
-                                  Inicio: {formatearFecha(tratamiento.fecha_ini)} | Fin:{" "}
-                                  {formatearFecha(tratamiento.fecha_fin)}
-                                </p>
-                                <p className="mt-1 text-xs text-slate-500">
-                                  Estado:{" "}
-                                  {tratamiento.estado_tratamiento || "Sin estado"}
-                                </p>
-
-                                {onEditarTratamiento && (
-                                  <div className="mt-3 flex justify-end">
-                                    <Button
-                                      type="button"
-                                      variant="outline"
-                                      className="rounded-xl border-slate-300 text-slate-700 hover:bg-slate-100"
-                                      onClick={() =>
-                                        onEditarTratamiento(consulta, tratamiento)
-                                      }
-                                    >
-                                      Editar tratamiento
-                                    </Button>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="mt-3 text-sm text-slate-500">
-                            No hay tratamientos registrados.
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="mt-6">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                          <h5 className="text-lg font-bold text-slate-900">
-                            Vacunas aplicadas
-                          </h5>
-
-                          {onAgregarVacuna && (
-                            <Button
-                              type="button"
-                              className="rounded-xl bg-orange-500 text-white hover:bg-orange-600"
-                              onClick={() => onAgregarVacuna(consulta)}
-                            >
-                              Agregar vacuna
-                            </Button>
-                          )}
-                        </div>
-
-                        {consulta.vacunas_aplicadas &&
-                        consulta.vacunas_aplicadas.length > 0 ? (
-                          <div className="mt-4 space-y-3">
-                            {consulta.vacunas_aplicadas.map((vacuna) => (
-                              <div
-                                key={vacuna.id_vacuna_aplicada}
-                                className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                              >
-                                <p className="font-semibold text-slate-900">
-                                  {vacuna.nombre_vacuna || "Vacuna"}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Dosis: {vacuna.dosis || "Sin dosis"}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Fecha aplicada:{" "}
-                                  {formatearFecha(vacuna.fecha_aplicada)}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Próxima fecha:{" "}
-                                  {formatearFecha(vacuna.fecha_proxima)}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Lote: {vacuna.lote || "Sin lote"}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Fabricante:{" "}
-                                  {vacuna.fabricante || "Sin fabricante"}
-                                </p>
-                                <p className="mt-1 text-sm text-slate-700">
-                                  Observación:{" "}
-                                  {vacuna.observacion || "Sin observación"}
-                                </p>
-                                <p className="mt-1 text-xs text-slate-500">
-                                  Estado vacuna:{" "}
-                                  {vacuna.estado_vacuna || "Sin estado"}
-                                </p>
-
-                                {onEditarVacuna && (
-                                  <div className="mt-3 flex justify-end">
-                                    <Button
-                                      type="button"
-                                      variant="outline"
-                                      className="rounded-xl border-slate-300 text-slate-700 hover:bg-slate-100"
-                                      onClick={() =>
-                                        onEditarVacuna(consulta, vacuna)
-                                      }
-                                    >
-                                      Editar vacuna
-                                    </Button>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="mt-3 text-sm text-slate-500">
-                            No hay vacunas registradas.
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="mt-6">
-                        <h5 className="text-lg font-bold text-slate-900">
-                          Receta
-                        </h5>
-
-                        {consulta.receta ? (
-                          <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <p className="text-sm text-slate-700">
-                              {consulta.receta.indicaciones || "Sin indicaciones"}
-                            </p>
-
-                            {consulta.receta.observacion && (
-                              <p className="mt-2 text-sm text-slate-600">
-                                Observación: {consulta.receta.observacion}
-                              </p>
-                            )}
-
-                            {consulta.receta.detalles &&
-                              consulta.receta.detalles.length > 0 && (
-                                <div className="mt-4 space-y-3">
-                                  {consulta.receta.detalles.map((detalle) => (
-                                    <div
-                                      key={detalle.id_detalle_receta}
-                                      className="rounded-xl border border-slate-200 bg-white p-3"
-                                    >
-                                      <p className="font-medium text-slate-900">
-                                        {detalle.medicamento || "Medicamento"}
-                                      </p>
-                                      <p className="mt-1 text-sm text-slate-600">
-                                        Dosis: {detalle.dosis || "No registrada"}
-                                      </p>
-                                      <p className="text-sm text-slate-600">
-                                        Frecuencia:{" "}
-                                        {detalle.frecuencia || "No registrada"}
-                                      </p>
-                                      <p className="text-sm text-slate-600">
-                                        Duración: {detalle.duracion_dias ?? "—"} días
-                                      </p>
-                                      <p className="text-sm text-slate-600">
-                                        Indicaciones adicionales:{" "}
-                                        {detalle.indicaciones_adicionales || "—"}
-                                      </p>
-                                      <p className="text-sm text-slate-500">
-                                        Producto asociado:{" "}
-                                        {detalle.id_producto ?? "Sin producto"}
-                                      </p>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                          </div>
-                        ) : (
-                          <p className="mt-3 text-sm text-slate-500">
-                            No hay receta registrada.
-                          </p>
-                        )}
-                      </div>
-                    </article>
+                      consulta={consulta}
+                      index={index}
+                      canCreate={canCreate}
+                      onVerDetalleConsulta={onVerDetalleConsulta}
+                      onEditarConsulta={onEditarConsulta}
+                      onAgregarTratamiento={onAgregarTratamiento}
+                      onEditarTratamiento={onEditarTratamiento}
+                      onAgregarVacuna={onAgregarVacuna}
+                      onEditarVacuna={onEditarVacuna}
+                    />
                   ))}
                 </div>
               ) : (

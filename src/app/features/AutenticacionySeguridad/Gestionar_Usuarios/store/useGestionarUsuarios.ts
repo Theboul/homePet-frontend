@@ -9,7 +9,7 @@ import { useGetUsuariosQuery, useCreateUsuarioMutation } from './gestionarUsuari
 
 export const useGestionarUsuarios = () => {
   const {
-    data: usuariosApi = [],
+    data: usuariosApi,
     isLoading,
     isFetching,
     isError,
@@ -23,7 +23,9 @@ export const useGestionarUsuarios = () => {
   const [estadoFilter, setEstadoFilter] = useState<UserStatus | 'Todos'>('Todos');
 
   useEffect(() => {
-    setUsuarios(usuariosApi);
+    if (usuariosApi) {
+      setUsuarios(usuariosApi);
+    }
   }, [usuariosApi]);
 
   const usuariosFiltrados = useMemo(() => {

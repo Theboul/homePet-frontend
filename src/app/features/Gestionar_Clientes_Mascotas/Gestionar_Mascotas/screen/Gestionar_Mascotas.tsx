@@ -10,6 +10,7 @@ import {
   MascotaDialog,
   MascotasTable,
 } from "../components"
+import { useCanCreate } from "#/store/components/component.hooks"
 
 function getEspecieMascota(mascota: Mascota) {
   return mascota.especie?.nombre ?? ""
@@ -240,6 +241,8 @@ export function Gestionar_Mascotas() {
     }
   }
 
+  const canCreate = useCanCreate("CLI_MASCOTAS")
+
   return (
     <div className="min-h-screen bg-[#FAFAFA] px-6 py-8 md:px-10">
       <div className="space-y-6">
@@ -301,12 +304,14 @@ export function Gestionar_Mascotas() {
             </div>
           </div>
 
-          <Button
-            onClick={handleOpenCreate}
-            className="h-14 rounded-2xl bg-[#F97316] px-8 text-lg font-semibold text-white hover:bg-[#EA580C]"
-          >
-            + Nueva mascota
-          </Button>
+          {canCreate && (
+            <Button
+              onClick={handleOpenCreate}
+              className="h-14 rounded-2xl bg-[#F97316] px-8 text-lg font-semibold text-white hover:bg-[#EA580C]"
+            >
+              + Nueva mascota
+            </Button>
+          )}
         </div>
 
         <p className="text-lg text-[#18181B]">

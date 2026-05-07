@@ -42,6 +42,7 @@ const RegisterModal = ({ open, onOpenChange }: Props) => {
     try {
       // 2. Ejecutar mutación con los datos que espera tu BackendUser
       await registerUser({
+        slug_veterinaria: 'petcare', // Requerido por la arquitectura SaaS
         correo: form.correo,
         password: form.password,
         nombre: form.nombre,

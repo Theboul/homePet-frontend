@@ -9,8 +9,10 @@ import {
   Scissors,
   Search,
   Tags,
+  Rabbit,
 } from 'lucide-react'
 import { toast } from 'sonner'
+
 
 import {
   CategoriaServicioDialog,
@@ -22,6 +24,10 @@ import {
   PreciosServicioTable,
   ServicioDialog,
   ServiciosTable,
+  EspeciesTable,
+  RazasTable,
+  EspecieDialog,
+  RazaDialog,
 } from '../components'
 
 import {
@@ -29,14 +35,22 @@ import {
   useCreatePrecioServicioMutation,
   useCreateServicioMutation,
   useDeleteCategoriaServicioMutation,
-  useDeletePrecioServicioMutation,
   useDeleteServicioMutation,
   useGetCategoriasServicioQuery,
   useGetPreciosServicioQuery,
   useGetServiciosQuery,
   useUpdateCategoriaServicioMutation,
-  useUpdatePrecioServicioMutation,
   useUpdateServicioMutation,
+  useUpdatePrecioServicioMutation,
+  useDeletePrecioServicioMutation,
+  useGetEspeciesQuery,
+  useCreateEspecieMutation,
+  useUpdateEspecieMutation,
+  useDeleteEspecieMutation,
+  useGetRazasQuery,
+  useCreateRazaMutation,
+  useUpdateRazaMutation,
+  useDeleteRazaMutation,
 } from '../store'
 
 import type {
@@ -46,9 +60,13 @@ import type {
   PrecioServicioPayload,
   Servicio,
   ServicioPayload,
+  Especie,
+  EspeciePayload,
+  Raza,
+  RazaPayload,
 } from '../store'
 
-type TabKey = 'categorias' | 'servicios' | 'precios'
+type TabKey = 'categorias' | 'servicios' | 'precios' | 'especies' | 'razas'
 type EstadoFiltro = 'all' | 'activo' | 'inactivo'
 
 const getErrorMessage = (error: unknown): string => {
@@ -73,7 +91,11 @@ const getErrorMessage = (error: unknown): string => {
   return fallback
 }
 
+import { useCanCreate, useCanEdit } from '#/store/auth/auth.hooks'
+
 export const Gestionar_Catalogo_Servicios_Precios = () => {
+  const canCreate = useCanCreate('SERV_SERVICIOS')
+  const canEditServicios = useCanEdit('SERV_SERVICIOS')
   const [activeTab, setActiveTab] = useState<TabKey>('categorias')
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<EstadoFiltro>('all')
@@ -95,6 +117,11 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
   const [precioToToggle, setPrecioToToggle] = useState<PrecioServicio | null>(
     null,
   )
+
+  const [especieDialogOpen, setEspecieDialogOpen] = useState(false)
+  const [razaDialogOpen, setRazaDialogOpen] = useState(false)
+  const [especieToEdit, setEspecieToEdit] = useState<Especie | null>(null)
+  const [razaToEdit, setRazaToEdit] = useState<Raza | null>(null)
 
   const { data: categoriasData = [], isLoading: isLoadingCategorias } =
     useGetCategoriasServicioQuery(undefined)
@@ -126,6 +153,22 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
   const [deletePrecio, { isLoading: isDeletingPrecio }] =
     useDeletePrecioServicioMutation()
 
+  const { data: especiesData = [], isLoading: isLoadingEspecies } =
+    useGetEspeciesQuery()
+  const { data: razasData = [], isLoading: isLoadingRazas } =
+    useGetRazasQuery()
+
+  const [createEspecie, { isLoading: isCreatingEspecie }] =
+    useCreateEspecieMutation()
+  const [updateEspecie, { isLoading: isUpdatingEspecie }] =
+    useUpdateEspecieMutation()
+  const [deleteEspecie] =
+    useDeleteEspecieMutation()
+
+  const [createRaza, { isLoading: isCreatingRaza }] = useCreateRazaMutation()
+  const [updateRaza, { isLoading: isUpdatingRaza }] = useUpdateRazaMutation()
+  const [deleteRaza] = useDeleteRazaMutation()
+
   const categorias = categoriasData
   const servicios = serviciosData
   const precios = preciosData
@@ -144,13 +187,15 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
     const totalCategorias = categorias.length
     const serviciosActivosCount = servicios.filter((s) => s.estado).length
     const totalPrecios = precios.length
+    const totalEspecies = especiesData.length
 
     return {
       totalCategorias,
       serviciosActivosCount,
       totalPrecios,
+      totalEspecies,
     }
-  }, [categorias, servicios, precios])
+  }, [categorias, servicios, precios, especiesData])
 
   const filteredCategorias = useMemo(() => {
     const term = searchQuery.trim().toLowerCase()
@@ -209,19 +254,43 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
     })
   }, [precios, searchQuery, statusFilter])
 
+  const filteredEspecies = useMemo(() => {
+    const term = searchQuery.trim().toLowerCase()
+    return especiesData.filter((esp) => 
+      !term || esp.nombre.toLowerCase().includes(term)
+    )
+  }, [especiesData, searchQuery])
+
+  const filteredRazas = useMemo(() => {
+    const term = searchQuery.trim().toLowerCase()
+    return razasData.filter((raza) => 
+      !term || 
+      raza.nombre.toLowerCase().includes(term) || 
+      raza.especie_nombre?.toLowerCase().includes(term)
+    )
+  }, [razasData, searchQuery])
+
   const currentCount =
     activeTab === 'categorias'
       ? filteredCategorias.length
       : activeTab === 'servicios'
         ? filteredServicios.length
-        : filteredPrecios.length
+        : activeTab === 'precios'
+          ? filteredPrecios.length
+          : activeTab === 'especies'
+            ? filteredEspecies.length
+            : filteredRazas.length
 
   const currentTotal =
     activeTab === 'categorias'
       ? categorias.length
       : activeTab === 'servicios'
         ? servicios.length
-        : precios.length
+        : activeTab === 'precios'
+          ? precios.length
+          : activeTab === 'especies'
+            ? especiesData.length
+            : razasData.length
 
   const handleSubmitCategoria = async (values: CategoriaServicioPayload) => {
     try {
@@ -319,6 +388,58 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
     }
   }
 
+  const handleSubmitEspecie = async (values: EspeciePayload) => {
+    try {
+      if (especieToEdit) {
+        await updateEspecie({ id: especieToEdit.id_especie, data: values }).unwrap()
+        toast.success('Especie actualizada.')
+      } else {
+        await createEspecie(values).unwrap()
+        toast.success('Especie creada.')
+      }
+      setEspecieDialogOpen(false)
+    } catch (error) {
+      toast.error(getErrorMessage(error))
+    }
+  }
+
+  const handleSubmitRaza = async (values: RazaPayload) => {
+    try {
+      if (razaToEdit) {
+        await updateRaza({ id: razaToEdit.id_raza, data: values }).unwrap()
+        toast.success('Raza actualizada.')
+      } else {
+        await createRaza(values).unwrap()
+        toast.success('Raza creada.')
+      }
+      setRazaDialogOpen(false)
+    } catch (error) {
+      toast.error(getErrorMessage(error))
+    }
+  }
+
+  const handleDeleteEspecie = async (especie: Especie) => {
+    if (window.confirm(`¿Estás seguro de eliminar la especie ${especie.nombre}?`)) {
+      try {
+        await deleteEspecie(especie.id_especie).unwrap()
+        toast.success('Especie eliminada.')
+      } catch (error) {
+        toast.error(getErrorMessage(error))
+      }
+    }
+  }
+
+  const handleDeleteRaza = async (raza: Raza) => {
+    if (window.confirm(`¿Estás seguro de eliminar la raza ${raza.nombre}?`)) {
+      try {
+        await deleteRaza(raza.id_raza).unwrap()
+        toast.success('Raza eliminada.')
+      } catch (error) {
+        toast.error(getErrorMessage(error))
+      }
+    }
+  }
+
   const handleCreate = () => {
     if (activeTab === 'categorias') {
       setCategoriaToEdit(null)
@@ -332,8 +453,20 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
       return
     }
 
-    setPrecioToEdit(null)
-    setPrecioDialogOpen(true)
+    if (activeTab === 'precios') {
+      setPrecioToEdit(null)
+      setPrecioDialogOpen(true)
+      return
+    }
+
+    if (activeTab === 'especies') {
+      setEspecieToEdit(null)
+      setEspecieDialogOpen(true)
+      return
+    }
+
+    setRazaToEdit(null)
+    setRazaDialogOpen(true)
   }
 
   const createLabel =
@@ -341,14 +474,22 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
       ? 'Nueva categoría'
       : activeTab === 'servicios'
         ? 'Nuevo servicio'
-        : 'Nuevo precio'
+        : activeTab === 'precios'
+          ? 'Nuevo precio'
+          : activeTab === 'especies'
+            ? 'Nueva especie'
+            : 'Nueva raza'
 
   const currentLoading =
     activeTab === 'categorias'
       ? isLoadingCategorias
       : activeTab === 'servicios'
         ? isLoadingServicios
-        : isLoadingPrecios
+        : activeTab === 'precios'
+          ? isLoadingPrecios
+          : activeTab === 'especies'
+            ? isLoadingEspecies
+            : isLoadingRazas
 
   return (
     <section className="min-h-screen bg-white px-4 py-6 sm:px-6 sm:py-8">
@@ -368,7 +509,7 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
           <div className="rounded-2xl border border-[#F97316]/30 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="rounded-full bg-[#7C3AED]/10 p-2">
@@ -413,6 +554,20 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               </div>
             </div>
           </div>
+
+          <div className="rounded-2xl border border-[#F97316]/30 bg-white p-5 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full bg-[#F97316]/10 p-2">
+                <Rabbit className="h-5 w-5 text-[#F97316]" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Especies base</p>
+                <p className="text-3xl font-bold text-[#F97316]">
+                  {stats.totalEspecies}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -451,6 +606,30 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
           >
             Precios
           </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('especies')}
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+              activeTab === 'especies'
+                ? 'bg-[#7C3AED] text-white'
+                : 'border border-[#7C3AED] bg-white text-[#7C3AED]'
+            }`}
+          >
+            Especies
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('razas')}
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+              activeTab === 'razas'
+                ? 'bg-[#7C3AED] text-white'
+                : 'border border-[#7C3AED] bg-white text-[#7C3AED]'
+            }`}
+          >
+            Razas
+          </button>
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -464,7 +643,11 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
                     ? 'Buscar categorías...'
                     : activeTab === 'servicios'
                       ? 'Buscar servicios...'
-                      : 'Buscar precios...'
+                      : activeTab === 'precios'
+                        ? 'Buscar precios...'
+                        : activeTab === 'especies'
+                          ? 'Buscar especies...'
+                          : 'Buscar razas...'
                 }
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -492,14 +675,16 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCreate}
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:opacity-90"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            {createLabel}
-          </button>
+          {canCreate && (
+            <button
+              type="button"
+              onClick={handleCreate}
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:opacity-90"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              {createLabel}
+            </button>
+          )}
         </div>
 
         <p className="text-sm text-black">
@@ -508,7 +693,11 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
             ? 'categorías'
             : activeTab === 'servicios'
               ? 'servicios'
-              : 'precios'}
+              : activeTab === 'precios'
+                ? 'precios'
+                : activeTab === 'especies'
+                  ? 'especies'
+                  : 'razas'}
         </p>
 
         {activeTab === 'categorias' && (
@@ -519,6 +708,7 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               setCategoriaDialogOpen(true)
             }}
             onToggleStatus={(categoria) => setCategoriaToToggle(categoria)}
+            canEdit={canEditServicios}
           />
         )}
 
@@ -530,6 +720,7 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               setServicioDialogOpen(true)
             }}
             onToggleStatus={(servicio) => setServicioToToggle(servicio)}
+            canEdit={canEditServicios}
           />
         )}
 
@@ -541,6 +732,31 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               setPrecioDialogOpen(true)
             }}
             onToggleStatus={(precio) => setPrecioToToggle(precio)}
+            canEdit={canEditServicios}
+          />
+        )}
+
+        {activeTab === 'especies' && (
+          <EspeciesTable
+            data={filteredEspecies}
+            onEdit={(esp) => {
+              setEspecieToEdit(esp)
+              setEspecieDialogOpen(true)
+            }}
+            onDelete={handleDeleteEspecie}
+            canEdit={canCreate}
+          />
+        )}
+
+        {activeTab === 'razas' && (
+          <RazasTable
+            data={filteredRazas}
+            onEdit={(raza) => {
+              setRazaToEdit(raza)
+              setRazaDialogOpen(true)
+            }}
+            onDelete={handleDeleteRaza}
+            canEdit={canCreate}
           />
         )}
 
@@ -551,7 +767,11 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               ? 'categorías'
               : activeTab === 'servicios'
                 ? 'servicios'
-                : 'precios'}
+                : activeTab === 'precios'
+                  ? 'precios'
+                  : activeTab === 'especies'
+                    ? 'especies'
+                    : 'razas'}
             ...
           </p>
         )}
@@ -619,6 +839,23 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
           precio={precioToToggle}
           onConfirm={handleTogglePrecio}
           isLoading={isDeletingPrecio}
+        />
+
+        <EspecieDialog
+          open={especieDialogOpen}
+          onOpenChange={setEspecieDialogOpen}
+          especie={especieToEdit}
+          onSubmit={handleSubmitEspecie}
+          isLoading={isCreatingEspecie || isUpdatingEspecie}
+        />
+
+        <RazaDialog
+          open={razaDialogOpen}
+          onOpenChange={setRazaDialogOpen}
+          raza={razaToEdit}
+          especies={especiesData}
+          onSubmit={handleSubmitRaza}
+          isLoading={isCreatingRaza || isUpdatingRaza}
         />
       </div>
     </section>

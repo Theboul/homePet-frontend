@@ -16,9 +16,9 @@ export const getBitacoraColumns = (onViewDetails: (bitacora: Bitacora) => void) 
       </span>
     ),
   }),
-  columnHelper.accessor('usuario_nombre', {
+  columnHelper.accessor('nombre_usuario', {
     header: 'Usuario Actor',
-    cell: (info) => <span className="font-medium">{info.getValue()}</span>,
+    cell: (info) => <span className="font-medium">{info.getValue() || 'Sistema'}</span>,
   }),
   columnHelper.accessor('ip', {
     header: 'Dirección IP',
@@ -38,29 +38,30 @@ export const getBitacoraColumns = (onViewDetails: (bitacora: Bitacora) => void) 
       );
     },
   }),
-  columnHelper.accessor('modulo_display', {
+  columnHelper.accessor('modulo', {
     header: 'Módulo',
     cell: (info) => (
-      <span className="inline-flex rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-        {info.getValue()}
+      <span className="inline-flex rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700 capitalize">
+        {info.getValue() || '-'}
       </span>
     ),
   }),
-  columnHelper.accessor('accion_display', {
+  columnHelper.accessor('accion', {
     header: 'Acción',
-    cell: (info) => info.getValue(),
+    cell: (info) => <span className="font-mono text-xs">{info.getValue() || '-'}</span>,
   }),
   columnHelper.accessor('descripcion', {
     header: 'Descripción',
-    cell: (info) => info.getValue(),
+    cell: (info) => info.getValue() || '-',
   }),
-  columnHelper.accessor('resultado_display', {
+  columnHelper.accessor('resultado', {
     header: 'Resultado',
     cell: (info) => {
-      const isExito = info.getValue() === 'Éxito';
+      const val = info.getValue();
+      const isExito = val === 'EXITO' || val === 'Éxito';
       return (
         <span className={`font-bold ${isExito ? 'text-green-600' : 'text-red-500'}`}>
-          {info.getValue()}
+          {val || '-'}
         </span>
       );
     },

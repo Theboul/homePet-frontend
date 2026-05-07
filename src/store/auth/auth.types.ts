@@ -1,7 +1,7 @@
-export type UserRole =
-  | 'ADMIN'
-  | 'VETERINARIAN'
-  | 'CLIENT';
+import type { ComponenteSistema } from '../components/component.types';
+import type { Plan, Veterinaria } from '../tenant/tenant.types';
+
+export type UserRole = 'ADMIN' | 'VETERINARIAN' | 'CLIENT' | 'SUPERADMIN';
 
 export interface BackendRole {
   id_rol?: number;
@@ -10,11 +10,11 @@ export interface BackendRole {
 }
 
 export interface User {
-  id: number;
+  id_usuario: number;
   correo: string;
   role: UserRole;
-  isActive: boolean;
-  dateJoined: string;
+  id_veterinaria: number | null;
+  is_superuser: boolean;
 }
 
 export interface AuthState {
@@ -26,44 +26,40 @@ export interface AuthState {
   error: string | null;
 }
 
-export interface BackendUser {
-  id_usuario?: number;
-  id?: number;
-  correo?: string;
-  role?: BackendRole | string;
-  rol?: BackendRole | string;
-  is_active?: boolean;
-  estado?: boolean | string;
-  date_joined?: string;
-  fecha_creacion?: string;
+export interface LoginResponse {
+  access: string;
+  refresh: string;
+  usuario: User;
+  veterinaria: Veterinaria | null;
+  plan: Plan | null;
+  componentes: ComponenteSistema[];
+}
+
+export interface AuthContextResponse {
+  usuario: User;
+  veterinaria: Veterinaria | null;
+  plan: Plan | null;
+  componentes: ComponenteSistema[];
 }
 
 export interface LoginRequest {
   correo: string;
   password: string;
+  plataforma?: 'WEB' | 'MOVIL';
 }
 
-export interface LoginResponse {
-  tokens: {
-    refresh: string;
-    access: string;
-  };
-  user: BackendUser;
+export interface MobileLoginRequest extends LoginRequest {
+  slug_veterinaria: string;
+  plataforma: 'MOVIL';
 }
 
 export interface RegisterRequest {
+  slug_veterinaria?: string;
   correo: string;
   password: string;
   nombre: string;
-  telefono: string;
-  direccion: string;
+  telefono?: string;
+  direccion?: string;
 }
 
-export interface RegisterResponse {
-  user: BackendUser;
-  perfil: {
-    nombre: string;
-    telefono: string;
-    direccion: string;
-  };
-}
+export interface RegisterResponse extends LoginResponse {}

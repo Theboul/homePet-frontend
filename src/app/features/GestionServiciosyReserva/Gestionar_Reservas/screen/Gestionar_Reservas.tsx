@@ -16,6 +16,7 @@ import type {
   Reserva,
   ReservaPatchPayload,
 } from '../store/reservas.types'
+import { useCanEdit, useCanDelete } from '#/store/auth/auth.hooks'
 
 const estadoOptions: EstadoReserva[] = ['PENDIENTE', 'CONFIRMADA', 'CANCELADA', 'COMPLETADA']
 const modalidadOptions: ModalidadReserva[] = ['CLINICA', 'DOMICILIO']
@@ -40,12 +41,15 @@ export const Gestionar_Reservas = () => {
   const [message, setMessage] = useState<string | null>(null)
   const [cancelReason, setCancelReason] = useState('')
 
-  const { data: reservas = [], isLoading, refetch } = useGetReservasQuery()
+  const canEdit = useCanEdit('SERV_CITAS')
+  const canDelete = useCanDelete('SERV_CITAS')
+
+  const { data: reservas = [], refetch } = useGetReservasQuery()
   const { data: mascotas = [] } = useGetMascotasOptionsQuery()
   const { data: servicios = [] } = useGetServiciosOptionsQuery()
   const { data: precios = [] } = useGetPreciosOptionsQuery()
-  const [updateReserva, { isLoading: isSaving }] = useUpdateReservaMutation()
-  const [patchEstadoReserva, { isLoading: isSavingStatus }] = usePatchEstadoReservaMutation()
+  const [updateReserva] = useUpdateReservaMutation()
+  const [patchEstadoReserva] = usePatchEstadoReservaMutation()
 
   const visibleReservas = useMemo(() => {
     return reservas.filter((reserva) => {
@@ -186,7 +190,9 @@ export const Gestionar_Reservas = () => {
               <th className="px-3 py-2">Fecha</th>
               <th className="px-3 py-2">Hora</th>
               <th className="px-3 py-2">Estado</th>
-              <th className="px-3 py-2">Acciones</th>
+              {(canEdit || canDelete) && (
+                <th className="px-3 py-2 text-right">Acciones</th>
+              )}
             </tr>
           </thead>
 
@@ -201,14 +207,43 @@ export const Gestionar_Reservas = () => {
                 <td className="px-3 py-2">{(reserva.hora_inicio || '').slice(0, 5)}</td>
                 <td className="px-3 py-2">{reserva.estado}</td>
 
-                <td className="px-3 py-2 ">
-                 <Button 
-                    className="bg-orange-500 text-white"
-                    onClick={() => startEdit(reserva)}
-                     
-                    >  Editar
-                 </Button>
-                </td>
+                {(canEdit || canDelete) && (
+                  <td className="px-3 py-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      {canEdit && (
+                        <>
+                          <Button 
+                            className="bg-orange-500 text-white h-8 text-xs px-3"
+                            onClick={() => startEdit(reserva)}
+                          >
+                            Editar
+                          </Button>
+                          {reserva.estado === 'PENDIENTE' && (
+                            <Button
+                              className="bg-green-600 hover:bg-green-700 text-white h-8 text-xs px-3"
+                              onClick={() => updateStatus(reserva.id_cita, 'COMPLETADA')}
+                            >
+                              Completar
+                            </Button>
+                          )}
+                        </>
+                      )}
+                      
+                      {canDelete && reserva.estado === 'PENDIENTE' && (
+                        <Button
+                          className="bg-red-500 hover:bg-red-600 text-white h-8 text-xs px-3"
+                          onClick={() => {
+                            if (window.confirm('¿Seguro que deseas cancelar esta reserva?')) {
+                              updateStatus(reserva.id_cita, 'CANCELADA')
+                            }
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      )}
+                    </div>
+                  </td>
+                )}
               </tr>
             ))} 
           </tbody>

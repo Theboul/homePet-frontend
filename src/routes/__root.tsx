@@ -5,12 +5,10 @@ import {
   Scripts,
   createRootRoute,
 } from '@tanstack/react-router'
-import { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 import { Provider } from 'react-redux'
-import { useAppDispatch, useAppSelector } from '#/store/hooks'
 import { store } from '#/store/store'
-import { useGetProfileQuery } from '#/store/auth/authApi'
-import { updateUser } from '#/store/auth/authSlice'
+import { AuthBootstrap } from '../app/providers/AuthBootstrap'
 
 import appCss from '../styles.css?url'
 
@@ -39,32 +37,17 @@ function RootDocument() {
       </head>
       <body className="font-sans antialiased">
         <Provider store={store}>
-          <AuthBootstrap />
-          <Suspense>
-            <Outlet />
-          </Suspense>
+          <AuthBootstrap>
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </AuthBootstrap>
         </Provider>
 
         <Scripts />
       </body>
     </html>
   )
-}
-
-function AuthBootstrap() {
-  const dispatch = useAppDispatch()
-  const accessToken = useAppSelector((state) => state.auth.accessToken)
-  const { data } = useGetProfileQuery(undefined, {
-    skip: !accessToken,
-  })
-
-  useEffect(() => {
-    if (data) {
-      dispatch(updateUser(data))
-    }
-  }, [data, dispatch])
-
-  return null
 }
 
 function NotFoundPage() {
