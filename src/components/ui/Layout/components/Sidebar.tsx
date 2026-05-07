@@ -23,6 +23,7 @@ type MenuChild = {
   | '/Gestionar_Usuarios'
   | '/Gestionar_Roles_Permisos'
   | '/Gestionar_Servicios_Precios_Catalogo'
+  | '/Gestionar_Agenda'
   | '/Gestionar_Historia_Clinica'
   | '/Gestionar_Reservas'
   | '/bitacora'
@@ -83,6 +84,10 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
             to: '/Gestionar_Servicios_Precios_Catalogo',
           },
           {
+            label: 'Agenda y Disponibilidad',
+            to: '/Gestionar_Agenda',
+          },
+          {
             label: 'Gestionar Reservas',
             to: '/Gestionar_Reservas',
           },
@@ -130,6 +135,7 @@ export function Sidebar({
     '/Gestionar_Mascotas': canViewMascotas,
     '/Gestionar_Historia_Clinica': canViewMascotas,
     '/Gestionar_Servicios_Precios_Catalogo': canViewServicios,
+    '/Gestionar_Agenda': canViewServicios,
     '/Gestionar_Reservas': canViewCitas,
   }
 

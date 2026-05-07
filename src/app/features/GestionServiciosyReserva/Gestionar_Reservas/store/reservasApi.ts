@@ -41,6 +41,16 @@ export const reservasApi = api.injectEndpoints({
       transformResponse: normalizeListResponse<PrecioServicioOption>,
     }),
 
+    // 🔹 CREAR RESERVA
+    createReserva: builder.mutation<Reserva, ReservaPatchPayload>({
+      query: (body) => ({
+        url: 'gestion/servicios/citas/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Appointments'],
+    }),
+
     // 🔥 EDITAR RESERVA (PUT + limpieza automática)
     updateReserva: builder.mutation<
       Reserva,
@@ -87,4 +97,5 @@ export const {
   useGetServiciosOptionsQuery,
   usePatchEstadoReservaMutation,
   useUpdateReservaMutation,
+  useCreateReservaMutation,
 } = reservasApi
