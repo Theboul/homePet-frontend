@@ -15,12 +15,14 @@ interface ServiciosTableProps {
   data: Servicio[]
   onEdit: (servicio: Servicio) => void
   onToggleStatus: (servicio: Servicio) => void
+  canEdit?: boolean
 }
 
 export function ServiciosTable({
   data,
   onEdit,
   onToggleStatus,
+  canEdit = true,
 }: ServiciosTableProps) {
   const [search, setSearch] = useState('')
   const [pagination, setPagination] = useState({
@@ -49,6 +51,7 @@ export function ServiciosTable({
   const columns = getServiciosColumns({
     onEdit,
     onToggleStatus,
+    canEdit,
   })
 
   const table = useReactTable({

@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { AuthState, User, UserRole } from './auth.types'
+import type { AuthState, User } from './auth.types'
 
 const AUTH_STORAGE_KEY = 'homePet_auth'
 
@@ -23,13 +23,7 @@ function loadPersistedAuth() {
     }
 
     const parsed = JSON.parse(raw) as {
-      user?: {
-        id: number
-        correo: string
-        role: UserRole
-        isActive: boolean
-        dateJoined: string
-      } | null
+      user?: User | null
       accessToken?: string | null
       refreshToken?: string | null
     }

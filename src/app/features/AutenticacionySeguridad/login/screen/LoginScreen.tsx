@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eye, EyeOff, Heart } from 'lucide-react'
 import { FormCrearPerfil } from '../components'
-import { useLoginMutation } from '#/store/auth/authApi'
+import { useLoginWebMutation } from '#/store/auth/authApi'
 import { useAppDispatch } from '#/store/hooks'
-import { setCredentials } from '#/store/auth/authSlice'
+import { applyLoginContext } from '#/store/auth/applyAuthContext'
 
 const LoginScreen = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -17,7 +17,7 @@ const LoginScreen = () => {
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [login, { isLoading }] = useLoginMutation()
+  const [login, { isLoading }] = useLoginWebMutation()
   const search = useSearch({ from: '/_public/login' })
 
   useEffect(() => {
@@ -31,18 +31,12 @@ const LoginScreen = () => {
     setFormError(null)
 
     try {
-      const result = await login({ correo, password }).unwrap()
+      const result = await login({ correo, password, plataforma: 'WEB' }).unwrap()
 
-      dispatch(
-        setCredentials({
-          user: result.user,
-          accessToken: result.accessToken,
-          refreshToken: result.refreshToken,
-        }),
-      )
+      applyLoginContext(dispatch, result)
 
       navigate({
-        to: result.user.role === 'CLIENT' ? '/cliente' : '/dashboard',
+        to: result.usuario.role === 'CLIENT' ? '/cliente' : '/dashboard',
       })
     } catch (error: any) {
       if (error?.status === 401) {

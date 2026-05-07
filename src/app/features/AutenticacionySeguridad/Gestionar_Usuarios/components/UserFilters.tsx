@@ -8,6 +8,7 @@ interface UserFiltersProps {
   estadoFilter: UserStatus | 'Todos';
   setEstadoFilter: (value: UserStatus | 'Todos') => void;
   onNuevoUsuario: () => void;
+  canCreate?: boolean;
 }
 
 export const UserFilters = ({
@@ -18,6 +19,7 @@ export const UserFilters = ({
   estadoFilter,
   setEstadoFilter,
   onNuevoUsuario,
+  canCreate = true,
 }: UserFiltersProps) => {
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -55,12 +57,14 @@ export const UserFilters = ({
         </select>
       </div>
 
+      {canCreate && (
         <button
-             onClick={onNuevoUsuario}
-           className="h-11 rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:bg-[#EA580C]"
-          >
-  Nuevo usuario
-</button>
+          onClick={onNuevoUsuario}
+          className="h-11 rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:bg-[#EA580C]"
+        >
+          Nuevo usuario
+        </button>
+      )}
     </div>
   );
 };

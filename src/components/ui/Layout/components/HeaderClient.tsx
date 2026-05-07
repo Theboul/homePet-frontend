@@ -18,10 +18,6 @@ export const HeaderClient = () => {
     'text-sm font-bold text-slate-900 hover:text-[#7C3AED] transition-colors'
   const mobileLinkStyles =
     'block text-base font-bold !text-[#111827] hover:!text-[#7C3AED] py-2'
-  const loginLinkStyles =
-    'inline-flex h-10 items-center justify-center rounded-lg border border-[#7C3AED] bg-white px-4 text-sm font-bold !text-[#7C3AED] transition-colors hover:bg-[#7C3AED] hover:!text-white'
-  const registerLinkStyles =
-    'inline-flex h-10 items-center justify-center rounded-lg bg-[#F97316] px-4 text-sm font-bold !text-white transition-colors hover:bg-[#EA580C]'
 
   const handleLogout = () => {
     dispatch(logout())
@@ -79,6 +75,7 @@ export const HeaderClient = () => {
                   className="border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-[#7C3AED] hover:text-white"
                 >
                   Iniciar sesion
+                </Button>
               </Link>
               <Link to="/login" search={{ register: true }}>
                 <Button className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold border-none">
@@ -153,6 +150,7 @@ export const HeaderClient = () => {
                     className="w-full border-[#7C3AED] text-[#7C3AED] font-bold"
                   >
                     Iniciar sesion
+                  </Button>
                 </Link>
                 <Link to="/login" search={{ register: true }}>
                   <Button className="w-full bg-[#F97316] text-white font-bold border-none">

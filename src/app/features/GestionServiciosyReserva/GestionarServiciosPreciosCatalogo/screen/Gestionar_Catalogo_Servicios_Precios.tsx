@@ -73,7 +73,10 @@ const getErrorMessage = (error: unknown): string => {
   return fallback
 }
 
+import { useCanCreate, useCanEdit } from '#/store/auth/auth.hooks'
+
 export const Gestionar_Catalogo_Servicios_Precios = () => {
+  const canCreate = useCanCreate('SERV_SERVICIOS')
   const [activeTab, setActiveTab] = useState<TabKey>('categorias')
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<EstadoFiltro>('all')
@@ -492,14 +495,16 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCreate}
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:opacity-90"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            {createLabel}
-          </button>
+          {canCreate && (
+            <button
+              type="button"
+              onClick={handleCreate}
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:opacity-90"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              {createLabel}
+            </button>
+          )}
         </div>
 
         <p className="text-sm text-black">
@@ -519,6 +524,7 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               setCategoriaDialogOpen(true)
             }}
             onToggleStatus={(categoria) => setCategoriaToToggle(categoria)}
+            canEdit={useCanEdit('SERV_SERVICIOS')}
           />
         )}
 
@@ -530,6 +536,7 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               setServicioDialogOpen(true)
             }}
             onToggleStatus={(servicio) => setServicioToToggle(servicio)}
+            canEdit={useCanEdit('SERV_SERVICIOS')}
           />
         )}
 
@@ -541,6 +548,7 @@ export const Gestionar_Catalogo_Servicios_Precios = () => {
               setPrecioDialogOpen(true)
             }}
             onToggleStatus={(precio) => setPrecioToToggle(precio)}
+            canEdit={useCanEdit('SERV_SERVICIOS')}
           />
         )}
 

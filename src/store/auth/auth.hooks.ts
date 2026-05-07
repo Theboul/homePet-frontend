@@ -1,8 +1,15 @@
 import { useCallback } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { logout } from './authSlice';
+//import { logout } from './authSlice';
 import { useLogoutSessionMutation } from './authApi';
+import { performFullLogout } from './auth.actions';
+import {
+  selectCanView,
+  selectCanCreate,
+  selectCanEdit,
+  selectCanDelete,
+} from '../components/component.selectors';
 
 export const useLogout = () => {
   const dispatch = useAppDispatch();
@@ -19,8 +26,8 @@ export const useLogout = () => {
     } catch (error) {
       console.error('Error en logout del backend:', error);
     } finally {
-      // Limpiar estado local independientemente si la llamada falla
-      dispatch(logout());
+      // Limpiar estado local SaaS completo
+      performFullLogout(dispatch);
 
       // Redirigir a login
       navigate({ to: '/login', search: { register: false } });
@@ -32,3 +39,13 @@ export const useLogout = () => {
     isLoading,
   };
 };
+
+/**
+ * Hooks para verificar permisos basados en códigos de componentes SaaS
+ */
+export const useCanView = (code: string) => useAppSelector(selectCanView(code));
+export const useCanCreate = (code: string) =>
+  useAppSelector(selectCanCreate(code));
+export const useCanEdit = (code: string) => useAppSelector(selectCanEdit(code));
+export const useCanDelete = (code: string) =>
+  useAppSelector(selectCanDelete(code));

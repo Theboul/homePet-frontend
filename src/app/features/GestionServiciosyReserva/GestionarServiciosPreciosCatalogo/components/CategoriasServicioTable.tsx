@@ -15,12 +15,14 @@ interface CategoriasServicioTableProps {
   data: CategoriaServicio[]
   onEdit: (categoria: CategoriaServicio) => void
   onToggleStatus: (categoria: CategoriaServicio) => void
+  canEdit?: boolean
 }
 
 export function CategoriasServicioTable({
   data,
   onEdit,
   onToggleStatus,
+  canEdit = true,
 }: CategoriasServicioTableProps) {
   const [search, setSearch] = useState('')
   const [pagination, setPagination] = useState({
@@ -45,6 +47,7 @@ export function CategoriasServicioTable({
   const columns = getCategoriasServicioColumns({
     onEdit,
     onToggleStatus,
+    canEdit,
   })
 
   const table = useReactTable({
