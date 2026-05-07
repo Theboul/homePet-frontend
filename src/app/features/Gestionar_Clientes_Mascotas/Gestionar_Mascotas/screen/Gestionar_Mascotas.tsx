@@ -241,7 +241,7 @@ export function Gestionar_Mascotas() {
     }
   }
 
-  const canCreate = useCanCreate("BTN_CREAR_MASCOTA")
+  const canCreate = useCanCreate("CLI_MASCOTAS")
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] px-6 py-8 md:px-10">

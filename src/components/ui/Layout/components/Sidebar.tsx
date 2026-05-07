@@ -21,6 +21,7 @@ type MenuChild = {
   | '/Gestionar_Clientes'
   | '/Gestionar_Mascotas'
   | '/Gestionar_Usuarios'
+  | '/Gestionar_Roles_Permisos'
   | '/Gestionar_Servicios_Precios_Catalogo'
   | '/Gestionar_Historia_Clinica'
   | '/Gestionar_Reservas'
@@ -51,6 +52,7 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         icon: ShieldCheck,
         children: [
           { label: 'Gestionar Usuarios', to: '/Gestionar_Usuarios' },
+          { label: 'Roles y Permisos', to: '/Gestionar_Roles_Permisos' },
           { label: 'Bitácora y Seguridad', to: '/bitacora' },
         ],
       },
@@ -77,7 +79,7 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         icon: PawPrint,
         children: [
           {
-            label: 'Catálogo de Servicios',
+            label: 'Catálogos y Servicios',
             to: '/Gestionar_Servicios_Precios_Catalogo',
           },
           {
@@ -110,9 +112,9 @@ export function Sidebar({
     setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }))
   }
 
-  const canViewDashboard = useCanView('MENU_DASHBOARD')
   const canViewUsuarios = useCanView('SEG_USUARIOS')
   const canViewBitacora = useCanView('SEG_BITACORA')
+  const canViewRoles = useCanView('SEG_GRUPO_USUARIO')
   const canViewClientes = useCanView('CLI_CLIENTES')
   const canViewMascotas = useCanView('CLI_MASCOTAS')
   const canViewServicios = useCanView('SERV_SERVICIOS')
@@ -120,15 +122,15 @@ export function Sidebar({
 
   // Mapeo de rutas a permisos para el filtrado dinámico
   const permissionMap: Record<string, boolean> = {
-    '/dashboard': true, // Dashboard siempre visible si está logueado (o podemos usar MENU_DASHBOARD)
+    '/dashboard': true,
     '/Gestionar_Usuarios': canViewUsuarios,
+    '/Gestionar_Roles_Permisos': canViewRoles,
     '/bitacora': canViewBitacora,
     '/Gestionar_Clientes': canViewClientes,
     '/Gestionar_Mascotas': canViewMascotas,
-    // Por ahora otros módulos se muestran o podemos añadir más checks
-    '/Gestionar_Historia_Clinica': canViewMascotas, // Relacionado a clínica
-    '/Gestionar_Servicios_Precios_Catalogo': canViewServicios, // Permiso real del catálogo
-    '/Gestionar_Reservas': canViewCitas, // Permiso real de citas
+    '/Gestionar_Historia_Clinica': canViewMascotas,
+    '/Gestionar_Servicios_Precios_Catalogo': canViewServicios,
+    '/Gestionar_Reservas': canViewCitas,
   }
 
   const processedSections = menuSections.map(section => ({
@@ -255,7 +257,7 @@ export function Sidebar({
                             return (
                               <Link
                                 key={child.label}
-                                to={child.to}
+                                to={child.to as any}
                                 className={`block rounded-lg px-3 py-2 text-xs font-medium transition-all ${childDisabledClasses} ${childActive
                                     ? 'bg-orange-500/25 text-orange-100 ring-1 ring-orange-300/45'
                                     : 'text-white/65 hover:bg-white/8 hover:text-white'
@@ -279,7 +281,7 @@ export function Sidebar({
                 return (
                   <Link
                     key={item.label}
-                    to={item.to ?? '/dashboard'}
+                    to={(item.to ?? '/dashboard') as any}
                     title={isCollapsed ? item.label : undefined}
                     className={`flex items-center rounded-xl py-2.5 text-sm transition-all ${disabledClasses} ${isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
                       } ${itemActive

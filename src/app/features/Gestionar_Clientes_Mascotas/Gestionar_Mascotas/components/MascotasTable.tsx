@@ -147,8 +147,8 @@ function ActionMenu({
   const itemClassName =
     "flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition"
 
-  const canEdit = useCanEdit("BTN_EDITAR_MASCOTA")
-  const canDelete = useCanDelete("BTN_DESACTIVAR_MASCOTA")
+  const canEdit = useCanEdit("CLI_MASCOTAS")
+  const canDelete = useCanDelete("CLI_MASCOTAS")
 
   const menu =
     open && mounted

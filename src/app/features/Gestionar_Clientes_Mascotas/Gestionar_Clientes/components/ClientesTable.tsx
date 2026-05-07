@@ -17,6 +17,7 @@ interface ClientesTableProps {
   pageIndex: number
   pageSize: number
   onPaginationChange: (pagination: any) => void
+  canEdit?: boolean
 }
 
 export function ClientesTable({
@@ -28,8 +29,9 @@ export function ClientesTable({
   pageIndex,
   pageSize,
   onPaginationChange,
+  canEdit = true,
 }: ClientesTableProps) {
-  const columns = getClientesColumns({ onEdit, onDelete, onToggleStatus })
+  const columns = getClientesColumns({ onEdit, onDelete, onToggleStatus, canEdit })
 
   const table = useReactTable({
     data: clientes,

@@ -110,12 +110,14 @@ interface ClientesColumnsProps {
   onEdit: (cliente: Cliente) => void
   onDelete: (clienteId: number) => void
   onToggleStatus: (clienteId: number) => void
+  canEdit?: boolean
 }
 
 export const getClientesColumns = ({
   onEdit,
   onDelete,
   onToggleStatus,
+  canEdit = true,
 }: ClientesColumnsProps): ColumnDef<Cliente>[] => [
   {
     accessorKey: 'nombre',
@@ -196,20 +198,24 @@ export const getClientesColumns = ({
       return <span className="text-gray-700">{formatDate(row.original.fecha_creacion)}</span>
     },
   },
-  {
-    id: 'acciones',
-    header: () => <div className="text-right">Acciones</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="text-right">
-          <AccionesCell
-            cliente={row.original}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            onToggleStatus={onToggleStatus}
-          />
-        </div>
-      )
-    },
-  },
+  ...(canEdit
+    ? [
+        {
+          id: 'acciones',
+          header: () => <div className="text-right">Acciones</div>,
+          cell: ({ row }: any) => {
+            return (
+              <div className="text-right">
+                <AccionesCell
+                  cliente={row.original}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onToggleStatus={onToggleStatus}
+                />
+              </div>
+            )
+          },
+        } as ColumnDef<Cliente>,
+      ]
+    : []),
 ]

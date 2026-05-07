@@ -8,17 +8,17 @@ import {
   useDeleteClienteMutation,
 } from '../store'
 import type { Cliente, ClienteCreatePayload } from '../store/gestionarClientes.types'
-import {
-  ClientesTable,
-  ClienteDialog,
-  DeleteClienteConfirmation,
-} from '../components'
+import { ClientesTable, ClienteDialog, DeleteClienteConfirmation } from '../components'
 import { Plus, Search, Filter, Users, PawPrint, MapPin } from 'lucide-react'
+import { useCanCreate, useCanEdit } from '#/store/auth/auth.hooks'
 
 export const GestionarClientes = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'activo' | 'inactivo'>('all')
   const [locationFilter, setLocationFilter] = useState('')
+
+  const canCreate = useCanCreate('CLI_CLIENTES')
+  const canEdit = useCanEdit('CLI_CLIENTES')
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingCliente, setEditingCliente] = useState<Cliente | undefined>()
@@ -223,14 +223,16 @@ export const GestionarClientes = () => {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCreateCliente}
-            className="inline-flex h-11 items-center rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:opacity-90"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Nuevo cliente
-          </button>
+          {canCreate && (
+            <button
+              type="button"
+              onClick={handleCreateCliente}
+              className="inline-flex h-11 items-center rounded-xl bg-[#F97316] px-5 font-medium text-white transition hover:opacity-90"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Nuevo cliente
+            </button>
+          )}
         </div>
 
         <p className="text-sm text-black">
@@ -246,6 +248,7 @@ export const GestionarClientes = () => {
           pageIndex={pagination.pageIndex}
           pageSize={pagination.pageSize}
           onPaginationChange={setPagination}
+          canEdit={canEdit}
         />
 
         <ClienteDialog
