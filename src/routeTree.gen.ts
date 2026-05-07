@@ -29,6 +29,7 @@ import { Route as AdminGestionar_ReservasRouteImport } from './routes/_admin/Ges
 import { Route as AdminGestionar_MascotasRouteImport } from './routes/_admin/Gestionar_Mascotas'
 import { Route as AdminGestionar_Historia_ClinicaRouteImport } from './routes/_admin/Gestionar_Historia_Clinica'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
+import { Route as AdminGestionar_AgendaRouteImport } from './routes/_admin/Gestionar_Agenda'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
@@ -132,6 +133,11 @@ const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
   path: '/Gestionar_Clientes',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGestionar_AgendaRoute = AdminGestionar_AgendaRouteImport.update({
+  id: '/Gestionar_Agenda',
+  path: '/Gestionar_Agenda',
+  getParentRoute: () => AdminRoute,
+} as any)
 const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
   id: '/demo/form/simple',
   path: '/demo/form/simple',
@@ -145,6 +151,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/Gestionar_Agenda': typeof AdminGestionar_AgendaRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+  '/Gestionar_Agenda': typeof AdminGestionar_AgendaRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_client': typeof ClientRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_admin/Gestionar_Agenda': typeof AdminGestionar_AgendaRoute
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
   '/_admin/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/_admin/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Gestionar_Agenda'
     | '/Gestionar_Clientes'
     | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Mascotas'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/Gestionar_Agenda'
     | '/Gestionar_Clientes'
     | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Mascotas'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_client'
     | '/_public'
+    | '/_admin/Gestionar_Agenda'
     | '/_admin/Gestionar_Clientes'
     | '/_admin/Gestionar_Historia_Clinica'
     | '/_admin/Gestionar_Mascotas'
@@ -430,6 +442,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_ClientesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Gestionar_Agenda': {
+      id: '/_admin/Gestionar_Agenda'
+      path: '/Gestionar_Agenda'
+      fullPath: '/Gestionar_Agenda'
+      preLoaderRoute: typeof AdminGestionar_AgendaRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/demo/form/simple': {
       id: '/demo/form/simple'
       path: '/demo/form/simple'
@@ -448,6 +467,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminGestionar_AgendaRoute: typeof AdminGestionar_AgendaRoute
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
   AdminGestionar_Historia_ClinicaRoute: typeof AdminGestionar_Historia_ClinicaRoute
   AdminGestionar_MascotasRoute: typeof AdminGestionar_MascotasRoute
@@ -460,6 +480,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminGestionar_AgendaRoute: AdminGestionar_AgendaRoute,
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
   AdminGestionar_Historia_ClinicaRoute: AdminGestionar_Historia_ClinicaRoute,
   AdminGestionar_MascotasRoute: AdminGestionar_MascotasRoute,

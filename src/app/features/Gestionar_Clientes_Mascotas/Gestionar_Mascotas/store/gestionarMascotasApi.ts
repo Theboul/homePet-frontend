@@ -27,13 +27,13 @@ export const gestionarMascotasApi = api.injectEndpoints({
     }),
 
     getEspeciesMascota: builder.query<EspecieOption[], void>({
-      query: () => "/gestion/clientes/especies/",
-      providesTags: ["Pets"],
+      query: () => "/gestion/servicios/especies/",
+      providesTags: ["Especies"],
     }),
 
     getRazasByEspecie: builder.query<RazaOption[], number>({
-      query: (idEspecie) => `/gestion/clientes/razas/?especie_id=${idEspecie}`,
-      providesTags: ["Pets"],
+      query: (idEspecie) => `/gestion/servicios/razas/?especie_id=${idEspecie}`,
+      providesTags: ["Razas"],
     }),
 
     createMascota: builder.mutation<Mascota, MascotaPayload>({
