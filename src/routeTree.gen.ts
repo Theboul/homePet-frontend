@@ -32,6 +32,7 @@ import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Ges
 import { Route as AdminGestionar_AgendaRouteImport } from './routes/_admin/Gestionar_Agenda'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
+import { Route as AdminNotificacionesSeguimientoRouteImport } from './routes/_admin/notificaciones/seguimiento'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -148,6 +149,12 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
   path: '/demo/form/address',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminNotificacionesSeguimientoRoute =
+  AdminNotificacionesSeguimientoRouteImport.update({
+    id: '/notificaciones/seguimiento',
+    path: '/notificaciones/seguimiento',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
+  '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
 }
@@ -190,6 +198,7 @@ export interface FileRoutesByTo {
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
+  '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
 }
@@ -216,6 +225,7 @@ export interface FileRoutesById {
   '/_public/login': typeof PublicLoginRoute
   '/demo/table': typeof DemoTableRoute
   '/_public/': typeof PublicIndexRoute
+  '/_admin/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
 }
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/demo/table'
+    | '/notificaciones/seguimiento'
     | '/demo/form/address'
     | '/demo/form/simple'
   fileRoutesByTo: FileRoutesByTo
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/demo/table'
+    | '/notificaciones/seguimiento'
     | '/demo/form/address'
     | '/demo/form/simple'
   id:
@@ -287,6 +299,7 @@ export interface FileRouteTypes {
     | '/_public/login'
     | '/demo/table'
     | '/_public/'
+    | '/_admin/notificaciones/seguimiento'
     | '/demo/form/address'
     | '/demo/form/simple'
   fileRoutesById: FileRoutesById
@@ -463,6 +476,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoFormAddressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/notificaciones/seguimiento': {
+      id: '/_admin/notificaciones/seguimiento'
+      path: '/notificaciones/seguimiento'
+      fullPath: '/notificaciones/seguimiento'
+      preLoaderRoute: typeof AdminNotificacionesSeguimientoRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -477,6 +497,7 @@ interface AdminRouteChildren {
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminNotificacionesSeguimientoRoute: typeof AdminNotificacionesSeguimientoRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -491,6 +512,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminNotificacionesSeguimientoRoute: AdminNotificacionesSeguimientoRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
