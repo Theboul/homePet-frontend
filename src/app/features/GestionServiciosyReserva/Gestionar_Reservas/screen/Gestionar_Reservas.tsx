@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
 import { EditReservaModal } from '../components'
+import { CreateConsultaModal } from '#/app/features/Gestionar_Clinica_Veterinaria/Gestionar_Historia_Clinica/components'
 import {
   useGetMascotasOptionsQuery,
   useGetPreciosOptionsQuery,
@@ -20,7 +21,6 @@ import { useCanEdit, useCanDelete } from '#/store/auth/auth.hooks'
 
 const estadoOptions: EstadoReserva[] = ['PENDIENTE', 'CONFIRMADA', 'CANCELADA', 'COMPLETADA']
 const modalidadOptions: ModalidadReserva[] = ['CLINICA', 'DOMICILIO']
-
 type EditableReserva = {
   id: number
   mascota: string
@@ -40,6 +40,8 @@ export const Gestionar_Reservas = () => {
   const [editing, setEditing] = useState<EditableReserva | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [cancelReason, setCancelReason] = useState('')
+  const [createConsultaOpen, setCreateConsultaOpen] = useState(false)
+  const [selectedReservaForConsulta, setSelectedReservaForConsulta] = useState<Reserva | null>(null)
 
   const canEdit = useCanEdit('SERV_CITAS')
   const canDelete = useCanDelete('SERV_CITAS')
@@ -219,11 +221,30 @@ export const Gestionar_Reservas = () => {
                             Editar
                           </Button>
                           {reserva.estado === 'PENDIENTE' && (
+                            <>
+                              <Button
+                                className="bg-blue-600 hover:bg-blue-700 text-white h-8 text-xs px-3"
+                                onClick={() => updateStatus(reserva.id_cita, 'CONFIRMADA')}
+                              >
+                                Confirmar
+                              </Button>
+                              <Button
+                                className="bg-green-600 hover:bg-green-700 text-white h-8 text-xs px-3"
+                                onClick={() => updateStatus(reserva.id_cita, 'COMPLETADA')}
+                              >
+                                Completar
+                              </Button>
+                            </>
+                          )}
+                          {reserva.estado === 'CONFIRMADA' && (
                             <Button
-                              className="bg-green-600 hover:bg-green-700 text-white h-8 text-xs px-3"
-                              onClick={() => updateStatus(reserva.id_cita, 'COMPLETADA')}
+                              className="bg-indigo-600 hover:bg-indigo-700 text-white h-8 text-xs px-3"
+                              onClick={() => {
+                                setSelectedReservaForConsulta(reserva)
+                                setCreateConsultaOpen(true)
+                              }}
                             >
-                              Completar
+                              + Consulta
                             </Button>
                           )}
                         </>
@@ -260,6 +281,20 @@ export const Gestionar_Reservas = () => {
         preciosFiltrados={preciosFiltrados}
         modalidadOptions={modalidadOptions}
         />
+
+        {selectedReservaForConsulta && (
+          <CreateConsultaModal
+            isOpen={createConsultaOpen}
+            onClose={() => {
+              setCreateConsultaOpen(false)
+              setSelectedReservaForConsulta(null)
+              refetch()
+            }}
+            citaId={selectedReservaForConsulta.id_cita}
+            mascotaId={selectedReservaForConsulta.mascota}
+            petName={selectedReservaForConsulta.mascota_nombre}
+          />
+        )}
     </section>
   )
 }

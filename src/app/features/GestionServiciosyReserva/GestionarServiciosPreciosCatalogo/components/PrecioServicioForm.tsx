@@ -90,13 +90,16 @@ px-3 py-2 text-sm"
         children={(field) => (
           <div className="space-y-2">
             <Label htmlFor={field.name}>Modalidad</Label>
-            <Input
+            <select
               id={field.name}
+              className="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm"
               value={field.state.value ?? ''}
-              onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Ej. Domicilio o Clínica"
-            />
+            >
+              <option value="">Selecciona una modalidad</option>
+              <option value="CLINICA">Clínica</option>
+              <option value="DOMICILIO">Domicilio</option>
+            </select>
           </div>
         )}
       />
