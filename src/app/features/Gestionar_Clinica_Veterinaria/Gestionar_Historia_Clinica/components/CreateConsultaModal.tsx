@@ -10,6 +10,7 @@ import {
 interface CreateConsultaModalProps {
   isOpen: boolean
   onClose: () => void
+  onConsultaCreada?: () => Promise<void> | void
   citaId: number
   mascotaId: number
   petName: string
@@ -18,6 +19,7 @@ interface CreateConsultaModalProps {
 export function CreateConsultaModal({
   isOpen,
   onClose,
+  onConsultaCreada,
   citaId,
   mascotaId,
   petName,
@@ -85,6 +87,8 @@ export function CreateConsultaModal({
           fecha_consulta: new Date().toISOString(),
         },
       }).unwrap()
+
+      await onConsultaCreada?.()
 
       resetForm()
       onClose()

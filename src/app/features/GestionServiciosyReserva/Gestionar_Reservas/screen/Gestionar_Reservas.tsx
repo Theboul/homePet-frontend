@@ -144,6 +144,16 @@ export const Gestionar_Reservas = () => {
     }
   }
 
+  const handleConsultaCreada = async (id: number) => {
+    try {
+      await patchEstadoReserva({ id, body: { estado: 'COMPLETADA' } }).unwrap()
+      await refetch()
+      setMessage('Consulta creada y reserva completada correctamente.')
+    } catch {
+      setMessage('La consulta se creó, pero no se pudo completar la reserva.')
+    }
+  }
+
   return (
     <section className="space-y-5 text-gray-900">
       
@@ -290,6 +300,7 @@ export const Gestionar_Reservas = () => {
               setSelectedReservaForConsulta(null)
               refetch()
             }}
+            onConsultaCreada={() => handleConsultaCreada(selectedReservaForConsulta.id_cita)}
             citaId={selectedReservaForConsulta.id_cita}
             mascotaId={selectedReservaForConsulta.mascota}
             petName={selectedReservaForConsulta.mascota_nombre}
