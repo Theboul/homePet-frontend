@@ -13,6 +13,25 @@ import {
 } from '../../Gestionar_Reservas/store/reservasApi'
 import { toast } from 'sonner'
 
+const normalizeText = (value: string | null | undefined) => {
+  const normalized = (value ?? '')
+    .trim()
+    .toUpperCase()
+    .replaceAll('Á', 'A')
+    .replaceAll('É', 'E')
+    .replaceAll('Í', 'I')
+    .replaceAll('Ó', 'O')
+    .replaceAll('Ú', 'U')
+    .replaceAll('Ü', 'U')
+
+  if (normalized.includes('DOMICILIO')) return 'DOMICILIO'
+  if (normalized.includes('CONSULTA') || normalized.includes('CLINICA')) {
+    return 'CLINICA'
+  }
+
+  return normalized
+}
+
 interface ReservaRapidaModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -40,7 +59,7 @@ export const ReservaRapidaModal = ({ open, onOpenChange, fecha, hora }: ReservaR
     return precios.filter(p => 
       p.estado && 
       p.servicio === Number(servicioId) && 
-      p.modalidad === modalidad
+      normalizeText(p.modalidad) === normalizeText(modalidad)
     )
   }, [precios, servicioId, modalidad])
 
