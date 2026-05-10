@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2, FileText, FileImage, FileArchive, File } from "lucide-react"
 import type { ArchivoClinico, ConsultaClinica } from "../../store"
+import { resolveMediaUrl } from "../utils"
 
 interface Props {
   archivos: ArchivoClinico[]
@@ -97,6 +98,10 @@ export function ArchivosListSection({
                 key={archivo.id_archivo_clinico}
                 className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
               >
+                {(() => {
+                  const archivoUrl = resolveMediaUrl(archivo.archivo)
+
+                  return (
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div className="flex flex-1 gap-4">
                     <div className="mt-1 rounded-xl bg-white p-3 text-slate-700 shadow-sm">
@@ -131,18 +136,18 @@ export function ArchivosListSection({
                         </p>
                       </div>
 
-                      {isImageFile(archivo) && archivo.archivo && (
+                      {isImageFile(archivo) && archivoUrl && (
                         <div className="mt-4">
                           <p className="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-violet-600">Vista previa</p>
-                          <img src={archivo.archivo} alt={archivo.nombre_archivo || "Vista previa"} className="max-h-52 rounded-2xl border border-slate-200 object-cover" />
+                          <img src={archivoUrl} alt={archivo.nombre_archivo || "Vista previa"} className="max-h-52 rounded-2xl border border-slate-200 object-cover" />
                         </div>
                       )}
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-2 md:w-[180px]">
-                    {archivo.archivo && (
-                      <a href={archivo.archivo} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-300 px-4 py-2 text-sm text-violet-700 hover:bg-violet-50">
+                    {archivoUrl && (
+                      <a href={archivoUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-300 px-4 py-2 text-sm text-violet-700 hover:bg-violet-50">
                         <Eye className="h-4 w-4" /> Ver archivo
                       </a>
                     )}
@@ -158,6 +163,8 @@ export function ArchivosListSection({
                     )}
                   </div>
                 </div>
+                  )
+                })()}
               </div>
             ))}
           </div>

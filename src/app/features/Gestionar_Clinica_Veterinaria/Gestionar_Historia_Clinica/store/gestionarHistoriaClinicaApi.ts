@@ -34,6 +34,11 @@ export const gestionarHistoriaClinicaApi = api.injectEndpoints({
       },
     }),
 
+    getClinicalHistoryByPet: builder.query<ClinicalHistory, number>({
+      query: (idMascota) => `/gestion/clinica/mascotas/${idMascota}/historial/`,
+      providesTags: ["ClinicalHistory"],
+    }),
+
     createClinicalHistory: builder.mutation<
       ClinicalHistory,
       ClinicalHistoryPayload
@@ -273,6 +278,7 @@ updateArchivoClinico: builder.mutation<
 
 export const {
   useGetClinicalHistoriesQuery,
+  useGetClinicalHistoryByPetQuery,
   useCreateClinicalHistoryMutation,
   useUpdateClinicalHistoryMutation,
   useCreateConsultaClinicaMutation,
