@@ -22,6 +22,8 @@ import { Route as ClientClienteRouteImport } from './routes/_client/cliente'
 import { Route as ClientPerfil_MascotaRouteImport } from './routes/_client/Perfil_Mascota'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
+import { Route as AdminUnidades_MovilesRouteImport } from './routes/_admin/Unidades_Moviles'
+import { Route as AdminRutas_ProgramadasRouteImport } from './routes/_admin/Rutas_Programadas'
 import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
 import { Route as AdminGestionar_Servicios_Precios_CatalogoRouteImport } from './routes/_admin/Gestionar_Servicios_Precios_Catalogo'
 import { Route as AdminGestionar_Roles_PermisosRouteImport } from './routes/_admin/Gestionar_Roles_Permisos'
@@ -96,6 +98,16 @@ const AdminBitacoraRoute = AdminBitacoraRouteImport.update({
   path: '/bitacora',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminUnidades_MovilesRoute = AdminUnidades_MovilesRouteImport.update({
+  id: '/Unidades_Moviles',
+  path: '/Unidades_Moviles',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRutas_ProgramadasRoute = AdminRutas_ProgramadasRouteImport.update({
+  id: '/Rutas_Programadas',
+  path: '/Rutas_Programadas',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
   id: '/Gestionar_Usuarios',
   path: '/Gestionar_Usuarios',
@@ -166,6 +178,8 @@ export interface FileRoutesByFullPath {
   '/Gestionar_Roles_Permisos': typeof AdminGestionar_Roles_PermisosRoute
   '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
+  '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
   '/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
@@ -189,6 +203,8 @@ export interface FileRoutesByTo {
   '/Gestionar_Roles_Permisos': typeof AdminGestionar_Roles_PermisosRoute
   '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
+  '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
   '/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
@@ -215,6 +231,8 @@ export interface FileRoutesById {
   '/_admin/Gestionar_Roles_Permisos': typeof AdminGestionar_Roles_PermisosRoute
   '/_admin/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/_admin/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
+  '/_admin/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_client/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
@@ -241,6 +259,8 @@ export interface FileRouteTypes {
     | '/Gestionar_Roles_Permisos'
     | '/Gestionar_Servicios_Precios_Catalogo'
     | '/Gestionar_Usuarios'
+    | '/Rutas_Programadas'
+    | '/Unidades_Moviles'
     | '/bitacora'
     | '/dashboard'
     | '/Perfil_Mascota'
@@ -264,6 +284,8 @@ export interface FileRouteTypes {
     | '/Gestionar_Roles_Permisos'
     | '/Gestionar_Servicios_Precios_Catalogo'
     | '/Gestionar_Usuarios'
+    | '/Rutas_Programadas'
+    | '/Unidades_Moviles'
     | '/bitacora'
     | '/dashboard'
     | '/Perfil_Mascota'
@@ -289,6 +311,8 @@ export interface FileRouteTypes {
     | '/_admin/Gestionar_Roles_Permisos'
     | '/_admin/Gestionar_Servicios_Precios_Catalogo'
     | '/_admin/Gestionar_Usuarios'
+    | '/_admin/Rutas_Programadas'
+    | '/_admin/Unidades_Moviles'
     | '/_admin/bitacora'
     | '/_admin/dashboard'
     | '/_client/Perfil_Mascota'
@@ -406,6 +430,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBitacoraRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Unidades_Moviles': {
+      id: '/_admin/Unidades_Moviles'
+      path: '/Unidades_Moviles'
+      fullPath: '/Unidades_Moviles'
+      preLoaderRoute: typeof AdminUnidades_MovilesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Rutas_Programadas': {
+      id: '/_admin/Rutas_Programadas'
+      path: '/Rutas_Programadas'
+      fullPath: '/Rutas_Programadas'
+      preLoaderRoute: typeof AdminRutas_ProgramadasRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Usuarios': {
       id: '/_admin/Gestionar_Usuarios'
       path: '/Gestionar_Usuarios'
@@ -495,6 +533,8 @@ interface AdminRouteChildren {
   AdminGestionar_Roles_PermisosRoute: typeof AdminGestionar_Roles_PermisosRoute
   AdminGestionar_Servicios_Precios_CatalogoRoute: typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
+  AdminRutas_ProgramadasRoute: typeof AdminRutas_ProgramadasRoute
+  AdminUnidades_MovilesRoute: typeof AdminUnidades_MovilesRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminNotificacionesSeguimientoRoute: typeof AdminNotificacionesSeguimientoRoute
@@ -510,6 +550,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_Servicios_Precios_CatalogoRoute:
     AdminGestionar_Servicios_Precios_CatalogoRoute,
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
+  AdminRutas_ProgramadasRoute: AdminRutas_ProgramadasRoute,
+  AdminUnidades_MovilesRoute: AdminUnidades_MovilesRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminNotificacionesSeguimientoRoute: AdminNotificacionesSeguimientoRoute,

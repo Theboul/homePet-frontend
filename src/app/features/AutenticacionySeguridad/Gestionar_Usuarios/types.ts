@@ -5,6 +5,7 @@ export type BackendRole = {
 export type BackendAuthUser = {
   id_usuario?: number
   id?: number
+  id_veterinaria?: number | null
   correo?: string
   rol?: BackendRole | string
   role?: BackendRole | string
@@ -16,6 +17,7 @@ export type BackendUsuario = {
   id_perfil?: number
   id_usuario?: number
   id?: number
+  id_veterinaria?: number | null
   nombre?: string
   correo?: string
   telefono?: string
@@ -28,7 +30,7 @@ export type BackendUsuario = {
   fecha_creacion?: string
   creado_en?: string
   created_at?: string
-  usuario?: BackendAuthUser
+  usuario?: BackendAuthUser | number
   perfil?: {
     nombre?: string
     telefono?: string

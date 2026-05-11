@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { useCanView } from '#/store/auth/auth.hooks'
+import { useAppSelector } from '#/store/hooks'
 
 type MenuChild = {
   label: string
@@ -26,6 +27,7 @@ type MenuChild = {
     | '/Gestionar_Agenda'
     | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Reservas'
+    | '/Rutas_Programadas'
     | '/bitacora'
     | '/about'
     | '/login'
@@ -91,6 +93,10 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
             label: 'Gestionar Reservas',
             to: '/Gestionar_Reservas',
           },
+          {
+            label: 'Rutas Programadas',
+            to: '/Rutas_Programadas',
+          },
         ],
       },
       {
@@ -134,6 +140,8 @@ export function Sidebar({
   const canViewMascotas = useCanView('CLI_MASCOTAS')
   const canViewServicios = useCanView('SERV_SERVICIOS')
   const canViewCitas = useCanView('SERV_CITAS')
+  const userRole = useAppSelector((state) => state.auth.user?.role)
+  const canViewRutasProgramadas = canViewCitas || userRole === 'VETERINARIAN'
 
   // Mapeo de rutas a permisos para el filtrado dinámico
   const permissionMap: Record<string, boolean> = {
@@ -147,6 +155,7 @@ export function Sidebar({
     '/Gestionar_Servicios_Precios_Catalogo': canViewServicios,
     '/Gestionar_Agenda': canViewServicios,
     '/Gestionar_Reservas': canViewCitas,
+    '/Rutas_Programadas': canViewRutasProgramadas,
   }
 
   const processedSections = menuSections.map((section) => ({

@@ -20,14 +20,14 @@ export const Route = createFileRoute('/_client')({
 
     if (user?.role !== 'CLIENT' && accessToken) {
       const profileRequest = store.dispatch(
-        authApi.endpoints.getProfile.initiate(undefined, { forceRefetch: true }),
+        authApi.endpoints.me.initiate(undefined, { forceRefetch: true }),
       )
 
       let shouldGoDashboard = false
 
       try {
         const profile = await profileRequest.unwrap()
-        shouldGoDashboard = profile.role !== 'CLIENT'
+        shouldGoDashboard = profile.usuario.role !== 'CLIENT'
       } catch {
         throw redirect({
           to: '/login',
