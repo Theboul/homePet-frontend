@@ -1,0 +1,1 @@
+export { UnidadesMovilesPage } from './UnidadesMovilesPage'

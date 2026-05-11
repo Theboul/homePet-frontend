@@ -34,9 +34,9 @@ const LoginScreen = () => {
       const result = await login({ correo, password, plataforma: 'WEB' }).unwrap()
 
       applyLoginContext(dispatch, result)
-
+      console.log(result)
       navigate({
-        to: result.usuario.role === 'CLIENT' ? '/cliente' : '/dashboard',
+        to: result.usuario.rol === 'CLIENT' ? '/cliente' : '/dashboard',
       })
     } catch (error: any) {
       if (error?.status === 401) {

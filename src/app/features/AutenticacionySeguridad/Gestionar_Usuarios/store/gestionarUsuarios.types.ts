@@ -7,6 +7,8 @@ export type UserStatus = 'Activo' | 'Inactivo';
 
 export interface Usuario {
   id: number;
+  id_usuario?: number;
+  id_veterinaria?: number | null;
   nombre: string;
   correo: string;
   telefono: string;

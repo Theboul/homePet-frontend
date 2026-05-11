@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { useCanView } from '#/store/auth/auth.hooks'
+import { useAppSelector } from '#/store/hooks'
 
 type MenuChild = {
   label: string
@@ -26,10 +27,12 @@ type MenuChild = {
   | '/Gestionar_Agenda'
   | '/Gestionar_Historia_Clinica'
   | '/Gestionar_Reservas'
+  | '/Rutas_Programadas'
   | '/bitacora'
   | '/gestionar-backups'
   | '/about'
   | '/login'
+  | '/notificaciones/seguimiento'
   hasAccess?: boolean
 }
 
@@ -93,6 +96,20 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
             label: 'Gestionar Reservas',
             to: '/Gestionar_Reservas',
           },
+          {
+            label: 'Rutas Programadas',
+            to: '/Rutas_Programadas',
+          },
+        ],
+      },
+      {
+        label: 'Notificaciones y Seguimiento',
+        icon: Users,
+        children: [
+          {
+            label: 'seguimiento de pedidos',
+            to: '/notificaciones/seguimiento',
+          },
         ],
       },
     ],
@@ -127,6 +144,8 @@ export function Sidebar({
   const canViewMascotas = useCanView('CLI_MASCOTAS')
   const canViewServicios = useCanView('SERV_SERVICIOS')
   const canViewCitas = useCanView('SERV_CITAS')
+  const userRole = useAppSelector((state) => state.auth.user?.role)
+  const canViewRutasProgramadas = canViewCitas || userRole === 'VETERINARIAN'
 
   // Mapeo de rutas a permisos para el filtrado dinámico
   const permissionMap: Record<string, boolean> = {
@@ -141,31 +160,34 @@ export function Sidebar({
     '/Gestionar_Servicios_Precios_Catalogo': canViewServicios,
     '/Gestionar_Agenda': canViewServicios,
     '/Gestionar_Reservas': canViewCitas,
+    '/Rutas_Programadas': canViewRutasProgramadas,
   }
 
-  const processedSections = menuSections.map(section => ({
+  const processedSections = menuSections.map((section) => ({
     ...section,
-    items: section.items.map(item => {
+    items: section.items.map((item) => {
       if (item.children) {
-        const processedChildren = item.children.map(child => ({
+        const processedChildren = item.children.map((child) => ({
           ...child,
-          hasAccess: permissionMap[child.to] !== false
+          hasAccess: permissionMap[child.to] !== false,
         }))
-        const hasAccess = processedChildren.some(child => child.hasAccess)
+        const hasAccess = processedChildren.some((child) => child.hasAccess)
         return { ...item, children: processedChildren, hasAccess }
       }
       return { ...item, hasAccess: permissionMap[item.to!] !== false }
-    })
+    }),
   }))
 
   return (
     <aside
-      className={`sticky top-0 z-20 flex h-screen flex-shrink-0 flex-col bg-[#6A24D4] text-white transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
-        }`}
+      className={`sticky top-0 z-20 flex h-screen flex-shrink-0 flex-col bg-[#6A24D4] text-white transition-all duration-300 ${
+        isCollapsed ? 'w-20' : 'w-64'
+      }`}
     >
       <div
-        className={`flex items-center select-none ${isCollapsed ? 'flex-col gap-4 px-4 py-6' : 'gap-3 p-6'
-          }`}
+        className={`flex items-center select-none ${
+          isCollapsed ? 'flex-col gap-4 px-4 py-6' : 'gap-3 p-6'
+        }`}
       >
         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 shadow-lg">
           <PawPrint className="h-5 w-5 text-white" fill="currentColor" />
@@ -180,8 +202,9 @@ export function Sidebar({
         <Button
           onClick={toggleSidebar}
           type="button"
-          className={`h-auto flex-shrink-0 rounded-full p-2 text-purple-300 transition-colors hover:bg-white/10 hover:text-orange-400 ${isCollapsed ? 'rotate-180' : ''
-            }`}
+          className={`h-auto flex-shrink-0 rounded-full p-2 text-purple-300 transition-colors hover:bg-white/10 hover:text-orange-400 ${
+            isCollapsed ? 'rotate-180' : ''
+          }`}
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
@@ -204,10 +227,13 @@ export function Sidebar({
                 const hasChildren = Boolean(item.children?.length)
                 const hasAccess = item.hasAccess
 
-                const disabledClasses = hasAccess ? '' : 'opacity-40 cursor-not-allowed pointer-events-none'
+                const disabledClasses = hasAccess
+                  ? ''
+                  : 'opacity-40 cursor-not-allowed pointer-events-none'
 
                 const isChildActive = childIsActive(item.children, pathname)
-                const itemActive = (item.to && pathname === item.to) || isChildActive
+                const itemActive =
+                  (item.to && pathname === item.to) || isChildActive
                 const itemOpen =
                   hasChildren && (openMenus[item.label] ?? isChildActive)
 
@@ -219,7 +245,7 @@ export function Sidebar({
                       <Button
                         type="button"
                         onClick={() => {
-                          if (!hasAccess) return;
+                          if (!hasAccess) return
                           if (isCollapsed && toggleSidebar) {
                             toggleSidebar()
                             setOpenMenus((prev) => ({
@@ -231,17 +257,18 @@ export function Sidebar({
                           }
                         }}
                         title={isCollapsed ? item.label : undefined}
-                        className={`flex w-full items-center rounded-xl py-2.5 text-left text-sm transition-all ${isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-                          } ${isActiveOrOpen
+                        className={`flex w-full items-center rounded-xl py-2.5 text-left text-sm transition-all ${
+                          isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+                        } ${
+                          isActiveOrOpen
                             ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
                             : 'text-white/75 hover:bg-white/8 hover:text-white'
-                          }`}
+                        }`}
                       >
                         <Icon
-                          className={`h-5 w-5 flex-shrink-0 ${isActiveOrOpen
-                              ? 'text-orange-300'
-                              : 'text-white/70'
-                            }`}
+                          className={`h-5 w-5 flex-shrink-0 ${
+                            isActiveOrOpen ? 'text-orange-300' : 'text-white/70'
+                          }`}
                         />
 
                         {!isCollapsed && (
@@ -262,19 +289,22 @@ export function Sidebar({
                         <div className="ml-8 mt-1 space-y-1 border-l border-white/15 pl-3">
                           {item.children?.map((child) => {
                             const childActive = pathname === child.to
-                            const childDisabledClasses = child.hasAccess ? '' : 'opacity-40 cursor-not-allowed pointer-events-none'
+                            const childDisabledClasses = child.hasAccess
+                              ? ''
+                              : 'opacity-40 cursor-not-allowed pointer-events-none'
 
                             return (
                               <Link
                                 key={child.label}
                                 to={child.to as any}
-                                className={`block rounded-lg px-3 py-2 text-xs font-medium transition-all ${childDisabledClasses} ${childActive
+                                className={`block rounded-lg px-3 py-2 text-xs font-medium transition-all ${childDisabledClasses} ${
+                                  childActive
                                     ? 'bg-orange-500/25 text-orange-100 ring-1 ring-orange-300/45'
                                     : 'text-white/65 hover:bg-white/8 hover:text-white'
-                                  }`}
+                                }`}
                                 onClick={(e) => {
                                   if (!child.hasAccess) {
-                                    e.preventDefault();
+                                    e.preventDefault()
                                   }
                                 }}
                               >
@@ -293,20 +323,23 @@ export function Sidebar({
                     key={item.label}
                     to={(item.to ?? '/dashboard') as any}
                     title={isCollapsed ? item.label : undefined}
-                    className={`flex items-center rounded-xl py-2.5 text-sm transition-all ${disabledClasses} ${isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-                      } ${itemActive
+                    className={`flex items-center rounded-xl py-2.5 text-sm transition-all ${disabledClasses} ${
+                      isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+                    } ${
+                      itemActive
                         ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
                         : 'text-white/75 hover:bg-white/8 hover:text-white'
-                      }`}
+                    }`}
                     onClick={(e) => {
                       if (!hasAccess) {
-                        e.preventDefault();
+                        e.preventDefault()
                       }
                     }}
                   >
                     <Icon
-                      className={`h-5 w-5 flex-shrink-0 ${itemActive ? 'text-orange-300' : 'text-white/70'
-                        }`}
+                      className={`h-5 w-5 flex-shrink-0 ${
+                        itemActive ? 'text-orange-300' : 'text-white/70'
+                      }`}
                     />
                     {!isCollapsed && (
                       <span className="whitespace-nowrap">{item.label}</span>
@@ -320,8 +353,9 @@ export function Sidebar({
       </nav>
 
       <div
-        className={`m-4 mt-auto flex items-center overflow-hidden border-t border-white/10 p-4 ${isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'
-          }`}
+        className={`m-4 mt-auto flex items-center overflow-hidden border-t border-white/10 p-4 ${
+          isCollapsed ? 'justify-center mx-1 px-0' : 'gap-3'
+        }`}
       >
         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
           AD

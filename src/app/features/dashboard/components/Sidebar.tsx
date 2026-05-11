@@ -5,11 +5,31 @@ import {
   ChevronLeft,
   ChevronDown,
   ChevronRight,
+  Route as RouteIcon,
   PawPrint,
+  Truck,
 } from 'lucide-react'
 import { useAppSelector } from '#/store/hooks'
 import { getIconByCode } from '@/shared/ui/icons/iconMap'
 import type { ComponenteSistema } from '#/store/components/component.types'
+
+function normalizeRole(value?: string | null) {
+  return (value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toUpperCase()
+}
+
+function hasAdminAccess(value?: string | null) {
+  const normalized = normalizeRole(value)
+  return normalized.includes('SUPERADMIN') || normalized.includes('ADMIN')
+}
+
+function hasVeterinarianAccess(value?: string | null) {
+  const normalized = normalizeRole(value)
+  return normalized.includes('VETERINARIAN') || normalized.includes('VETERINARIO')
+}
 
 export function Sidebar({
   isCollapsed = false,
@@ -22,6 +42,9 @@ export function Sidebar({
   const { componentTree } = useAppSelector((state) => state.components)
   const { user } = useAppSelector((state) => state.auth)
   const { veterinaria } = useAppSelector((state) => state.tenant)
+  const normalizedRole = normalizeRole(user?.role)
+  const showRoutesShortcut =
+    hasVeterinarianAccess(user?.role) || hasAdminAccess(user?.role)
 
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
 
@@ -187,6 +210,46 @@ export function Sidebar({
       </div>
 
       <nav className="mt-2 flex-1 overflow-y-auto px-4 py-2 space-y-1">
+        {showRoutesShortcut ? (
+          <>
+            <Link
+              to="/Rutas_Programadas"
+              title={isCollapsed ? 'Rutas programadas' : undefined}
+              className={`mb-2 flex items-center rounded-xl py-2.5 text-sm transition-all ${
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+              } ${
+                pathname === '/Rutas_Programadas'
+                  ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
+                  : 'text-white/75 hover:bg-white/8 hover:text-white'
+              }`}
+            >
+              <RouteIcon
+                className={`h-5 w-5 flex-shrink-0 ${
+                  pathname === '/Rutas_Programadas' ? 'text-orange-300' : 'text-white/70'
+                }`}
+              />
+              {!isCollapsed && <span className="whitespace-nowrap">Rutas Programadas</span>}
+            </Link>
+            <Link
+              to="/Unidades_Moviles"
+              title={isCollapsed ? 'Unidades móviles' : undefined}
+              className={`mb-2 flex items-center rounded-xl py-2.5 text-sm transition-all ${
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+              } ${
+                pathname === '/Unidades_Moviles'
+                  ? 'bg-orange-500/20 text-orange-200 ring-1 ring-orange-300/40'
+                  : 'text-white/75 hover:bg-white/8 hover:text-white'
+              }`}
+            >
+              <Truck
+                className={`h-5 w-5 flex-shrink-0 ${
+                  pathname === '/Unidades_Moviles' ? 'text-orange-300' : 'text-white/70'
+                }`}
+              />
+              {!isCollapsed && <span className="whitespace-nowrap">Unidades Móviles</span>}
+            </Link>
+          </>
+        ) : null}
         {renderMenuItems(componentTree)}
       </nav>
 
