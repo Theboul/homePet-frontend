@@ -27,6 +27,7 @@ type MenuChild = {
   | '/Gestionar_Historia_Clinica'
   | '/Gestionar_Reservas'
   | '/bitacora'
+  | '/gestionar-backups'
   | '/about'
   | '/login'
   hasAccess?: boolean
@@ -55,6 +56,7 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
           { label: 'Gestionar Usuarios', to: '/Gestionar_Usuarios' },
           { label: 'Roles y Permisos', to: '/Gestionar_Roles_Permisos' },
           { label: 'Bitácora y Seguridad', to: '/bitacora' },
+          { label: 'Copias de Seguridad', to: '/gestionar-backups' },
         ],
       },
       {
@@ -120,6 +122,7 @@ export function Sidebar({
   const canViewUsuarios = useCanView('SEG_USUARIOS')
   const canViewBitacora = useCanView('SEG_BITACORA')
   const canViewRoles = useCanView('SEG_GRUPO_USUARIO')
+  const canViewBackups = useCanView('SEG_BACKUPS')
   const canViewClientes = useCanView('CLI_CLIENTES')
   const canViewMascotas = useCanView('CLI_MASCOTAS')
   const canViewServicios = useCanView('SERV_SERVICIOS')
@@ -131,6 +134,7 @@ export function Sidebar({
     '/Gestionar_Usuarios': canViewUsuarios,
     '/Gestionar_Roles_Permisos': canViewRoles,
     '/bitacora': canViewBitacora,
+    '/gestionar-backups': canViewBackups,
     '/Gestionar_Clientes': canViewClientes,
     '/Gestionar_Mascotas': canViewMascotas,
     '/Gestionar_Historia_Clinica': canViewMascotas,
