@@ -28,17 +28,44 @@ export function BackupConfigPanel({
 }: BackupConfigPanelProps) {
   const [frecuencia, setFrecuencia] = useState<string>(config?.frecuencia || 'SEMANAL');
   const [diasRetention, setDiasRetention] = useState<number>(config?.dias_retención || 30);
+  const [horaEjecucion, setHoraEjecucion] = useState<number>(config?.hora_ejecucion ?? 2);
+  const [diasSemana, setDiasSemana] = useState<number[]>(config?.dias_semana ?? []);
+
+  const diasSemanaLabels = [
+    'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'
+  ];
+
+  const toggleDiaSemana = (dia: number) => {
+    setDiasSemana(prev => 
+      prev.includes(dia) 
+        ? prev.filter(d => d !== dia)
+        : [...prev, dia].sort()
+    );
+  };
 
   const handleSave = () => {
-    onSave({
+    const saveData: any = {
       frecuencia: frecuencia as 'DIARIO' | 'SEMANAL' | 'MENSUAL' | 'PERSONALIZADO',
       dias_retención: diasRetention,
-    });
+    };
+
+    if (frecuencia === 'PERSONALIZADO') {
+      saveData.hora_ejecucion = horaEjecucion;
+      if (diasSemana.length > 0) {
+        saveData.dias_semana = diasSemana;
+      }
+    }
+
+    onSave(saveData);
   };
 
   const hasChanges = 
     frecuencia !== config?.frecuencia || 
-    diasRetention !== config?.dias_retención;
+    diasRetention !== config?.dias_retención ||
+    (frecuencia === 'PERSONALIZADO' && (
+      horaEjecucion !== config?.hora_ejecucion ||
+      JSON.stringify(diasSemana) !== JSON.stringify(config?.dias_semana || [])
+    ));
 
   return (
     <Card className="border-[#7C3AED] bg-gradient-to-br from-white to-purple-50">
@@ -65,6 +92,54 @@ export function BackupConfigPanel({
             </SelectContent>
           </Select>
         </div>
+
+        {/* Configuración Personalizada */}
+        {frecuencia === 'PERSONALIZADO' && (
+          <div className="p-4 rounded-lg bg-blue-50 border border-blue-200 space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700">Hora de Ejecución</label>
+              <div className="mt-2 flex items-center gap-2">
+                <input
+                  type="number"
+                  min="0"
+                  max="23"
+                  value={horaEjecucion}
+                  onChange={(e) => setHoraEjecucion(Math.max(0, Math.min(23, parseInt(e.target.value) || 0)))}
+                  disabled={isLoading}
+                  className="w-20 px-3 py-2 border border-gray-300 rounded-lg bg-white text-black"
+                />
+                <span className="text-sm text-gray-600">
+                  {String(horaEjecucion).padStart(2, '0')}:00 hrs
+                </span>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Hora del día en que se ejecutará el backup</p>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-700">Días de Ejecución</label>
+              <div className="mt-2 grid grid-cols-4 gap-2">
+                {diasSemanaLabels.map((dia, index) => (
+                  <button
+                    key={index}
+                    onClick={() => toggleDiaSemana(index)}
+                    disabled={isLoading}
+                    className={`py-2 px-3 rounded-lg text-sm font-medium transition ${
+                      diasSemana.includes(index)
+                        ? 'bg-[#7C3AED] text-white'
+                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    {dia.slice(0, 3)}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Selecciona qué días ejecutar el backup
+                {diasSemana.length === 0 && <span className="text-orange-600"> (Selecciona al menos un día)</span>}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Días de Retención */}
         <div className="space-y-2">

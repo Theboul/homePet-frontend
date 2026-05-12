@@ -25,6 +25,9 @@ export interface BackupConfig {
   activo: boolean;
   creado: string;
   actualizado: string;
+  // Campos de personalización (para frecuencia PERSONALIZADO)
+  hora_ejecucion?: number; // 0-23 (hora del día)
+  dias_semana?: number[]; // [0-6] donde 0=lunes, 6=domingo
 }
 
 export interface PaginatedResponse<T> {

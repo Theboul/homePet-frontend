@@ -20,11 +20,14 @@ export const backupApi = api.injectEndpoints({
       invalidatesTags: ['Backup'],
     }),
 
-    restoreBackup: builder.mutation<{ success: boolean; message: string }, { backup_id: number; motivo: string }>({
-      query: ({ backup_id, motivo }) => ({
+    restoreBackup: builder.mutation<
+      { success: boolean; message: string },
+      { backup_id: number; motivo: string; scope?: 'TENANT' | 'GLOBAL' }
+    >({
+      query: ({ backup_id, motivo, scope }) => ({
         url: `auth/backups/${backup_id}/restore/`,
         method: 'POST',
-        body: { motivo },
+        body: { motivo, scope },
       }),
       invalidatesTags: ['Backup'],
     }),

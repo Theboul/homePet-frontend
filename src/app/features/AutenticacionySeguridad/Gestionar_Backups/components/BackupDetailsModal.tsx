@@ -9,8 +9,9 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Database, Shield } from 'lucide-react';
 import { useState } from 'react';
+import { useAppSelector } from '#/store/hooks';
 import type { BackupRestore } from '../store/backup.types';
 import { useRestoreBackupMutation } from '../store';
 
@@ -23,7 +24,10 @@ interface BackupDetailsModalProps {
 export function BackupDetailsModal({ backup, onClose, onRestore }: BackupDetailsModalProps) {
   const [copiedHash, setCopiedHash] = useState(false);
   const [motivo, setMotivo] = useState('Restauración manual');
+  const [scope, setScope] = useState<'TENANT' | 'GLOBAL'>('TENANT');
   const [restoreBackup, { isLoading: isRestoring }] = useRestoreBackupMutation();
+  const user = useAppSelector((state) => state.auth.user);
+  const isSuperuser = user?.is_superuser || false;
 
   if (!backup) return null;
 
@@ -154,15 +158,66 @@ export function BackupDetailsModal({ backup, onClose, onRestore }: BackupDetails
           />
         </div>
 
+        {/* Selector de Scope (solo para superadministradores) */}
+        {isSuperuser && (
+          <div className="my-4">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Alcance de Restauración
+            </label>
+            <p className="text-xs text-gray-500 mt-1 mb-3">
+              Elige qué datos se restaurarán desde este backup
+            </p>
+            <div className="space-y-2">
+              <label className="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                <input
+                  type="radio"
+                  name="scope"
+                  value="TENANT"
+                  checked={scope === 'TENANT'}
+                  onChange={(e) => setScope(e.target.value as 'TENANT' | 'GLOBAL')}
+                  className="w-4 h-4"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Restaurar Solo Esta Clínica</p>
+                  <p className="text-xs text-gray-600">Se restaurarán solo los datos de esta veterinaria (clientes, mascotas, consultas, etc.)</p>
+                </div>
+              </label>
+
+              <label className="flex items-center gap-3 p-3 border-2 border-red-300 rounded-lg cursor-pointer hover:bg-red-50 transition bg-red-50">
+                <input
+                  type="radio"
+                  name="scope"
+                  value="GLOBAL"
+                  checked={scope === 'GLOBAL'}
+                  onChange={(e) => setScope(e.target.value as 'TENANT' | 'GLOBAL')}
+                  className="w-4 h-4"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                    <Database className="h-4 w-4 text-red-600" />
+                    Restaurar Base de Datos Completa
+                  </p>
+                  <p className="text-xs text-gray-600">⚠️ Se restaurará TODO el sistema incluyendo todas las clínicas. Esta operación es irreversible.</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-3 justify-end mt-4">
           <Button variant="ghost" onClick={() => onClose()}>Cerrar</Button>
           <Button
-            className="bg-red-600 text-white hover:bg-red-700"
+            className={`text-white hover:opacity-90 ${scope === 'GLOBAL' ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'}`}
             disabled={isRestoring}
             onClick={async () => {
               if (!backup) return;
               try {
-                await restoreBackup({ backup_id: backup.id_backup_restore, motivo }).unwrap();
+                await restoreBackup({ 
+                  backup_id: backup.id_backup_restore, 
+                  motivo,
+                  scope
+                }).unwrap();
                 if (onRestore) onRestore(backup);
               } catch (err) {
                 console.error('Error restaurando desde modal:', err);
@@ -171,7 +226,7 @@ export function BackupDetailsModal({ backup, onClose, onRestore }: BackupDetails
               }
             }}
           >
-            {isRestoring ? 'Restaurando...' : 'Restaurar'}
+            {isRestoring ? 'Restaurando...' : scope === 'GLOBAL' ? '⚠️ Restaurar Todo' : 'Restaurar'}
           </Button>
         </div>
       </DialogContent>
