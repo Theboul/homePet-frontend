@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { Link, useLocation } from '@tanstack/react-router'
 import { Button } from '#/components/ui/button'
 import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Home,
-  PawPrint,
   ShieldCheck,
-  Stethoscope,
   Users,
+  PawPrint,
+  Stethoscope,
+  ChevronLeft,
+  ChevronDown,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react'
 import { useCanView } from '#/store/auth/auth.hooks'
@@ -18,21 +18,21 @@ import { useAppSelector } from '#/store/hooks'
 type MenuChild = {
   label: string
   to:
-    | '/dashboard'
-    | '/Gestionar_Clientes'
-    | '/Gestionar_Mascotas'
-    | '/Gestionar_Usuarios'
-    | '/Gestionar_Roles_Permisos'
-    | '/Gestionar_Servicios_Precios_Catalogo'
-    | '/Gestionar_Agenda'
-    | '/Gestionar_Historia_Clinica'
-    | '/Gestionar_Reservas'
-    | '/Rutas_Programadas'
-    | '/bitacora'
-    | '/seguridad/cambiar-password'
-    | '/about'
-    | '/login'
-    | '/notificaciones/seguimiento'
+  | '/dashboard'
+  | '/Gestionar_Clientes'
+  | '/Gestionar_Mascotas'
+  | '/Gestionar_Usuarios'
+  | '/Gestionar_Roles_Permisos'
+  | '/Gestionar_Servicios_Precios_Catalogo'
+  | '/Gestionar_Agenda'
+  | '/Gestionar_Historia_Clinica'
+  | '/Gestionar_Reservas'
+  | '/Rutas_Programadas'
+  | '/bitacora'
+  | '/gestionar-backups'
+  | '/about'
+  | '/login'
+  | '/notificaciones/seguimiento'
   hasAccess?: boolean
 }
 
@@ -50,16 +50,17 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
     items: [{ label: 'Inicio', icon: Home, to: '/dashboard' }],
   },
   {
-    section: 'Modulos del Sistema',
+    section: 'Módulos del Sistema',
     items: [
       {
-        label: 'Autenticacion y Seg.',
+        label: 'Autenticación y Seg.',
         icon: ShieldCheck,
         children: [
           { label: 'Gestionar Usuarios', to: '/Gestionar_Usuarios' },
           { label: 'Roles y Permisos', to: '/Gestionar_Roles_Permisos' },
-          { label: 'Bitacora y Seguridad', to: '/bitacora' },
-          { label: 'Cambiar contrasena', to: '/seguridad/cambiar-password' },
+          { label: 'Cambiar contraseña', to: '/seguridad/cambiar-password' },
+          { label: 'Bitácora y Seguridad', to: '/bitacora' },
+          { label: 'Copias de Seguridad', to: '/gestionar-backups' },
         ],
       },
       {
@@ -71,11 +72,11 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         ],
       },
       {
-        label: 'Clinica Veterinaria',
+        label: 'Clínica Veterinaria',
         icon: Stethoscope,
         children: [
           {
-            label: 'Gestionar Historial Clinico',
+            label: 'Gestionar Historial Clínico',
             to: '/Gestionar_Historia_Clinica',
           },
         ],
@@ -85,7 +86,7 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         icon: PawPrint,
         children: [
           {
-            label: 'Catalogos y Servicios',
+            label: 'Catálogos y Servicios',
             to: '/Gestionar_Servicios_Precios_Catalogo',
           },
           {
@@ -107,7 +108,7 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         icon: Users,
         children: [
           {
-            label: 'Seguimiento de pedidos',
+            label: 'seguimiento de pedidos',
             to: '/notificaciones/seguimiento',
           },
         ],
@@ -139,6 +140,7 @@ export function Sidebar({
   const canViewUsuarios = useCanView('SEG_USUARIOS')
   const canViewBitacora = useCanView('SEG_BITACORA')
   const canViewRoles = useCanView('SEG_GRUPO_USUARIO')
+  const canViewBackups = useCanView('SEG_BACKUPS')
   const canViewClientes = useCanView('CLI_CLIENTES')
   const canViewMascotas = useCanView('CLI_MASCOTAS')
   const canViewServicios = useCanView('SERV_SERVICIOS')
@@ -146,11 +148,14 @@ export function Sidebar({
   const userRole = useAppSelector((state) => state.auth.user?.role)
   const canViewRutasProgramadas = canViewCitas || userRole === 'VETERINARIAN'
 
+  // Mapeo de rutas a permisos para el filtrado dinámico
   const permissionMap: Record<string, boolean> = {
     '/dashboard': true,
     '/Gestionar_Usuarios': canViewUsuarios,
     '/Gestionar_Roles_Permisos': canViewRoles,
+    '/seguridad/cambiar-password': true,
     '/bitacora': canViewBitacora,
+    '/gestionar-backups': canViewBackups,
     '/Gestionar_Clientes': canViewClientes,
     '/Gestionar_Mascotas': canViewMascotas,
     '/Gestionar_Historia_Clinica': canViewMascotas,
@@ -158,8 +163,6 @@ export function Sidebar({
     '/Gestionar_Agenda': canViewServicios,
     '/Gestionar_Reservas': canViewCitas,
     '/Rutas_Programadas': canViewRutasProgramadas,
-    '/seguridad/cambiar-password': true,
-    '/notificaciones/seguimiento': true,
   }
 
   const processedSections = menuSections.map((section) => ({

@@ -22,6 +22,7 @@ import { Route as ClientMisReservasRouteImport } from './routes/_client/mis-rese
 import { Route as ClientMisMascotasRouteImport } from './routes/_client/mis-mascotas'
 import { Route as ClientClienteRouteImport } from './routes/_client/cliente'
 import { Route as ClientPerfil_MascotaRouteImport } from './routes/_client/Perfil_Mascota'
+import { Route as AdminGestionarBackupsRouteImport } from './routes/_admin/gestionar-backups'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
 import { Route as AdminUnidades_MovilesRouteImport } from './routes/_admin/Unidades_Moviles'
@@ -101,6 +102,11 @@ const ClientPerfil_MascotaRoute = ClientPerfil_MascotaRouteImport.update({
   id: '/Perfil_Mascota',
   path: '/Perfil_Mascota',
   getParentRoute: () => ClientRoute,
+} as any)
+const AdminGestionarBackupsRoute = AdminGestionarBackupsRouteImport.update({
+  id: '/gestionar-backups',
+  path: '/gestionar-backups',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
@@ -208,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/gestionar-backups': typeof AdminGestionarBackupsRoute
   '/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
   '/cliente': typeof ClientClienteRoute
   '/mis-mascotas': typeof ClientMisMascotasRoute
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/gestionar-backups': typeof AdminGestionarBackupsRoute
   '/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
   '/cliente': typeof ClientClienteRoute
   '/mis-mascotas': typeof ClientMisMascotasRoute
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   '/_admin/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/gestionar-backups': typeof AdminGestionarBackupsRoute
   '/_client/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
   '/_client/cliente': typeof ClientClienteRoute
   '/_client/mis-mascotas': typeof ClientMisMascotasRoute
@@ -301,6 +310,7 @@ export interface FileRouteTypes {
     | '/Unidades_Moviles'
     | '/bitacora'
     | '/dashboard'
+    | '/gestionar-backups'
     | '/Perfil_Mascota'
     | '/cliente'
     | '/mis-mascotas'
@@ -330,6 +340,7 @@ export interface FileRouteTypes {
     | '/Unidades_Moviles'
     | '/bitacora'
     | '/dashboard'
+    | '/gestionar-backups'
     | '/Perfil_Mascota'
     | '/cliente'
     | '/mis-mascotas'
@@ -361,6 +372,7 @@ export interface FileRouteTypes {
     | '/_admin/Unidades_Moviles'
     | '/_admin/bitacora'
     | '/_admin/dashboard'
+    | '/_admin/gestionar-backups'
     | '/_client/Perfil_Mascota'
     | '/_client/cliente'
     | '/_client/mis-mascotas'
@@ -479,6 +491,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/Perfil_Mascota'
       preLoaderRoute: typeof ClientPerfil_MascotaRouteImport
       parentRoute: typeof ClientRoute
+    }
+    '/_admin/gestionar-backups': {
+      id: '/_admin/gestionar-backups'
+      path: '/gestionar-backups'
+      fullPath: '/gestionar-backups'
+      preLoaderRoute: typeof AdminGestionarBackupsRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_admin/dashboard': {
       id: '/_admin/dashboard'
@@ -615,6 +634,7 @@ interface AdminRouteChildren {
   AdminUnidades_MovilesRoute: typeof AdminUnidades_MovilesRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminGestionarBackupsRoute: typeof AdminGestionarBackupsRoute
   AdminNotificacionesSeguimientoRoute: typeof AdminNotificacionesSeguimientoRoute
   AdminSeguridadCambiarPasswordRoute: typeof AdminSeguridadCambiarPasswordRoute
 }
@@ -633,6 +653,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminUnidades_MovilesRoute: AdminUnidades_MovilesRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminGestionarBackupsRoute: AdminGestionarBackupsRoute,
   AdminNotificacionesSeguimientoRoute: AdminNotificacionesSeguimientoRoute,
   AdminSeguridadCambiarPasswordRoute: AdminSeguridadCambiarPasswordRoute,
 }

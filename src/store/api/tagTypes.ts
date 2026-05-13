@@ -17,6 +17,8 @@ export const TAG_TYPES = [
   'Planes',
   'Especies',
   'Razas',
+  'Backup',
+  'BackupConfig',
 ] as const
 
 export type TagType = (typeof TAG_TYPES)[number]
