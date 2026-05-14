@@ -12,6 +12,7 @@ export interface BackendRole {
 export interface User {
   id_usuario: number;
   correo: string;
+  nombre?: string;
   role: UserRole;
   id_veterinaria: number | null;
   is_superuser: boolean;
