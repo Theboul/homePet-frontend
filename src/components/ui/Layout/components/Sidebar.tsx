@@ -33,6 +33,7 @@ type MenuChild = {
   | '/about'
   | '/login'
   | '/notificaciones/seguimiento'
+  | '/seguridad/cambiar-password'
   hasAccess?: boolean
 }
 
@@ -145,7 +146,10 @@ export function Sidebar({
   const canViewMascotas = useCanView('CLI_MASCOTAS')
   const canViewServicios = useCanView('SERV_SERVICIOS')
   const canViewCitas = useCanView('SERV_CITAS')
-  const userRole = useAppSelector((state) => state.auth.user?.role)
+  const user = useAppSelector((state) => state.auth.user)
+  const userRole = user?.role
+  const userName = user?.nombre || user?.correo || 'Usuario'
+  const userInitials = userName.substring(0, 2).toUpperCase()
   const canViewRutasProgramadas = canViewCitas || userRole === 'VETERINARIAN'
 
   // Mapeo de rutas a permisos para el filtrado dinámico
@@ -360,13 +364,13 @@ export function Sidebar({
         }`}
       >
         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
-          AD
+          {userInitials}
         </div>
 
         {!isCollapsed && (
-          <div className="flex flex-col whitespace-nowrap">
-            <span className="text-sm font-medium">Admin</span>
-            <span className="text-xs text-white/60">admin@vetcare.com</span>
+          <div className="flex flex-col overflow-hidden whitespace-nowrap">
+            <span className="truncate text-sm font-medium">{userName}</span>
+            <span className="truncate text-xs text-white/60">{user?.correo}</span>
           </div>
         )}
       </div>
