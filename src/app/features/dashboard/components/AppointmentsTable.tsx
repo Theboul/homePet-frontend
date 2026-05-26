@@ -7,7 +7,6 @@ import {
 } from '@tanstack/react-table'
 import { PawPrint, Clock } from 'lucide-react'
 
-
 export type AppointmentStatus = 'Confirmada' | 'En espera' | 'Pendiente'
 
 export interface Appointment {
@@ -20,59 +19,17 @@ export interface Appointment {
   status: AppointmentStatus
 }
 
-// Datos Hardcodeados de prueba
-const data: Appointment[] = [
-  {
-    id: '1',
-    petName: 'Max',
-    petType: 'Perro',
-    ownerName: 'Carlos García',
-    service: 'Vacunación',
-    time: '09:00 AM',
-    status: 'Confirmada',
-  },
-  {
-    id: '2',
-    petName: 'Luna',
-    petType: 'Gato',
-    ownerName: 'María López',
-    service: 'Consulta General',
-    time: '10:30 AM',
-    status: 'En espera',
-  },
-  {
-    id: '3',
-    petName: 'Rocky',
-    petType: 'Perro',
-    ownerName: 'Juan Martínez',
-    service: 'Cirugía',
-    time: '11:00 AM',
-    status: 'Confirmada',
-  },
-  {
-    id: '4',
-    petName: 'Michi',
-    petType: 'Gato',
-    ownerName: 'Ana Rodríguez',
-    service: 'Desparasitación',
-    time: '12:00 PM',
-    status: 'Pendiente',
-  },
-  {
-    id: '5',
-    petName: 'Toby',
-    petType: 'Perro',
-    ownerName: 'Pedro Sánchez',
-    service: 'Control',
-    time: '02:30 PM',
-    status: 'Confirmada',
-  },
-]
-
-//Helper de columnas
 const columnHelper = createColumnHelper<Appointment>()
 
-export function AppointmentsTable() {
+export function AppointmentsTable({
+  data = [],
+  isLoading = false,
+  hasError = false,
+}: {
+  data?: Appointment[]
+  isLoading?: boolean
+  hasError?: boolean
+}) {
   const columns = useMemo(
     () => [
       columnHelper.accessor('petName', {
@@ -87,11 +44,11 @@ export function AppointmentsTable() {
                 {info.getValue()} <span className="text-gray-400 font-normal">({info.row.original.petType})</span>
               </span>
               <span className="text-sm text-gray-500 mt-0.5">
-                {info.row.original.ownerName} • {info.row.original.service}
+                {info.row.original.ownerName} - {info.row.original.service}
               </span>
             </div>
           </div>
-        )
+        ),
       }),
       columnHelper.accessor('time', {
         header: 'Hora',
@@ -100,7 +57,7 @@ export function AppointmentsTable() {
             <Clock className="w-4 h-4" />
             {info.getValue()}
           </div>
-        )
+        ),
       }),
       columnHelper.accessor('status', {
         header: 'Estado',
@@ -108,11 +65,8 @@ export function AppointmentsTable() {
           const status = info.getValue()
           let bg = 'bg-green-100 text-green-700'
 
-          if (status === 'En espera') {
-            bg = 'bg-yellow-100 text-yellow-700'
-          } else if (status === 'Pendiente') {
-            bg = 'bg-gray-100 text-gray-600'
-          }
+          if (status === 'En espera') bg = 'bg-yellow-100 text-yellow-700'
+          if (status === 'Pendiente') bg = 'bg-gray-100 text-gray-600'
 
           return (
             <div className="flex justify-end">
@@ -121,16 +75,16 @@ export function AppointmentsTable() {
               </span>
             </div>
           )
-        }
-      })
+        },
+      }),
     ],
-    []
+    [],
   )
 
   const table = useReactTable({
     data,
     columns,
-    // @ts-expect-error - Known TS issue with tanstack table v8.21+ requiring filterFns unnecessarily
+    // @ts-expect-error tanstack table requires filterFns in some versions
     filterFns: undefined,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -140,40 +94,55 @@ export function AppointmentsTable() {
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-gray-800 font-sans">Citas de Hoy</h3>
         <div className="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-md">
-          5 citas
+          {data.length} citas
         </div>
       </div>
 
-      <div className="space-y-3">
-        {/* 
-          Instead of rendering a traditional <table>, we can iterate over table.getRowModel().rows
-          to render customized "cards" or "list items" to match the design while keeping
-          TanStack Table logic intact behind the scenes.
-        */}
-        {table.getRowModel().rows.map(row => (
-          <div
-            key={row.id}
-            className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-purple-200 hover:bg-purple-50/50 transition-colors"
-          >
-            {/* Pet Info (Cell 1) */}
-            <div className="flex-1">
-              {flexRender(row.getVisibleCells()[0].column.columnDef.cell, row.getVisibleCells()[0].getContext())}
-            </div>
-
-            <div className="flex items-center gap-6 justify-end">
-              {/* Time (Cell 2) */}
-              <div className="w-24">
-                {flexRender(row.getVisibleCells()[1].column.columnDef.cell, row.getVisibleCells()[1].getContext())}
+      {isLoading ? (
+        <div className="space-y-3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-20 rounded-xl border border-gray-100 bg-gray-50 animate-pulse" />
+          ))}
+        </div>
+      ) : hasError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center text-sm text-red-700">
+          No se pudo cargar citas de hoy
+        </div>
+      ) : table.getRowModel().rows.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-gray-200 p-8 text-center text-sm text-gray-500">
+          Aun no tienes citas registradas
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {table.getRowModel().rows.map((row) => (
+            <div
+              key={row.id}
+              className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-purple-200 hover:bg-purple-50/50 transition-colors"
+            >
+              <div className="flex-1">
+                {flexRender(
+                  row.getVisibleCells()[0].column.columnDef.cell,
+                  row.getVisibleCells()[0].getContext(),
+                )}
               </div>
-
-              {/* Status (Cell 3) */}
-              <div className="w-24">
-                {flexRender(row.getVisibleCells()[2].column.columnDef.cell, row.getVisibleCells()[2].getContext())}
+              <div className="flex items-center gap-6 justify-end">
+                <div className="w-24">
+                  {flexRender(
+                    row.getVisibleCells()[1].column.columnDef.cell,
+                    row.getVisibleCells()[1].getContext(),
+                  )}
+                </div>
+                <div className="w-24">
+                  {flexRender(
+                    row.getVisibleCells()[2].column.columnDef.cell,
+                    row.getVisibleCells()[2].getContext(),
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

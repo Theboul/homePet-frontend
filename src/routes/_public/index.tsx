@@ -28,9 +28,7 @@ function HomePage() {
               asChild
               className="bg-[#F97316] font-bold text-white hover:bg-[#EA580C]"
             >
-              <Link to="/login" search={{ register: false }}>
-                Iniciar sesion
-              </Link>
+              <Link to="/trial-signup">Prueba gratis</Link>
             </Button>
 
             <Button
@@ -38,9 +36,7 @@ function HomePage() {
               variant="outline"
               className="border-white bg-white text-[#7C3AED] font-bold hover:bg-white/90"
             >
-              <Link to="/login" search={{ register: true }}>
-                Crear cuenta
-              </Link>
+              <Link to="/pricing">Comprar ahora</Link>
             </Button>
           </div>
         </div>

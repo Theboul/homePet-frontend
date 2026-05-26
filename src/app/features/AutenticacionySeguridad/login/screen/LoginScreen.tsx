@@ -6,7 +6,9 @@ import { Eye, EyeOff, Heart } from 'lucide-react'
 import { FormCrearPerfil } from '../components'
 import { useLoginWebMutation } from '#/store/auth/authApi'
 import { useAppDispatch } from '#/store/hooks'
-import { applyLoginContext } from '#/store/auth/applyAuthContext'
+import { applyLoginContext, applyMeContext } from '#/store/auth/applyAuthContext'
+import { clearClientSessionData, performFullLogout } from '#/store/auth/auth.actions'
+import { useLazyMeQuery } from '#/store/auth/authApi'
 
 const LoginScreen = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -18,6 +20,7 @@ const LoginScreen = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginWebMutation()
+  const [triggerMe] = useLazyMeQuery()
   const search = useSearch({ from: '/_public/login' })
 
   useEffect(() => {
@@ -33,9 +36,16 @@ const LoginScreen = () => {
     try {
       const result = await login({ correo, password, plataforma: 'WEB' }).unwrap()
 
+      clearClientSessionData()
+      performFullLogout(dispatch)
       applyLoginContext(dispatch, result)
+      const me = await triggerMe().unwrap()
+      applyMeContext(dispatch, me)
+      if (import.meta.env.DEV) {
+        console.log('Tenant activo:', me.usuario.id_veterinaria)
+      }
       navigate({
-        to: result.usuario.rol === 'CLIENT' ? '/cliente' : '/dashboard',
+        to: result.usuario.role === 'CLIENT' ? '/cliente' : '/dashboard',
       })
     } catch (error: any) {
       if (error?.status === 403) {
@@ -158,6 +168,13 @@ const LoginScreen = () => {
             className="w-full border-[#7C3AED] text-[#7C3AED] font-bold hover:bg-purple-50 h-11 transition-all"
           >
             Crear cuenta nueva
+          </Button>
+          <Button
+            asChild
+            type="button"
+            className="w-full bg-[#635BFF] font-bold text-white hover:bg-[#564FE0] h-11 transition-all"
+          >
+            <Link to="/pricing">Comprar ahora</Link>
           </Button>
         </div>
       </div>

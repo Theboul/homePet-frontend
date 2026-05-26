@@ -3,9 +3,10 @@ import { Card, CardContent } from '#/components/ui/card'
 
 interface StatCardProps {
   title: string
-  value: string | number
+  value?: string | number
   trend: string
   trendUp?: boolean
+  hasError?: boolean
   icon: ReactNode
   iconBgSpan: string
 }
@@ -15,6 +16,7 @@ export function StatCard({
   value,
   trend,
   trendUp = true,
+  hasError = false,
   icon,
   iconBgSpan,
 }: StatCardProps) {
@@ -30,9 +32,9 @@ export function StatCard({
           </div>
         </div>
         <div>
-          <div className="mb-2 text-3xl font-bold text-gray-900">{value}</div>
+          <div className="mb-2 text-3xl font-bold text-gray-900">{value ?? '--'}</div>
           <p
-            className={`text-xs font-semibold ${trendUp ? 'text-green-500' : 'text-red-500'}`}
+            className={`text-xs font-semibold ${hasError ? 'text-red-500' : trendUp ? 'text-green-500' : 'text-red-500'}`}
           >
             {trend}
           </p>

@@ -14,9 +14,15 @@ import { Route as ClientRouteImport } from './routes/_client'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
+import { Route as PublicTrialSignupRouteImport } from './routes/_public/trial-signup'
+import { Route as PublicStripeSuccessRouteImport } from './routes/_public/stripe-success'
+import { Route as PublicStripeCancelRouteImport } from './routes/_public/stripe-cancel'
 import { Route as PublicResetPasswordRouteImport } from './routes/_public/reset-password'
+import { Route as PublicPricingRouteImport } from './routes/_public/pricing'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
+import { Route as PublicLandingRouteImport } from './routes/_public/landing'
 import { Route as PublicForgotPasswordRouteImport } from './routes/_public/forgot-password'
+import { Route as PublicCheckoutDemoRouteImport } from './routes/_public/checkout-demo'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as ClientMisReservasRouteImport } from './routes/_client/mis-reservas'
 import { Route as ClientMisMascotasRouteImport } from './routes/_client/mis-mascotas'
@@ -25,6 +31,7 @@ import { Route as ClientPerfil_MascotaRouteImport } from './routes/_client/Perfi
 import { Route as AdminGestionarBackupsRouteImport } from './routes/_admin/gestionar-backups'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
+import { Route as AdminBillingRouteImport } from './routes/_admin/billing'
 import { Route as AdminUnidades_MovilesRouteImport } from './routes/_admin/Unidades_Moviles'
 import { Route as AdminRutas_ProgramadasRouteImport } from './routes/_admin/Rutas_Programadas'
 import { Route as AdminLogistica_Unidades_MovilesRouteImport } from './routes/_admin/Logistica_Unidades_Moviles'
@@ -72,9 +79,29 @@ const DemoTableRoute = DemoTableRouteImport.update({
   path: '/demo/table',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicTrialSignupRoute = PublicTrialSignupRouteImport.update({
+  id: '/trial-signup',
+  path: '/trial-signup',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicStripeSuccessRoute = PublicStripeSuccessRouteImport.update({
+  id: '/stripe-success',
+  path: '/stripe-success',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicStripeCancelRoute = PublicStripeCancelRouteImport.update({
+  id: '/stripe-cancel',
+  path: '/stripe-cancel',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicResetPasswordRoute = PublicResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicPricingRoute = PublicPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicLoginRoute = PublicLoginRouteImport.update({
@@ -82,9 +109,19 @@ const PublicLoginRoute = PublicLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicLandingRoute = PublicLandingRouteImport.update({
+  id: '/landing',
+  path: '/landing',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicForgotPasswordRoute = PublicForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicCheckoutDemoRoute = PublicCheckoutDemoRouteImport.update({
+  id: '/checkout-demo',
+  path: '/checkout-demo',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicAboutRoute = PublicAboutRouteImport.update({
@@ -125,6 +162,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 const AdminBitacoraRoute = AdminBitacoraRouteImport.update({
   id: '/bitacora',
   path: '/bitacora',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBillingRoute = AdminBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminUnidades_MovilesRoute = AdminUnidades_MovilesRouteImport.update({
@@ -283,6 +325,7 @@ export interface FileRoutesByFullPath {
   '/Logistica_Unidades_Moviles': typeof AdminLogistica_Unidades_MovilesRoute
   '/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
   '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
+  '/billing': typeof AdminBillingRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
   '/gestionar-backups': typeof AdminGestionarBackupsRoute
@@ -291,9 +334,15 @@ export interface FileRoutesByFullPath {
   '/mis-mascotas': typeof ClientMisMascotasRoute
   '/mis-reservas': typeof ClientMisReservasRoute
   '/about': typeof PublicAboutRoute
+  '/checkout-demo': typeof PublicCheckoutDemoRoute
   '/forgot-password': typeof PublicForgotPasswordRoute
+  '/landing': typeof PublicLandingRoute
   '/login': typeof PublicLoginRoute
+  '/pricing': typeof PublicPricingRoute
   '/reset-password': typeof PublicResetPasswordRoute
+  '/stripe-cancel': typeof PublicStripeCancelRoute
+  '/stripe-success': typeof PublicStripeSuccessRoute
+  '/trial-signup': typeof PublicTrialSignupRoute
   '/demo/table': typeof DemoTableRoute
   '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
@@ -322,6 +371,7 @@ export interface FileRoutesByTo {
   '/Logistica_Unidades_Moviles': typeof AdminLogistica_Unidades_MovilesRoute
   '/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
   '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
+  '/billing': typeof AdminBillingRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
   '/gestionar-backups': typeof AdminGestionarBackupsRoute
@@ -330,9 +380,15 @@ export interface FileRoutesByTo {
   '/mis-mascotas': typeof ClientMisMascotasRoute
   '/mis-reservas': typeof ClientMisReservasRoute
   '/about': typeof PublicAboutRoute
+  '/checkout-demo': typeof PublicCheckoutDemoRoute
   '/forgot-password': typeof PublicForgotPasswordRoute
+  '/landing': typeof PublicLandingRoute
   '/login': typeof PublicLoginRoute
+  '/pricing': typeof PublicPricingRoute
   '/reset-password': typeof PublicResetPasswordRoute
+  '/stripe-cancel': typeof PublicStripeCancelRoute
+  '/stripe-success': typeof PublicStripeSuccessRoute
+  '/trial-signup': typeof PublicTrialSignupRoute
   '/demo/table': typeof DemoTableRoute
   '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
@@ -364,6 +420,7 @@ export interface FileRoutesById {
   '/_admin/Logistica_Unidades_Moviles': typeof AdminLogistica_Unidades_MovilesRoute
   '/_admin/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
   '/_admin/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
+  '/_admin/billing': typeof AdminBillingRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/gestionar-backups': typeof AdminGestionarBackupsRoute
@@ -372,9 +429,15 @@ export interface FileRoutesById {
   '/_client/mis-mascotas': typeof ClientMisMascotasRoute
   '/_client/mis-reservas': typeof ClientMisReservasRoute
   '/_public/about': typeof PublicAboutRoute
+  '/_public/checkout-demo': typeof PublicCheckoutDemoRoute
   '/_public/forgot-password': typeof PublicForgotPasswordRoute
+  '/_public/landing': typeof PublicLandingRoute
   '/_public/login': typeof PublicLoginRoute
+  '/_public/pricing': typeof PublicPricingRoute
   '/_public/reset-password': typeof PublicResetPasswordRoute
+  '/_public/stripe-cancel': typeof PublicStripeCancelRoute
+  '/_public/stripe-success': typeof PublicStripeSuccessRoute
+  '/_public/trial-signup': typeof PublicTrialSignupRoute
   '/demo/table': typeof DemoTableRoute
   '/_public/': typeof PublicIndexRoute
   '/_admin/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
@@ -406,6 +469,7 @@ export interface FileRouteTypes {
     | '/Logistica_Unidades_Moviles'
     | '/Rutas_Programadas'
     | '/Unidades_Moviles'
+    | '/billing'
     | '/bitacora'
     | '/dashboard'
     | '/gestionar-backups'
@@ -414,9 +478,15 @@ export interface FileRouteTypes {
     | '/mis-mascotas'
     | '/mis-reservas'
     | '/about'
+    | '/checkout-demo'
     | '/forgot-password'
+    | '/landing'
     | '/login'
+    | '/pricing'
     | '/reset-password'
+    | '/stripe-cancel'
+    | '/stripe-success'
+    | '/trial-signup'
     | '/demo/table'
     | '/notificaciones/seguimiento'
     | '/seguridad/cambiar-password'
@@ -445,6 +515,7 @@ export interface FileRouteTypes {
     | '/Logistica_Unidades_Moviles'
     | '/Rutas_Programadas'
     | '/Unidades_Moviles'
+    | '/billing'
     | '/bitacora'
     | '/dashboard'
     | '/gestionar-backups'
@@ -453,9 +524,15 @@ export interface FileRouteTypes {
     | '/mis-mascotas'
     | '/mis-reservas'
     | '/about'
+    | '/checkout-demo'
     | '/forgot-password'
+    | '/landing'
     | '/login'
+    | '/pricing'
     | '/reset-password'
+    | '/stripe-cancel'
+    | '/stripe-success'
+    | '/trial-signup'
     | '/demo/table'
     | '/notificaciones/seguimiento'
     | '/seguridad/cambiar-password'
@@ -486,6 +563,7 @@ export interface FileRouteTypes {
     | '/_admin/Logistica_Unidades_Moviles'
     | '/_admin/Rutas_Programadas'
     | '/_admin/Unidades_Moviles'
+    | '/_admin/billing'
     | '/_admin/bitacora'
     | '/_admin/dashboard'
     | '/_admin/gestionar-backups'
@@ -494,9 +572,15 @@ export interface FileRouteTypes {
     | '/_client/mis-mascotas'
     | '/_client/mis-reservas'
     | '/_public/about'
+    | '/_public/checkout-demo'
     | '/_public/forgot-password'
+    | '/_public/landing'
     | '/_public/login'
+    | '/_public/pricing'
     | '/_public/reset-password'
+    | '/_public/stripe-cancel'
+    | '/_public/stripe-success'
+    | '/_public/trial-signup'
     | '/demo/table'
     | '/_public/'
     | '/_admin/notificaciones/seguimiento'
@@ -552,11 +636,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTableRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/trial-signup': {
+      id: '/_public/trial-signup'
+      path: '/trial-signup'
+      fullPath: '/trial-signup'
+      preLoaderRoute: typeof PublicTrialSignupRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/stripe-success': {
+      id: '/_public/stripe-success'
+      path: '/stripe-success'
+      fullPath: '/stripe-success'
+      preLoaderRoute: typeof PublicStripeSuccessRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/stripe-cancel': {
+      id: '/_public/stripe-cancel'
+      path: '/stripe-cancel'
+      fullPath: '/stripe-cancel'
+      preLoaderRoute: typeof PublicStripeCancelRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/reset-password': {
       id: '/_public/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof PublicResetPasswordRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/pricing': {
+      id: '/_public/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PublicPricingRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/login': {
@@ -566,11 +678,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/landing': {
+      id: '/_public/landing'
+      path: '/landing'
+      fullPath: '/landing'
+      preLoaderRoute: typeof PublicLandingRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/forgot-password': {
       id: '/_public/forgot-password'
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof PublicForgotPasswordRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/checkout-demo': {
+      id: '/_public/checkout-demo'
+      path: '/checkout-demo'
+      fullPath: '/checkout-demo'
+      preLoaderRoute: typeof PublicCheckoutDemoRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/about': {
@@ -627,6 +753,13 @@ declare module '@tanstack/react-router' {
       path: '/bitacora'
       fullPath: '/bitacora'
       preLoaderRoute: typeof AdminBitacoraRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/billing': {
+      id: '/_admin/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AdminBillingRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/Unidades_Moviles': {
@@ -820,6 +953,7 @@ interface AdminRouteChildren {
   AdminLogistica_Unidades_MovilesRoute: typeof AdminLogistica_Unidades_MovilesRoute
   AdminRutas_ProgramadasRoute: typeof AdminRutas_ProgramadasRoute
   AdminUnidades_MovilesRoute: typeof AdminUnidades_MovilesRoute
+  AdminBillingRoute: typeof AdminBillingRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminGestionarBackupsRoute: typeof AdminGestionarBackupsRoute
@@ -851,6 +985,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLogistica_Unidades_MovilesRoute: AdminLogistica_Unidades_MovilesRoute,
   AdminRutas_ProgramadasRoute: AdminRutas_ProgramadasRoute,
   AdminUnidades_MovilesRoute: AdminUnidades_MovilesRoute,
+  AdminBillingRoute: AdminBillingRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminGestionarBackupsRoute: AdminGestionarBackupsRoute,
@@ -881,17 +1016,29 @@ const ClientRouteWithChildren =
 
 interface PublicRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
+  PublicCheckoutDemoRoute: typeof PublicCheckoutDemoRoute
   PublicForgotPasswordRoute: typeof PublicForgotPasswordRoute
+  PublicLandingRoute: typeof PublicLandingRoute
   PublicLoginRoute: typeof PublicLoginRoute
+  PublicPricingRoute: typeof PublicPricingRoute
   PublicResetPasswordRoute: typeof PublicResetPasswordRoute
+  PublicStripeCancelRoute: typeof PublicStripeCancelRoute
+  PublicStripeSuccessRoute: typeof PublicStripeSuccessRoute
+  PublicTrialSignupRoute: typeof PublicTrialSignupRoute
   PublicIndexRoute: typeof PublicIndexRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
+  PublicCheckoutDemoRoute: PublicCheckoutDemoRoute,
   PublicForgotPasswordRoute: PublicForgotPasswordRoute,
+  PublicLandingRoute: PublicLandingRoute,
   PublicLoginRoute: PublicLoginRoute,
+  PublicPricingRoute: PublicPricingRoute,
   PublicResetPasswordRoute: PublicResetPasswordRoute,
+  PublicStripeCancelRoute: PublicStripeCancelRoute,
+  PublicStripeSuccessRoute: PublicStripeSuccessRoute,
+  PublicTrialSignupRoute: PublicTrialSignupRoute,
   PublicIndexRoute: PublicIndexRoute,
 }
 

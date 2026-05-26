@@ -1,21 +1,36 @@
-import { type AppDispatch } from "../store";
-import { logout as logoutAuth } from "./authSlice";
-import { clearTenant } from "../tenant/tenantSlice";
-import { clearComponents } from "../components/componentSlice";
-import { api } from "../api/api";
+import { type AppDispatch } from '../store';
+import { logout as logoutAuth } from './authSlice';
+import { clearTenant } from '../tenant/tenantSlice';
+import { clearComponents } from '../components/componentSlice';
+import { api } from '../api/api';
+
+const LOCAL_KEYS_TO_CLEAR = [
+  'homePet_auth',
+  'auth',
+  'token',
+  'user',
+  'tenant',
+  'menu',
+  'menu_cache',
+];
 
 export const performFullLogout = (dispatch: AppDispatch) => {
-  // 1. Limpiar auth (tokens + user)
   dispatch(logoutAuth());
-
-  // 2. Limpiar tenant
   dispatch(clearTenant());
-
-  // 3. Limpiar componentes y permisos
   dispatch(clearComponents());
-
-  // 4. Limpiar caché de RTK Query
   dispatch(api.util.resetApiState());
-  
-  // Opcional: Limpiar cookies si se usan
+};
+
+export const clearClientSessionData = () => {
+  if (typeof window === 'undefined') return;
+
+  for (const key of LOCAL_KEYS_TO_CLEAR) {
+    window.localStorage.removeItem(key);
+  }
+
+  Object.keys(window.localStorage)
+    .filter((key) => key.startsWith('homePet_'))
+    .forEach((key) => window.localStorage.removeItem(key));
+
+  window.sessionStorage.clear();
 };

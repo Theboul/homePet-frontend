@@ -99,5 +99,16 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
     }
   }
 
+  const shouldRedirectToBilling =
+    result.error &&
+    (result.error.status === 402 || result.error.status === 403) &&
+    typeof window !== 'undefined' &&
+    !['/login', '/forgot-password', '/reset-password', '/billing'].includes(window.location.pathname) &&
+    JSON.stringify(result.error.data || {}).toLowerCase().includes('suscrip');
+
+  if (shouldRedirectToBilling) {
+    window.location.assign('/billing');
+  }
+
   return result;
 };
