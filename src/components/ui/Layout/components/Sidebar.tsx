@@ -13,8 +13,9 @@ import {
   ChevronRight,
   LayoutDashboard,
   PackageSearch,
-  type LucideIcon,
+  Wallet,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { useCanView } from '#/store/auth/auth.hooks'
 import { useAppSelector } from '#/store/hooks'
 
@@ -48,6 +49,8 @@ type MenuChild = {
     | '/Gestionar_Productos'
     | '/Inventario_Control'
     | '/Inventario_Movimientos'
+    | '/ventas-pagos/ventas'
+    | '/ventas-pagos/ventas/nueva'
   hasAccess?: boolean
 }
 
@@ -167,6 +170,20 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
         ],
       },
       {
+        label: 'Ventas y Pagos',
+        icon: Wallet,
+        children: [
+          {
+            label: 'Registrar Venta',
+            to: '/ventas-pagos/ventas/nueva',
+          },
+          {
+            label: 'Consultar Ventas',
+            to: '/ventas-pagos/ventas',
+          },
+        ],
+      },
+      {
         label: 'Notificaciones y Seguimiento',
         icon: Users,
         children: [
@@ -187,9 +204,58 @@ const menuSections: Array<{ section: string; items: MenuItem[] }> = [
   },
 ]
 
+function normalizeRole(value?: string | null) {
+  return (value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toUpperCase()
+}
+
+function extractRole(source: unknown) {
+  if (!source) return ''
+
+  if (typeof source === 'string') {
+    return normalizeRole(source)
+  }
+
+  if (typeof source !== 'object') return ''
+  const record = source as Record<string, unknown>
+
+  const fromRole = record.role
+  if (typeof fromRole === 'string') {
+    return normalizeRole(fromRole)
+  }
+  if (fromRole && typeof fromRole === 'object') {
+    const roleName = (fromRole as Record<string, unknown>).nombre
+    if (typeof roleName === 'string') return normalizeRole(roleName)
+  }
+
+  const fromRol = record.rol
+  if (typeof fromRol === 'string') {
+    return normalizeRole(fromRol)
+  }
+  if (fromRol && typeof fromRol === 'object') {
+    const roleName = (fromRol as Record<string, unknown>).nombre
+    if (typeof roleName === 'string') return normalizeRole(roleName)
+  }
+
+  return ''
+}
+
+function canAccessVentasModule(source: unknown) {
+  const normalized = extractRole(source)
+  return (
+    normalized === 'ADMIN' ||
+    normalized === 'ADMINISTRADOR' ||
+    normalized === 'VETERINARIAN' ||
+    normalized === 'VETERINARIO'
+  )
+}
+
 function childIsActive(children: MenuChild[] | undefined, pathname: string) {
   if (!children) return false
-  return children.some((child) => child.to === pathname)
+  return children.some((child) => pathname === child.to || pathname.startsWith(`${child.to}/`))
 }
 
 export function Sidebar({
@@ -219,6 +285,7 @@ export function Sidebar({
 
   const user = useAppSelector((state) => state.auth.user)
   const userRole = user?.role
+  const canViewVentas = canAccessVentasModule(user)
   const userName = user?.nombre || user?.correo || 'Usuario'
   const userInitials = userName.substring(0, 2).toUpperCase()
   const canViewRutasProgramadas = canViewCitas || userRole === 'VETERINARIAN'
@@ -253,6 +320,8 @@ export function Sidebar({
     '/Inventario_Movimientos': true,
     '/Gestionar_Categorias': true,
     '/Gestionar_Proveedores': true,
+    '/ventas-pagos/ventas': canViewVentas,
+    '/ventas-pagos/ventas/nueva': canViewVentas,
 
     '/notificaciones/seguimiento': true,
     '/Gestionar_Reportes': true,

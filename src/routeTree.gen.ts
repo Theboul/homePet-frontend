@@ -58,6 +58,9 @@ import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 import { Route as ClientMiCuentaCambiarPasswordRouteImport } from './routes/_client/mi-cuenta/cambiar-password'
 import { Route as AdminSeguridadCambiarPasswordRouteImport } from './routes/_admin/seguridad/cambiar-password'
 import { Route as AdminNotificacionesSeguimientoRouteImport } from './routes/_admin/notificaciones/seguimiento'
+import { Route as AdminVentasPagosVentasIndexRouteImport } from './routes/_admin/ventas-pagos/ventas/index'
+import { Route as AdminVentasPagosVentasNuevaRouteImport } from './routes/_admin/ventas-pagos/ventas/nueva'
+import { Route as AdminVentasPagosVentasIdRouteImport } from './routes/_admin/ventas-pagos/ventas/$id'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -316,6 +319,24 @@ const AdminNotificacionesSeguimientoRoute =
     path: '/notificaciones/seguimiento',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminVentasPagosVentasIndexRoute =
+  AdminVentasPagosVentasIndexRouteImport.update({
+    id: '/ventas-pagos/ventas/',
+    path: '/ventas-pagos/ventas/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminVentasPagosVentasNuevaRoute =
+  AdminVentasPagosVentasNuevaRouteImport.update({
+    id: '/ventas-pagos/ventas/nueva',
+    path: '/ventas-pagos/ventas/nueva',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminVentasPagosVentasIdRoute =
+  AdminVentasPagosVentasIdRouteImport.update({
+    id: '/ventas-pagos/ventas/$id',
+    path: '/ventas-pagos/ventas/$id',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -364,6 +385,9 @@ export interface FileRoutesByFullPath {
   '/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
+  '/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
+  '/ventas-pagos/ventas/nueva': typeof AdminVentasPagosVentasNuevaRoute
+  '/ventas-pagos/ventas/': typeof AdminVentasPagosVentasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
@@ -412,6 +436,9 @@ export interface FileRoutesByTo {
   '/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
+  '/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
+  '/ventas-pagos/ventas/nueva': typeof AdminVentasPagosVentasNuevaRoute
+  '/ventas-pagos/ventas': typeof AdminVentasPagosVentasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -464,6 +491,9 @@ export interface FileRoutesById {
   '/_client/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
+  '/_admin/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
+  '/_admin/ventas-pagos/ventas/nueva': typeof AdminVentasPagosVentasNuevaRoute
+  '/_admin/ventas-pagos/ventas/': typeof AdminVentasPagosVentasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -514,6 +544,9 @@ export interface FileRouteTypes {
     | '/mi-cuenta/cambiar-password'
     | '/demo/form/address'
     | '/demo/form/simple'
+    | '/ventas-pagos/ventas/$id'
+    | '/ventas-pagos/ventas/nueva'
+    | '/ventas-pagos/ventas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -562,6 +595,9 @@ export interface FileRouteTypes {
     | '/mi-cuenta/cambiar-password'
     | '/demo/form/address'
     | '/demo/form/simple'
+    | '/ventas-pagos/ventas/$id'
+    | '/ventas-pagos/ventas/nueva'
+    | '/ventas-pagos/ventas'
   id:
     | '__root__'
     | '/_admin'
@@ -613,6 +649,9 @@ export interface FileRouteTypes {
     | '/_client/mi-cuenta/cambiar-password'
     | '/demo/form/address'
     | '/demo/form/simple'
+    | '/_admin/ventas-pagos/ventas/$id'
+    | '/_admin/ventas-pagos/ventas/nueva'
+    | '/_admin/ventas-pagos/ventas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -969,6 +1008,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNotificacionesSeguimientoRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/ventas-pagos/ventas/': {
+      id: '/_admin/ventas-pagos/ventas/'
+      path: '/ventas-pagos/ventas'
+      fullPath: '/ventas-pagos/ventas/'
+      preLoaderRoute: typeof AdminVentasPagosVentasIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ventas-pagos/ventas/nueva': {
+      id: '/_admin/ventas-pagos/ventas/nueva'
+      path: '/ventas-pagos/ventas/nueva'
+      fullPath: '/ventas-pagos/ventas/nueva'
+      preLoaderRoute: typeof AdminVentasPagosVentasNuevaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ventas-pagos/ventas/$id': {
+      id: '/_admin/ventas-pagos/ventas/$id'
+      path: '/ventas-pagos/ventas/$id'
+      fullPath: '/ventas-pagos/ventas/$id'
+      preLoaderRoute: typeof AdminVentasPagosVentasIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -1000,6 +1060,9 @@ interface AdminRouteChildren {
   AdminGestionarBackupsRoute: typeof AdminGestionarBackupsRoute
   AdminNotificacionesSeguimientoRoute: typeof AdminNotificacionesSeguimientoRoute
   AdminSeguridadCambiarPasswordRoute: typeof AdminSeguridadCambiarPasswordRoute
+  AdminVentasPagosVentasIdRoute: typeof AdminVentasPagosVentasIdRoute
+  AdminVentasPagosVentasNuevaRoute: typeof AdminVentasPagosVentasNuevaRoute
+  AdminVentasPagosVentasIndexRoute: typeof AdminVentasPagosVentasIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -1034,6 +1097,9 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionarBackupsRoute: AdminGestionarBackupsRoute,
   AdminNotificacionesSeguimientoRoute: AdminNotificacionesSeguimientoRoute,
   AdminSeguridadCambiarPasswordRoute: AdminSeguridadCambiarPasswordRoute,
+  AdminVentasPagosVentasIdRoute: AdminVentasPagosVentasIdRoute,
+  AdminVentasPagosVentasNuevaRoute: AdminVentasPagosVentasNuevaRoute,
+  AdminVentasPagosVentasIndexRoute: AdminVentasPagosVentasIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
