@@ -3,15 +3,15 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { Button } from '#/components/ui/button';
 import { useDemoCheckout } from '#/hooks/useDemoCheckout';
 
-export const Route = createFileRoute('/_public/stripe-success')({
+export const Route = createFileRoute('/_public/billing/success')({
   validateSearch: (search: Record<string, unknown>) => ({
     checkout_token:
       typeof search.checkout_token === 'string' ? search.checkout_token : undefined,
   }),
-  component: StripeSuccessPage,
+  component: BillingSuccessPage,
 });
 
-function StripeSuccessPage() {
+function BillingSuccessPage() {
   const navigate = useNavigate();
   const { confirm, isLoading, error } = useDemoCheckout();
   const { checkout_token: checkoutToken } = Route.useSearch();

@@ -58,11 +58,11 @@ function PricingPage() {
       return;
     }
 
-    await start({
+    const checkout = await start({
       ...payload,
       veterinaria_slug: payload.veterinaria_slug.trim().toLowerCase(),
     });
-    await startCheckout();
+    await startCheckout(checkout.checkout_url);
   };
 
   return (
