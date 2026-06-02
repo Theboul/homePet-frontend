@@ -55,6 +55,7 @@ import { Route as AdminGestionar_CategoriasRouteImport } from './routes/_admin/G
 import { Route as AdminGestionar_AgendaRouteImport } from './routes/_admin/Gestionar_Agenda'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
+import { Route as PublicBillingSuccessRouteImport } from './routes/_public/billing.success'
 import { Route as ClientMiCuentaCambiarPasswordRouteImport } from './routes/_client/mi-cuenta/cambiar-password'
 import { Route as AdminSeguridadCambiarPasswordRouteImport } from './routes/_admin/seguridad/cambiar-password'
 import { Route as AdminNotificacionesSeguimientoRouteImport } from './routes/_admin/notificaciones/seguimiento'
@@ -301,6 +302,11 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
   path: '/demo/form/address',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicBillingSuccessRoute = PublicBillingSuccessRouteImport.update({
+  id: '/billing/success',
+  path: '/billing/success',
+  getParentRoute: () => PublicRoute,
+} as any)
 const ClientMiCuentaCambiarPasswordRoute =
   ClientMiCuentaCambiarPasswordRouteImport.update({
     id: '/mi-cuenta/cambiar-password',
@@ -383,6 +389,7 @@ export interface FileRoutesByFullPath {
   '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
   '/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
+  '/billing/success': typeof PublicBillingSuccessRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
@@ -434,6 +441,7 @@ export interface FileRoutesByTo {
   '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
   '/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
+  '/billing/success': typeof PublicBillingSuccessRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
@@ -489,6 +497,7 @@ export interface FileRoutesById {
   '/_admin/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
   '/_admin/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
   '/_client/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
+  '/_public/billing/success': typeof PublicBillingSuccessRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/_admin/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
@@ -542,6 +551,7 @@ export interface FileRouteTypes {
     | '/notificaciones/seguimiento'
     | '/seguridad/cambiar-password'
     | '/mi-cuenta/cambiar-password'
+    | '/billing/success'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/ventas-pagos/ventas/$id'
@@ -593,6 +603,7 @@ export interface FileRouteTypes {
     | '/notificaciones/seguimiento'
     | '/seguridad/cambiar-password'
     | '/mi-cuenta/cambiar-password'
+    | '/billing/success'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/ventas-pagos/ventas/$id'
@@ -647,6 +658,7 @@ export interface FileRouteTypes {
     | '/_admin/notificaciones/seguimiento'
     | '/_admin/seguridad/cambiar-password'
     | '/_client/mi-cuenta/cambiar-password'
+    | '/_public/billing/success'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/_admin/ventas-pagos/ventas/$id'
@@ -987,6 +999,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoFormAddressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/billing/success': {
+      id: '/_public/billing/success'
+      path: '/billing/success'
+      fullPath: '/billing/success'
+      preLoaderRoute: typeof PublicBillingSuccessRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_client/mi-cuenta/cambiar-password': {
       id: '/_client/mi-cuenta/cambiar-password'
       path: '/mi-cuenta/cambiar-password'
@@ -1135,6 +1154,7 @@ interface PublicRouteChildren {
   PublicStripeSuccessRoute: typeof PublicStripeSuccessRoute
   PublicTrialSignupRoute: typeof PublicTrialSignupRoute
   PublicIndexRoute: typeof PublicIndexRoute
+  PublicBillingSuccessRoute: typeof PublicBillingSuccessRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
@@ -1149,6 +1169,7 @@ const PublicRouteChildren: PublicRouteChildren = {
   PublicStripeSuccessRoute: PublicStripeSuccessRoute,
   PublicTrialSignupRoute: PublicTrialSignupRoute,
   PublicIndexRoute: PublicIndexRoute,
+  PublicBillingSuccessRoute: PublicBillingSuccessRoute,
 }
 
 const PublicRouteWithChildren =

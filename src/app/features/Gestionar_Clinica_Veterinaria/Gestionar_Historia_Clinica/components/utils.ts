@@ -1,4 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL || 'https://pethome-backend-t4kl.onrender.com/api'
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? 'http://127.0.0.1:8000/api' : 'https://pethome-backend-t4kl.onrender.com/api')
 
 function getBackendOrigin() {
   try {

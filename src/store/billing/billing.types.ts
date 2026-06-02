@@ -27,7 +27,11 @@ export interface CheckoutDemoStartRequest {
 
 export interface CheckoutDemoStartResponse {
   checkout_token: string;
+  event_id?: string;
   expires_at?: string;
+  payment_mode?: string;
+  checkout_url: string;
+  detail?: string;
 }
 
 export interface CheckoutDemoConfirmRequest {
