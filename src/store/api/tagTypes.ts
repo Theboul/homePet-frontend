@@ -8,6 +8,9 @@ export const TAG_TYPES = [
   'Servicios',
   'PreciosServicio',
   'CategoriasServicio',
+  'CategoriasProducto',
+  'Productos',
+  'Proveedores',
   'ClinicalHistory',
   'Veterinarias',
   'Grupos',
@@ -17,6 +20,14 @@ export const TAG_TYPES = [
   'Planes',
   'Especies',
   'Razas',
+  'Notifications',
+  'Devices',
+  'Backup',
+  'BackupConfig',
+  'InventarioStock',
+  'InventarioMovimientos',
+  'InventarioPuntos',
+  'InventarioDisponibilidad',
 ] as const
 
 export type TagType = (typeof TAG_TYPES)[number]

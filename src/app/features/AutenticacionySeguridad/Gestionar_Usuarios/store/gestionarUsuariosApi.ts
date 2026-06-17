@@ -52,15 +52,21 @@ const mapStatus = (
 }
 
 const mapBackendUsuario = (usuario: BackendUsuario): Usuario => {
-  const authUser = usuario.usuario
+  const authUser =
+    typeof usuario.usuario === 'number' ? undefined : usuario.usuario
+  const rawUsuarioId =
+    typeof usuario.usuario === 'number' ? usuario.usuario : authUser?.id_usuario
   const role = mapRole(
     usuario.rol ?? usuario.role ?? authUser?.rol ?? authUser?.role
   )
 
-  const id = usuario.id_perfil ?? usuario.id_usuario ?? authUser?.id_usuario ?? usuario.id ?? 0
+  const userId = usuario.id_usuario ?? rawUsuarioId ?? authUser?.id ?? usuario.id ?? 0
+  const displayId = userId || usuario.id_perfil || 0
 
   return {
-    id,
+    id: displayId,
+    id_usuario: userId || undefined,
+    id_veterinaria: usuario.id_veterinaria ?? authUser?.id_veterinaria ?? null,
     nombre: usuario.nombre ?? usuario.perfil?.nombre ?? 'Sin nombre',
     correo: usuario.correo ?? authUser?.correo ?? '',
     telefono: usuario.telefono ?? usuario.perfil?.telefono ?? '-',

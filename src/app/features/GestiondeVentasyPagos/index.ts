@@ -1,0 +1,5 @@
+export * from './pages/RegistrarVentaPage'
+export * from './pages/ConsultarVentasPage'
+export * from './pages/DetalleVentaPage'
+export * from './services/ventasService'
+export * from './types/ventas.types'

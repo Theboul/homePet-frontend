@@ -12,6 +12,7 @@ export interface BackendRole {
 export interface User {
   id_usuario: number;
   correo: string;
+  nombre?: string;
   role: UserRole;
   id_veterinaria: number | null;
   is_superuser: boolean;
@@ -48,6 +49,24 @@ export interface LoginRequest {
   plataforma?: 'WEB' | 'MOVIL';
 }
 
+export interface ForgotPasswordRequest {
+  correo: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  nueva_password: string;
+}
+
+export interface ChangePasswordRequest {
+  password_actual: string;
+  nueva_password: string;
+}
+
+export interface MessageResponse {
+  detail: string;
+}
+
 export interface MobileLoginRequest extends LoginRequest {
   slug_veterinaria: string;
   plataforma: 'MOVIL';
@@ -62,4 +81,4 @@ export interface RegisterRequest {
   direccion?: string;
 }
 
-export interface RegisterResponse extends LoginResponse {}
+export interface RegisterResponse extends LoginResponse { }

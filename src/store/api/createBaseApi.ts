@@ -2,7 +2,9 @@ import { fetchBaseQuery, type BaseQueryFn, type FetchArgs, type FetchBaseQueryEr
 import type { RootState } from '../store';
 import { logout, setAccessToken } from '../auth/authSlice';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://pethome-backend-ujju.onrender.com/api';
 const REFRESH_TOKEN_URL = '/auth/token/refresh/';
 
 const baseQuery = fetchBaseQuery({
@@ -78,9 +80,34 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
       case 'FETCH_ERROR':
         console.error('Fetch Error: Problemas de Red / Timeout', result.error);
         break;
+      case 'PARSING_ERROR': {
+        const parsingError = result.error as FetchBaseQueryError & {
+          originalStatus?: number;
+          data?: string;
+        };
+        const backendMessage =
+          typeof parsingError.data === 'string'
+            ? parsingError.data.split('\n')[0]
+            : 'Respuesta no JSON del servidor';
+        console.error(
+          `Parsing Error (${parsingError.originalStatus ?? 'desconocido'}): ${backendMessage}`
+        );
+        break;
+      }
       default:
         console.error('Error HTTP no manejado:', result.error);
     }
+  }
+
+  const shouldRedirectToBilling =
+    result.error &&
+    (result.error.status === 402 || result.error.status === 403) &&
+    typeof window !== 'undefined' &&
+    !['/login', '/forgot-password', '/reset-password', '/billing'].includes(window.location.pathname) &&
+    JSON.stringify(result.error.data || {}).toLowerCase().includes('suscrip');
+
+  if (shouldRedirectToBilling) {
+    window.location.assign('/billing');
   }
 
   return result;

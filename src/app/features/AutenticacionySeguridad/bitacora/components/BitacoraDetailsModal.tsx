@@ -17,8 +17,8 @@ export function BitacoraDetailsModal({ bitacora, onClose }: BitacoraDetailsModal
   if (!bitacora) return null;
 
   return (
-    <Dialog 
-      open={!!bitacora} 
+    <Dialog
+      open={!!bitacora}
       onOpenChange={(isOpen) => !isOpen && onClose()}
     >
       <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
@@ -32,7 +32,7 @@ export function BitacoraDetailsModal({ bitacora, onClose }: BitacoraDetailsModal
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
-          
+
           {/* Información Básica */}
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
@@ -42,7 +42,7 @@ export function BitacoraDetailsModal({ bitacora, onClose }: BitacoraDetailsModal
             <div>
               <span className="font-semibold text-gray-500">Entidad Afectada:</span>
               <p className="font-medium text-gray-900">
-                {bitacora.entidad_tipo || 'N/A'} 
+                {bitacora.entidad_tipo || 'N/A'}
                 {bitacora.entidad_id ? ` (#${bitacora.entidad_id})` : ''}
               </p>
             </div>

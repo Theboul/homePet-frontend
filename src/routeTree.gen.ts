@@ -14,24 +14,54 @@ import { Route as ClientRouteImport } from './routes/_client'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
+import { Route as PublicTrialSignupRouteImport } from './routes/_public/trial-signup'
+import { Route as PublicStripeSuccessRouteImport } from './routes/_public/stripe-success'
+import { Route as PublicStripeCancelRouteImport } from './routes/_public/stripe-cancel'
+import { Route as PublicResetPasswordRouteImport } from './routes/_public/reset-password'
+import { Route as PublicPricingRouteImport } from './routes/_public/pricing'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
+import { Route as PublicLandingRouteImport } from './routes/_public/landing'
+import { Route as PublicForgotPasswordRouteImport } from './routes/_public/forgot-password'
+import { Route as PublicCheckoutDemoRouteImport } from './routes/_public/checkout-demo'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as ClientMisReservasRouteImport } from './routes/_client/mis-reservas'
 import { Route as ClientMisMascotasRouteImport } from './routes/_client/mis-mascotas'
 import { Route as ClientClienteRouteImport } from './routes/_client/cliente'
 import { Route as ClientPerfil_MascotaRouteImport } from './routes/_client/Perfil_Mascota'
+import { Route as AdminGestionarBackupsRouteImport } from './routes/_admin/gestionar-backups'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminBitacoraRouteImport } from './routes/_admin/bitacora'
+import { Route as AdminBillingRouteImport } from './routes/_admin/billing'
+import { Route as AdminUnidades_MovilesRouteImport } from './routes/_admin/Unidades_Moviles'
+import { Route as AdminRutas_ProgramadasRouteImport } from './routes/_admin/Rutas_Programadas'
+import { Route as AdminLogistica_Unidades_MovilesRouteImport } from './routes/_admin/Logistica_Unidades_Moviles'
+import { Route as AdminLogistica_Rutas_ProgramadasRouteImport } from './routes/_admin/Logistica_Rutas_Programadas'
+import { Route as AdminLogistica_Asignar_Servicios_MovilesRouteImport } from './routes/_admin/Logistica_Asignar_Servicios_Moviles'
+import { Route as AdminLogistica_Asignar_Personal_ZonasRouteImport } from './routes/_admin/Logistica_Asignar_Personal_Zonas'
+import { Route as AdminInventario_MovimientosRouteImport } from './routes/_admin/Inventario_Movimientos'
+import { Route as AdminInventario_ControlRouteImport } from './routes/_admin/Inventario_Control'
 import { Route as AdminGestionar_UsuariosRouteImport } from './routes/_admin/Gestionar_Usuarios'
 import { Route as AdminGestionar_Servicios_Precios_CatalogoRouteImport } from './routes/_admin/Gestionar_Servicios_Precios_Catalogo'
 import { Route as AdminGestionar_Roles_PermisosRouteImport } from './routes/_admin/Gestionar_Roles_Permisos'
 import { Route as AdminGestionar_ReservasRouteImport } from './routes/_admin/Gestionar_Reservas'
+import { Route as AdminGestionar_ReportesRouteImport } from './routes/_admin/Gestionar_Reportes'
+import { Route as AdminGestionar_ProveedoresRouteImport } from './routes/_admin/Gestionar_Proveedores'
+import { Route as AdminGestionar_ProductosRouteImport } from './routes/_admin/Gestionar_Productos'
 import { Route as AdminGestionar_MascotasRouteImport } from './routes/_admin/Gestionar_Mascotas'
 import { Route as AdminGestionar_Historia_ClinicaRouteImport } from './routes/_admin/Gestionar_Historia_Clinica'
+import { Route as AdminGestionar_Clinicas_VeterinariasRouteImport } from './routes/_admin/Gestionar_Clinicas_Veterinarias'
 import { Route as AdminGestionar_ClientesRouteImport } from './routes/_admin/Gestionar_Clientes'
+import { Route as AdminGestionar_CategoriasRouteImport } from './routes/_admin/Gestionar_Categorias'
 import { Route as AdminGestionar_AgendaRouteImport } from './routes/_admin/Gestionar_Agenda'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
+import { Route as PublicBillingSuccessRouteImport } from './routes/_public/billing.success'
+import { Route as ClientMiCuentaCambiarPasswordRouteImport } from './routes/_client/mi-cuenta/cambiar-password'
+import { Route as AdminSeguridadCambiarPasswordRouteImport } from './routes/_admin/seguridad/cambiar-password'
+import { Route as AdminNotificacionesSeguimientoRouteImport } from './routes/_admin/notificaciones/seguimiento'
+import { Route as AdminVentasPagosVentasIndexRouteImport } from './routes/_admin/ventas-pagos/ventas/index'
+import { Route as AdminVentasPagosVentasNuevaRouteImport } from './routes/_admin/ventas-pagos/ventas/nueva'
+import { Route as AdminVentasPagosVentasIdRouteImport } from './routes/_admin/ventas-pagos/ventas/$id'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -55,9 +85,49 @@ const DemoTableRoute = DemoTableRouteImport.update({
   path: '/demo/table',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicTrialSignupRoute = PublicTrialSignupRouteImport.update({
+  id: '/trial-signup',
+  path: '/trial-signup',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicStripeSuccessRoute = PublicStripeSuccessRouteImport.update({
+  id: '/stripe-success',
+  path: '/stripe-success',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicStripeCancelRoute = PublicStripeCancelRouteImport.update({
+  id: '/stripe-cancel',
+  path: '/stripe-cancel',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicResetPasswordRoute = PublicResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicPricingRoute = PublicPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicLoginRoute = PublicLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicLandingRoute = PublicLandingRouteImport.update({
+  id: '/landing',
+  path: '/landing',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicForgotPasswordRoute = PublicForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicCheckoutDemoRoute = PublicCheckoutDemoRouteImport.update({
+  id: '/checkout-demo',
+  path: '/checkout-demo',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicAboutRoute = PublicAboutRouteImport.update({
@@ -85,6 +155,11 @@ const ClientPerfil_MascotaRoute = ClientPerfil_MascotaRouteImport.update({
   path: '/Perfil_Mascota',
   getParentRoute: () => ClientRoute,
 } as any)
+const AdminGestionarBackupsRoute = AdminGestionarBackupsRouteImport.update({
+  id: '/gestionar-backups',
+  path: '/gestionar-backups',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -93,6 +168,56 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 const AdminBitacoraRoute = AdminBitacoraRouteImport.update({
   id: '/bitacora',
   path: '/bitacora',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBillingRoute = AdminBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUnidades_MovilesRoute = AdminUnidades_MovilesRouteImport.update({
+  id: '/Unidades_Moviles',
+  path: '/Unidades_Moviles',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRutas_ProgramadasRoute = AdminRutas_ProgramadasRouteImport.update({
+  id: '/Rutas_Programadas',
+  path: '/Rutas_Programadas',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLogistica_Unidades_MovilesRoute =
+  AdminLogistica_Unidades_MovilesRouteImport.update({
+    id: '/Logistica_Unidades_Moviles',
+    path: '/Logistica_Unidades_Moviles',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminLogistica_Rutas_ProgramadasRoute =
+  AdminLogistica_Rutas_ProgramadasRouteImport.update({
+    id: '/Logistica_Rutas_Programadas',
+    path: '/Logistica_Rutas_Programadas',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminLogistica_Asignar_Servicios_MovilesRoute =
+  AdminLogistica_Asignar_Servicios_MovilesRouteImport.update({
+    id: '/Logistica_Asignar_Servicios_Moviles',
+    path: '/Logistica_Asignar_Servicios_Moviles',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminLogistica_Asignar_Personal_ZonasRoute =
+  AdminLogistica_Asignar_Personal_ZonasRouteImport.update({
+    id: '/Logistica_Asignar_Personal_Zonas',
+    path: '/Logistica_Asignar_Personal_Zonas',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminInventario_MovimientosRoute =
+  AdminInventario_MovimientosRouteImport.update({
+    id: '/Inventario_Movimientos',
+    path: '/Inventario_Movimientos',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminInventario_ControlRoute = AdminInventario_ControlRouteImport.update({
+  id: '/Inventario_Control',
+  path: '/Inventario_Control',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminGestionar_UsuariosRoute = AdminGestionar_UsuariosRouteImport.update({
@@ -117,6 +242,23 @@ const AdminGestionar_ReservasRoute = AdminGestionar_ReservasRouteImport.update({
   path: '/Gestionar_Reservas',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGestionar_ReportesRoute = AdminGestionar_ReportesRouteImport.update({
+  id: '/Gestionar_Reportes',
+  path: '/Gestionar_Reportes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGestionar_ProveedoresRoute =
+  AdminGestionar_ProveedoresRouteImport.update({
+    id: '/Gestionar_Proveedores',
+    path: '/Gestionar_Proveedores',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminGestionar_ProductosRoute =
+  AdminGestionar_ProductosRouteImport.update({
+    id: '/Gestionar_Productos',
+    path: '/Gestionar_Productos',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminGestionar_MascotasRoute = AdminGestionar_MascotasRouteImport.update({
   id: '/Gestionar_Mascotas',
   path: '/Gestionar_Mascotas',
@@ -128,11 +270,23 @@ const AdminGestionar_Historia_ClinicaRoute =
     path: '/Gestionar_Historia_Clinica',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminGestionar_Clinicas_VeterinariasRoute =
+  AdminGestionar_Clinicas_VeterinariasRouteImport.update({
+    id: '/Gestionar_Clinicas_Veterinarias',
+    path: '/Gestionar_Clinicas_Veterinarias',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminGestionar_ClientesRoute = AdminGestionar_ClientesRouteImport.update({
   id: '/Gestionar_Clientes',
   path: '/Gestionar_Clientes',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGestionar_CategoriasRoute =
+  AdminGestionar_CategoriasRouteImport.update({
+    id: '/Gestionar_Categorias',
+    path: '/Gestionar_Categorias',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminGestionar_AgendaRoute = AdminGestionar_AgendaRouteImport.update({
   id: '/Gestionar_Agenda',
   path: '/Gestionar_Agenda',
@@ -148,50 +302,151 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
   path: '/demo/form/address',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicBillingSuccessRoute = PublicBillingSuccessRouteImport.update({
+  id: '/billing/success',
+  path: '/billing/success',
+  getParentRoute: () => PublicRoute,
+} as any)
+const ClientMiCuentaCambiarPasswordRoute =
+  ClientMiCuentaCambiarPasswordRouteImport.update({
+    id: '/mi-cuenta/cambiar-password',
+    path: '/mi-cuenta/cambiar-password',
+    getParentRoute: () => ClientRoute,
+  } as any)
+const AdminSeguridadCambiarPasswordRoute =
+  AdminSeguridadCambiarPasswordRouteImport.update({
+    id: '/seguridad/cambiar-password',
+    path: '/seguridad/cambiar-password',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminNotificacionesSeguimientoRoute =
+  AdminNotificacionesSeguimientoRouteImport.update({
+    id: '/notificaciones/seguimiento',
+    path: '/notificaciones/seguimiento',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminVentasPagosVentasIndexRoute =
+  AdminVentasPagosVentasIndexRouteImport.update({
+    id: '/ventas-pagos/ventas/',
+    path: '/ventas-pagos/ventas/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminVentasPagosVentasNuevaRoute =
+  AdminVentasPagosVentasNuevaRouteImport.update({
+    id: '/ventas-pagos/ventas/nueva',
+    path: '/ventas-pagos/ventas/nueva',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminVentasPagosVentasIdRoute =
+  AdminVentasPagosVentasIdRouteImport.update({
+    id: '/ventas-pagos/ventas/$id',
+    path: '/ventas-pagos/ventas/$id',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/Gestionar_Agenda': typeof AdminGestionar_AgendaRoute
+  '/Gestionar_Categorias': typeof AdminGestionar_CategoriasRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Clinicas_Veterinarias': typeof AdminGestionar_Clinicas_VeterinariasRoute
   '/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
+  '/Gestionar_Productos': typeof AdminGestionar_ProductosRoute
+  '/Gestionar_Proveedores': typeof AdminGestionar_ProveedoresRoute
+  '/Gestionar_Reportes': typeof AdminGestionar_ReportesRoute
   '/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
   '/Gestionar_Roles_Permisos': typeof AdminGestionar_Roles_PermisosRoute
   '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/Inventario_Control': typeof AdminInventario_ControlRoute
+  '/Inventario_Movimientos': typeof AdminInventario_MovimientosRoute
+  '/Logistica_Asignar_Personal_Zonas': typeof AdminLogistica_Asignar_Personal_ZonasRoute
+  '/Logistica_Asignar_Servicios_Moviles': typeof AdminLogistica_Asignar_Servicios_MovilesRoute
+  '/Logistica_Rutas_Programadas': typeof AdminLogistica_Rutas_ProgramadasRoute
+  '/Logistica_Unidades_Moviles': typeof AdminLogistica_Unidades_MovilesRoute
+  '/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
+  '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
+  '/billing': typeof AdminBillingRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/gestionar-backups': typeof AdminGestionarBackupsRoute
   '/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
   '/cliente': typeof ClientClienteRoute
   '/mis-mascotas': typeof ClientMisMascotasRoute
   '/mis-reservas': typeof ClientMisReservasRoute
   '/about': typeof PublicAboutRoute
+  '/checkout-demo': typeof PublicCheckoutDemoRoute
+  '/forgot-password': typeof PublicForgotPasswordRoute
+  '/landing': typeof PublicLandingRoute
   '/login': typeof PublicLoginRoute
+  '/pricing': typeof PublicPricingRoute
+  '/reset-password': typeof PublicResetPasswordRoute
+  '/stripe-cancel': typeof PublicStripeCancelRoute
+  '/stripe-success': typeof PublicStripeSuccessRoute
+  '/trial-signup': typeof PublicTrialSignupRoute
   '/demo/table': typeof DemoTableRoute
+  '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
+  '/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
+  '/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
+  '/billing/success': typeof PublicBillingSuccessRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
+  '/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
+  '/ventas-pagos/ventas/nueva': typeof AdminVentasPagosVentasNuevaRoute
+  '/ventas-pagos/ventas/': typeof AdminVentasPagosVentasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/Gestionar_Agenda': typeof AdminGestionar_AgendaRoute
+  '/Gestionar_Categorias': typeof AdminGestionar_CategoriasRoute
   '/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/Gestionar_Clinicas_Veterinarias': typeof AdminGestionar_Clinicas_VeterinariasRoute
   '/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
+  '/Gestionar_Productos': typeof AdminGestionar_ProductosRoute
+  '/Gestionar_Proveedores': typeof AdminGestionar_ProveedoresRoute
+  '/Gestionar_Reportes': typeof AdminGestionar_ReportesRoute
   '/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
   '/Gestionar_Roles_Permisos': typeof AdminGestionar_Roles_PermisosRoute
   '/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/Inventario_Control': typeof AdminInventario_ControlRoute
+  '/Inventario_Movimientos': typeof AdminInventario_MovimientosRoute
+  '/Logistica_Asignar_Personal_Zonas': typeof AdminLogistica_Asignar_Personal_ZonasRoute
+  '/Logistica_Asignar_Servicios_Moviles': typeof AdminLogistica_Asignar_Servicios_MovilesRoute
+  '/Logistica_Rutas_Programadas': typeof AdminLogistica_Rutas_ProgramadasRoute
+  '/Logistica_Unidades_Moviles': typeof AdminLogistica_Unidades_MovilesRoute
+  '/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
+  '/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
+  '/billing': typeof AdminBillingRoute
   '/bitacora': typeof AdminBitacoraRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/gestionar-backups': typeof AdminGestionarBackupsRoute
   '/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
   '/cliente': typeof ClientClienteRoute
   '/mis-mascotas': typeof ClientMisMascotasRoute
   '/mis-reservas': typeof ClientMisReservasRoute
   '/about': typeof PublicAboutRoute
+  '/checkout-demo': typeof PublicCheckoutDemoRoute
+  '/forgot-password': typeof PublicForgotPasswordRoute
+  '/landing': typeof PublicLandingRoute
   '/login': typeof PublicLoginRoute
+  '/pricing': typeof PublicPricingRoute
+  '/reset-password': typeof PublicResetPasswordRoute
+  '/stripe-cancel': typeof PublicStripeCancelRoute
+  '/stripe-success': typeof PublicStripeSuccessRoute
+  '/trial-signup': typeof PublicTrialSignupRoute
   '/demo/table': typeof DemoTableRoute
+  '/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
+  '/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
+  '/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
+  '/billing/success': typeof PublicBillingSuccessRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
+  '/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
+  '/ventas-pagos/ventas/nueva': typeof AdminVentasPagosVentasNuevaRoute
+  '/ventas-pagos/ventas': typeof AdminVentasPagosVentasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -199,96 +454,216 @@ export interface FileRoutesById {
   '/_client': typeof ClientRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_admin/Gestionar_Agenda': typeof AdminGestionar_AgendaRoute
+  '/_admin/Gestionar_Categorias': typeof AdminGestionar_CategoriasRoute
   '/_admin/Gestionar_Clientes': typeof AdminGestionar_ClientesRoute
+  '/_admin/Gestionar_Clinicas_Veterinarias': typeof AdminGestionar_Clinicas_VeterinariasRoute
   '/_admin/Gestionar_Historia_Clinica': typeof AdminGestionar_Historia_ClinicaRoute
   '/_admin/Gestionar_Mascotas': typeof AdminGestionar_MascotasRoute
+  '/_admin/Gestionar_Productos': typeof AdminGestionar_ProductosRoute
+  '/_admin/Gestionar_Proveedores': typeof AdminGestionar_ProveedoresRoute
+  '/_admin/Gestionar_Reportes': typeof AdminGestionar_ReportesRoute
   '/_admin/Gestionar_Reservas': typeof AdminGestionar_ReservasRoute
   '/_admin/Gestionar_Roles_Permisos': typeof AdminGestionar_Roles_PermisosRoute
   '/_admin/Gestionar_Servicios_Precios_Catalogo': typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   '/_admin/Gestionar_Usuarios': typeof AdminGestionar_UsuariosRoute
+  '/_admin/Inventario_Control': typeof AdminInventario_ControlRoute
+  '/_admin/Inventario_Movimientos': typeof AdminInventario_MovimientosRoute
+  '/_admin/Logistica_Asignar_Personal_Zonas': typeof AdminLogistica_Asignar_Personal_ZonasRoute
+  '/_admin/Logistica_Asignar_Servicios_Moviles': typeof AdminLogistica_Asignar_Servicios_MovilesRoute
+  '/_admin/Logistica_Rutas_Programadas': typeof AdminLogistica_Rutas_ProgramadasRoute
+  '/_admin/Logistica_Unidades_Moviles': typeof AdminLogistica_Unidades_MovilesRoute
+  '/_admin/Rutas_Programadas': typeof AdminRutas_ProgramadasRoute
+  '/_admin/Unidades_Moviles': typeof AdminUnidades_MovilesRoute
+  '/_admin/billing': typeof AdminBillingRoute
   '/_admin/bitacora': typeof AdminBitacoraRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/gestionar-backups': typeof AdminGestionarBackupsRoute
   '/_client/Perfil_Mascota': typeof ClientPerfil_MascotaRoute
   '/_client/cliente': typeof ClientClienteRoute
   '/_client/mis-mascotas': typeof ClientMisMascotasRoute
   '/_client/mis-reservas': typeof ClientMisReservasRoute
   '/_public/about': typeof PublicAboutRoute
+  '/_public/checkout-demo': typeof PublicCheckoutDemoRoute
+  '/_public/forgot-password': typeof PublicForgotPasswordRoute
+  '/_public/landing': typeof PublicLandingRoute
   '/_public/login': typeof PublicLoginRoute
+  '/_public/pricing': typeof PublicPricingRoute
+  '/_public/reset-password': typeof PublicResetPasswordRoute
+  '/_public/stripe-cancel': typeof PublicStripeCancelRoute
+  '/_public/stripe-success': typeof PublicStripeSuccessRoute
+  '/_public/trial-signup': typeof PublicTrialSignupRoute
   '/demo/table': typeof DemoTableRoute
   '/_public/': typeof PublicIndexRoute
+  '/_admin/notificaciones/seguimiento': typeof AdminNotificacionesSeguimientoRoute
+  '/_admin/seguridad/cambiar-password': typeof AdminSeguridadCambiarPasswordRoute
+  '/_client/mi-cuenta/cambiar-password': typeof ClientMiCuentaCambiarPasswordRoute
+  '/_public/billing/success': typeof PublicBillingSuccessRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
+  '/_admin/ventas-pagos/ventas/$id': typeof AdminVentasPagosVentasIdRoute
+  '/_admin/ventas-pagos/ventas/nueva': typeof AdminVentasPagosVentasNuevaRoute
+  '/_admin/ventas-pagos/ventas/': typeof AdminVentasPagosVentasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/Gestionar_Agenda'
+    | '/Gestionar_Categorias'
     | '/Gestionar_Clientes'
+    | '/Gestionar_Clinicas_Veterinarias'
     | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Mascotas'
+    | '/Gestionar_Productos'
+    | '/Gestionar_Proveedores'
+    | '/Gestionar_Reportes'
     | '/Gestionar_Reservas'
     | '/Gestionar_Roles_Permisos'
     | '/Gestionar_Servicios_Precios_Catalogo'
     | '/Gestionar_Usuarios'
+    | '/Inventario_Control'
+    | '/Inventario_Movimientos'
+    | '/Logistica_Asignar_Personal_Zonas'
+    | '/Logistica_Asignar_Servicios_Moviles'
+    | '/Logistica_Rutas_Programadas'
+    | '/Logistica_Unidades_Moviles'
+    | '/Rutas_Programadas'
+    | '/Unidades_Moviles'
+    | '/billing'
     | '/bitacora'
     | '/dashboard'
+    | '/gestionar-backups'
     | '/Perfil_Mascota'
     | '/cliente'
     | '/mis-mascotas'
     | '/mis-reservas'
     | '/about'
+    | '/checkout-demo'
+    | '/forgot-password'
+    | '/landing'
     | '/login'
+    | '/pricing'
+    | '/reset-password'
+    | '/stripe-cancel'
+    | '/stripe-success'
+    | '/trial-signup'
     | '/demo/table'
+    | '/notificaciones/seguimiento'
+    | '/seguridad/cambiar-password'
+    | '/mi-cuenta/cambiar-password'
+    | '/billing/success'
     | '/demo/form/address'
     | '/demo/form/simple'
+    | '/ventas-pagos/ventas/$id'
+    | '/ventas-pagos/ventas/nueva'
+    | '/ventas-pagos/ventas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/Gestionar_Agenda'
+    | '/Gestionar_Categorias'
     | '/Gestionar_Clientes'
+    | '/Gestionar_Clinicas_Veterinarias'
     | '/Gestionar_Historia_Clinica'
     | '/Gestionar_Mascotas'
+    | '/Gestionar_Productos'
+    | '/Gestionar_Proveedores'
+    | '/Gestionar_Reportes'
     | '/Gestionar_Reservas'
     | '/Gestionar_Roles_Permisos'
     | '/Gestionar_Servicios_Precios_Catalogo'
     | '/Gestionar_Usuarios'
+    | '/Inventario_Control'
+    | '/Inventario_Movimientos'
+    | '/Logistica_Asignar_Personal_Zonas'
+    | '/Logistica_Asignar_Servicios_Moviles'
+    | '/Logistica_Rutas_Programadas'
+    | '/Logistica_Unidades_Moviles'
+    | '/Rutas_Programadas'
+    | '/Unidades_Moviles'
+    | '/billing'
     | '/bitacora'
     | '/dashboard'
+    | '/gestionar-backups'
     | '/Perfil_Mascota'
     | '/cliente'
     | '/mis-mascotas'
     | '/mis-reservas'
     | '/about'
+    | '/checkout-demo'
+    | '/forgot-password'
+    | '/landing'
     | '/login'
+    | '/pricing'
+    | '/reset-password'
+    | '/stripe-cancel'
+    | '/stripe-success'
+    | '/trial-signup'
     | '/demo/table'
+    | '/notificaciones/seguimiento'
+    | '/seguridad/cambiar-password'
+    | '/mi-cuenta/cambiar-password'
+    | '/billing/success'
     | '/demo/form/address'
     | '/demo/form/simple'
+    | '/ventas-pagos/ventas/$id'
+    | '/ventas-pagos/ventas/nueva'
+    | '/ventas-pagos/ventas'
   id:
     | '__root__'
     | '/_admin'
     | '/_client'
     | '/_public'
     | '/_admin/Gestionar_Agenda'
+    | '/_admin/Gestionar_Categorias'
     | '/_admin/Gestionar_Clientes'
+    | '/_admin/Gestionar_Clinicas_Veterinarias'
     | '/_admin/Gestionar_Historia_Clinica'
     | '/_admin/Gestionar_Mascotas'
+    | '/_admin/Gestionar_Productos'
+    | '/_admin/Gestionar_Proveedores'
+    | '/_admin/Gestionar_Reportes'
     | '/_admin/Gestionar_Reservas'
     | '/_admin/Gestionar_Roles_Permisos'
     | '/_admin/Gestionar_Servicios_Precios_Catalogo'
     | '/_admin/Gestionar_Usuarios'
+    | '/_admin/Inventario_Control'
+    | '/_admin/Inventario_Movimientos'
+    | '/_admin/Logistica_Asignar_Personal_Zonas'
+    | '/_admin/Logistica_Asignar_Servicios_Moviles'
+    | '/_admin/Logistica_Rutas_Programadas'
+    | '/_admin/Logistica_Unidades_Moviles'
+    | '/_admin/Rutas_Programadas'
+    | '/_admin/Unidades_Moviles'
+    | '/_admin/billing'
     | '/_admin/bitacora'
     | '/_admin/dashboard'
+    | '/_admin/gestionar-backups'
     | '/_client/Perfil_Mascota'
     | '/_client/cliente'
     | '/_client/mis-mascotas'
     | '/_client/mis-reservas'
     | '/_public/about'
+    | '/_public/checkout-demo'
+    | '/_public/forgot-password'
+    | '/_public/landing'
     | '/_public/login'
+    | '/_public/pricing'
+    | '/_public/reset-password'
+    | '/_public/stripe-cancel'
+    | '/_public/stripe-success'
+    | '/_public/trial-signup'
     | '/demo/table'
     | '/_public/'
+    | '/_admin/notificaciones/seguimiento'
+    | '/_admin/seguridad/cambiar-password'
+    | '/_client/mi-cuenta/cambiar-password'
+    | '/_public/billing/success'
     | '/demo/form/address'
     | '/demo/form/simple'
+    | '/_admin/ventas-pagos/ventas/$id'
+    | '/_admin/ventas-pagos/ventas/nueva'
+    | '/_admin/ventas-pagos/ventas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -337,11 +712,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTableRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/trial-signup': {
+      id: '/_public/trial-signup'
+      path: '/trial-signup'
+      fullPath: '/trial-signup'
+      preLoaderRoute: typeof PublicTrialSignupRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/stripe-success': {
+      id: '/_public/stripe-success'
+      path: '/stripe-success'
+      fullPath: '/stripe-success'
+      preLoaderRoute: typeof PublicStripeSuccessRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/stripe-cancel': {
+      id: '/_public/stripe-cancel'
+      path: '/stripe-cancel'
+      fullPath: '/stripe-cancel'
+      preLoaderRoute: typeof PublicStripeCancelRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/reset-password': {
+      id: '/_public/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof PublicResetPasswordRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/pricing': {
+      id: '/_public/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PublicPricingRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/login': {
       id: '/_public/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof PublicLoginRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/landing': {
+      id: '/_public/landing'
+      path: '/landing'
+      fullPath: '/landing'
+      preLoaderRoute: typeof PublicLandingRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/forgot-password': {
+      id: '/_public/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof PublicForgotPasswordRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/checkout-demo': {
+      id: '/_public/checkout-demo'
+      path: '/checkout-demo'
+      fullPath: '/checkout-demo'
+      preLoaderRoute: typeof PublicCheckoutDemoRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/about': {
@@ -379,6 +810,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientPerfil_MascotaRouteImport
       parentRoute: typeof ClientRoute
     }
+    '/_admin/gestionar-backups': {
+      id: '/_admin/gestionar-backups'
+      path: '/gestionar-backups'
+      fullPath: '/gestionar-backups'
+      preLoaderRoute: typeof AdminGestionarBackupsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/dashboard': {
       id: '/_admin/dashboard'
       path: '/dashboard'
@@ -391,6 +829,69 @@ declare module '@tanstack/react-router' {
       path: '/bitacora'
       fullPath: '/bitacora'
       preLoaderRoute: typeof AdminBitacoraRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/billing': {
+      id: '/_admin/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AdminBillingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Unidades_Moviles': {
+      id: '/_admin/Unidades_Moviles'
+      path: '/Unidades_Moviles'
+      fullPath: '/Unidades_Moviles'
+      preLoaderRoute: typeof AdminUnidades_MovilesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Rutas_Programadas': {
+      id: '/_admin/Rutas_Programadas'
+      path: '/Rutas_Programadas'
+      fullPath: '/Rutas_Programadas'
+      preLoaderRoute: typeof AdminRutas_ProgramadasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Logistica_Unidades_Moviles': {
+      id: '/_admin/Logistica_Unidades_Moviles'
+      path: '/Logistica_Unidades_Moviles'
+      fullPath: '/Logistica_Unidades_Moviles'
+      preLoaderRoute: typeof AdminLogistica_Unidades_MovilesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Logistica_Rutas_Programadas': {
+      id: '/_admin/Logistica_Rutas_Programadas'
+      path: '/Logistica_Rutas_Programadas'
+      fullPath: '/Logistica_Rutas_Programadas'
+      preLoaderRoute: typeof AdminLogistica_Rutas_ProgramadasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Logistica_Asignar_Servicios_Moviles': {
+      id: '/_admin/Logistica_Asignar_Servicios_Moviles'
+      path: '/Logistica_Asignar_Servicios_Moviles'
+      fullPath: '/Logistica_Asignar_Servicios_Moviles'
+      preLoaderRoute: typeof AdminLogistica_Asignar_Servicios_MovilesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Logistica_Asignar_Personal_Zonas': {
+      id: '/_admin/Logistica_Asignar_Personal_Zonas'
+      path: '/Logistica_Asignar_Personal_Zonas'
+      fullPath: '/Logistica_Asignar_Personal_Zonas'
+      preLoaderRoute: typeof AdminLogistica_Asignar_Personal_ZonasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Inventario_Movimientos': {
+      id: '/_admin/Inventario_Movimientos'
+      path: '/Inventario_Movimientos'
+      fullPath: '/Inventario_Movimientos'
+      preLoaderRoute: typeof AdminInventario_MovimientosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Inventario_Control': {
+      id: '/_admin/Inventario_Control'
+      path: '/Inventario_Control'
+      fullPath: '/Inventario_Control'
+      preLoaderRoute: typeof AdminInventario_ControlRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/Gestionar_Usuarios': {
@@ -421,6 +922,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_ReservasRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Gestionar_Reportes': {
+      id: '/_admin/Gestionar_Reportes'
+      path: '/Gestionar_Reportes'
+      fullPath: '/Gestionar_Reportes'
+      preLoaderRoute: typeof AdminGestionar_ReportesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Proveedores': {
+      id: '/_admin/Gestionar_Proveedores'
+      path: '/Gestionar_Proveedores'
+      fullPath: '/Gestionar_Proveedores'
+      preLoaderRoute: typeof AdminGestionar_ProveedoresRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Productos': {
+      id: '/_admin/Gestionar_Productos'
+      path: '/Gestionar_Productos'
+      fullPath: '/Gestionar_Productos'
+      preLoaderRoute: typeof AdminGestionar_ProductosRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Mascotas': {
       id: '/_admin/Gestionar_Mascotas'
       path: '/Gestionar_Mascotas'
@@ -435,11 +957,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGestionar_Historia_ClinicaRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/Gestionar_Clinicas_Veterinarias': {
+      id: '/_admin/Gestionar_Clinicas_Veterinarias'
+      path: '/Gestionar_Clinicas_Veterinarias'
+      fullPath: '/Gestionar_Clinicas_Veterinarias'
+      preLoaderRoute: typeof AdminGestionar_Clinicas_VeterinariasRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/Gestionar_Clientes': {
       id: '/_admin/Gestionar_Clientes'
       path: '/Gestionar_Clientes'
       fullPath: '/Gestionar_Clientes'
       preLoaderRoute: typeof AdminGestionar_ClientesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/Gestionar_Categorias': {
+      id: '/_admin/Gestionar_Categorias'
+      path: '/Gestionar_Categorias'
+      fullPath: '/Gestionar_Categorias'
+      preLoaderRoute: typeof AdminGestionar_CategoriasRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/Gestionar_Agenda': {
@@ -463,34 +999,126 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoFormAddressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/billing/success': {
+      id: '/_public/billing/success'
+      path: '/billing/success'
+      fullPath: '/billing/success'
+      preLoaderRoute: typeof PublicBillingSuccessRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_client/mi-cuenta/cambiar-password': {
+      id: '/_client/mi-cuenta/cambiar-password'
+      path: '/mi-cuenta/cambiar-password'
+      fullPath: '/mi-cuenta/cambiar-password'
+      preLoaderRoute: typeof ClientMiCuentaCambiarPasswordRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/_admin/seguridad/cambiar-password': {
+      id: '/_admin/seguridad/cambiar-password'
+      path: '/seguridad/cambiar-password'
+      fullPath: '/seguridad/cambiar-password'
+      preLoaderRoute: typeof AdminSeguridadCambiarPasswordRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/notificaciones/seguimiento': {
+      id: '/_admin/notificaciones/seguimiento'
+      path: '/notificaciones/seguimiento'
+      fullPath: '/notificaciones/seguimiento'
+      preLoaderRoute: typeof AdminNotificacionesSeguimientoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ventas-pagos/ventas/': {
+      id: '/_admin/ventas-pagos/ventas/'
+      path: '/ventas-pagos/ventas'
+      fullPath: '/ventas-pagos/ventas/'
+      preLoaderRoute: typeof AdminVentasPagosVentasIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ventas-pagos/ventas/nueva': {
+      id: '/_admin/ventas-pagos/ventas/nueva'
+      path: '/ventas-pagos/ventas/nueva'
+      fullPath: '/ventas-pagos/ventas/nueva'
+      preLoaderRoute: typeof AdminVentasPagosVentasNuevaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ventas-pagos/ventas/$id': {
+      id: '/_admin/ventas-pagos/ventas/$id'
+      path: '/ventas-pagos/ventas/$id'
+      fullPath: '/ventas-pagos/ventas/$id'
+      preLoaderRoute: typeof AdminVentasPagosVentasIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminGestionar_AgendaRoute: typeof AdminGestionar_AgendaRoute
+  AdminGestionar_CategoriasRoute: typeof AdminGestionar_CategoriasRoute
   AdminGestionar_ClientesRoute: typeof AdminGestionar_ClientesRoute
+  AdminGestionar_Clinicas_VeterinariasRoute: typeof AdminGestionar_Clinicas_VeterinariasRoute
   AdminGestionar_Historia_ClinicaRoute: typeof AdminGestionar_Historia_ClinicaRoute
   AdminGestionar_MascotasRoute: typeof AdminGestionar_MascotasRoute
+  AdminGestionar_ProductosRoute: typeof AdminGestionar_ProductosRoute
+  AdminGestionar_ProveedoresRoute: typeof AdminGestionar_ProveedoresRoute
+  AdminGestionar_ReportesRoute: typeof AdminGestionar_ReportesRoute
   AdminGestionar_ReservasRoute: typeof AdminGestionar_ReservasRoute
   AdminGestionar_Roles_PermisosRoute: typeof AdminGestionar_Roles_PermisosRoute
   AdminGestionar_Servicios_Precios_CatalogoRoute: typeof AdminGestionar_Servicios_Precios_CatalogoRoute
   AdminGestionar_UsuariosRoute: typeof AdminGestionar_UsuariosRoute
+  AdminInventario_ControlRoute: typeof AdminInventario_ControlRoute
+  AdminInventario_MovimientosRoute: typeof AdminInventario_MovimientosRoute
+  AdminLogistica_Asignar_Personal_ZonasRoute: typeof AdminLogistica_Asignar_Personal_ZonasRoute
+  AdminLogistica_Asignar_Servicios_MovilesRoute: typeof AdminLogistica_Asignar_Servicios_MovilesRoute
+  AdminLogistica_Rutas_ProgramadasRoute: typeof AdminLogistica_Rutas_ProgramadasRoute
+  AdminLogistica_Unidades_MovilesRoute: typeof AdminLogistica_Unidades_MovilesRoute
+  AdminRutas_ProgramadasRoute: typeof AdminRutas_ProgramadasRoute
+  AdminUnidades_MovilesRoute: typeof AdminUnidades_MovilesRoute
+  AdminBillingRoute: typeof AdminBillingRoute
   AdminBitacoraRoute: typeof AdminBitacoraRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminGestionarBackupsRoute: typeof AdminGestionarBackupsRoute
+  AdminNotificacionesSeguimientoRoute: typeof AdminNotificacionesSeguimientoRoute
+  AdminSeguridadCambiarPasswordRoute: typeof AdminSeguridadCambiarPasswordRoute
+  AdminVentasPagosVentasIdRoute: typeof AdminVentasPagosVentasIdRoute
+  AdminVentasPagosVentasNuevaRoute: typeof AdminVentasPagosVentasNuevaRoute
+  AdminVentasPagosVentasIndexRoute: typeof AdminVentasPagosVentasIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminGestionar_AgendaRoute: AdminGestionar_AgendaRoute,
+  AdminGestionar_CategoriasRoute: AdminGestionar_CategoriasRoute,
   AdminGestionar_ClientesRoute: AdminGestionar_ClientesRoute,
+  AdminGestionar_Clinicas_VeterinariasRoute:
+    AdminGestionar_Clinicas_VeterinariasRoute,
   AdminGestionar_Historia_ClinicaRoute: AdminGestionar_Historia_ClinicaRoute,
   AdminGestionar_MascotasRoute: AdminGestionar_MascotasRoute,
+  AdminGestionar_ProductosRoute: AdminGestionar_ProductosRoute,
+  AdminGestionar_ProveedoresRoute: AdminGestionar_ProveedoresRoute,
+  AdminGestionar_ReportesRoute: AdminGestionar_ReportesRoute,
   AdminGestionar_ReservasRoute: AdminGestionar_ReservasRoute,
   AdminGestionar_Roles_PermisosRoute: AdminGestionar_Roles_PermisosRoute,
   AdminGestionar_Servicios_Precios_CatalogoRoute:
     AdminGestionar_Servicios_Precios_CatalogoRoute,
   AdminGestionar_UsuariosRoute: AdminGestionar_UsuariosRoute,
+  AdminInventario_ControlRoute: AdminInventario_ControlRoute,
+  AdminInventario_MovimientosRoute: AdminInventario_MovimientosRoute,
+  AdminLogistica_Asignar_Personal_ZonasRoute:
+    AdminLogistica_Asignar_Personal_ZonasRoute,
+  AdminLogistica_Asignar_Servicios_MovilesRoute:
+    AdminLogistica_Asignar_Servicios_MovilesRoute,
+  AdminLogistica_Rutas_ProgramadasRoute: AdminLogistica_Rutas_ProgramadasRoute,
+  AdminLogistica_Unidades_MovilesRoute: AdminLogistica_Unidades_MovilesRoute,
+  AdminRutas_ProgramadasRoute: AdminRutas_ProgramadasRoute,
+  AdminUnidades_MovilesRoute: AdminUnidades_MovilesRoute,
+  AdminBillingRoute: AdminBillingRoute,
   AdminBitacoraRoute: AdminBitacoraRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminGestionarBackupsRoute: AdminGestionarBackupsRoute,
+  AdminNotificacionesSeguimientoRoute: AdminNotificacionesSeguimientoRoute,
+  AdminSeguridadCambiarPasswordRoute: AdminSeguridadCambiarPasswordRoute,
+  AdminVentasPagosVentasIdRoute: AdminVentasPagosVentasIdRoute,
+  AdminVentasPagosVentasNuevaRoute: AdminVentasPagosVentasNuevaRoute,
+  AdminVentasPagosVentasIndexRoute: AdminVentasPagosVentasIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -500,6 +1128,7 @@ interface ClientRouteChildren {
   ClientClienteRoute: typeof ClientClienteRoute
   ClientMisMascotasRoute: typeof ClientMisMascotasRoute
   ClientMisReservasRoute: typeof ClientMisReservasRoute
+  ClientMiCuentaCambiarPasswordRoute: typeof ClientMiCuentaCambiarPasswordRoute
 }
 
 const ClientRouteChildren: ClientRouteChildren = {
@@ -507,6 +1136,7 @@ const ClientRouteChildren: ClientRouteChildren = {
   ClientClienteRoute: ClientClienteRoute,
   ClientMisMascotasRoute: ClientMisMascotasRoute,
   ClientMisReservasRoute: ClientMisReservasRoute,
+  ClientMiCuentaCambiarPasswordRoute: ClientMiCuentaCambiarPasswordRoute,
 }
 
 const ClientRouteWithChildren =
@@ -514,14 +1144,32 @@ const ClientRouteWithChildren =
 
 interface PublicRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
+  PublicCheckoutDemoRoute: typeof PublicCheckoutDemoRoute
+  PublicForgotPasswordRoute: typeof PublicForgotPasswordRoute
+  PublicLandingRoute: typeof PublicLandingRoute
   PublicLoginRoute: typeof PublicLoginRoute
+  PublicPricingRoute: typeof PublicPricingRoute
+  PublicResetPasswordRoute: typeof PublicResetPasswordRoute
+  PublicStripeCancelRoute: typeof PublicStripeCancelRoute
+  PublicStripeSuccessRoute: typeof PublicStripeSuccessRoute
+  PublicTrialSignupRoute: typeof PublicTrialSignupRoute
   PublicIndexRoute: typeof PublicIndexRoute
+  PublicBillingSuccessRoute: typeof PublicBillingSuccessRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
+  PublicCheckoutDemoRoute: PublicCheckoutDemoRoute,
+  PublicForgotPasswordRoute: PublicForgotPasswordRoute,
+  PublicLandingRoute: PublicLandingRoute,
   PublicLoginRoute: PublicLoginRoute,
+  PublicPricingRoute: PublicPricingRoute,
+  PublicResetPasswordRoute: PublicResetPasswordRoute,
+  PublicStripeCancelRoute: PublicStripeCancelRoute,
+  PublicStripeSuccessRoute: PublicStripeSuccessRoute,
+  PublicTrialSignupRoute: PublicTrialSignupRoute,
   PublicIndexRoute: PublicIndexRoute,
+  PublicBillingSuccessRoute: PublicBillingSuccessRoute,
 }
 
 const PublicRouteWithChildren =
